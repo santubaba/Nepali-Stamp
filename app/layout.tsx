@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EB_Garamond, Inter, Open_Sans } from "next/font/google";
 import Navbar from "./components/Navbar/page";
 import "./globals.css";
+import Footer from "./components/Footer/page";
 
 const inter = Inter({
   subsets: ["latin"],

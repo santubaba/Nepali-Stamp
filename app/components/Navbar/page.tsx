@@ -1,153 +1,52 @@
 "use client";
 
-import { IconChevronDown, IconMenu2, IconX } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconMenu2,
+  IconSearch,
+  IconX,
+  IconRectangle,
+} from "@tabler/icons-react";
+
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [language, setLanguage] = useState<"EN" | "NP">("EN");
 
-  const pathName = usePathname();
-
-  const isActive = (href: string) => pathName === href;
+  const pathname = usePathname();
+  const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  // mobile accordion only
+  const [openDrawerMenu, setOpenDrawerMenu] = useState<string | null>(null);
 
-  const openMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const toggleDrawerMenu = (key: string) => {
+    setOpenDrawerMenu((prev) => (prev === key ? null : key));
   };
 
-  const toggleDropdown = (menu: string) => {
-    setOpenDropdown(openDropdown === menu ? null : menu);
+  const isActive = (href: string) => pathname === href;
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    setOpenDrawerMenu(null);
   };
-
-  const homeText = {
-    EN: "Home",
-    NP: "गृहपृष्ठ",
-  };
-
-  const collectionText = {
-    EN: "Collections",
-    NP: "सङ्ग्रहहरू",
-  };
-
-  const revenueText = {
-    EN: "Revenue",
-    NP: "राजस्व",
-  };
-
-  const archiveText = {
-    EN: "Archive",
-    NP: "अभिलेख",
-  };
-
-  const aboutText = {
-    EN: "About",
-    NP: "बारेमा",
-  };
-
-  const collectionsDropdown = [
-    {
-      label: {
-        EN: "Stamps",
-        NP: "टिकट",
-      },
-      href: "/collections/stamps",
-    },
-    {
-      label: {
-        EN: "Envelopes",
-        NP: "खामहरू",
-      },
-      href: "/collections/envelopes",
-    },
-    {
-      label: {
-        EN: "Postcards",
-        NP: "पोस्टकार्डहरू",
-      },
-      href: "/collections/postcards",
-    },
-    {
-      label: {
-        EN: "Commemoratives",
-        NP: "स्मारकहरू",
-      },
-      href: "/collections/commemoratives",
-    },
-    {
-      label: {
-        EN: "Service Stamps",
-        NP: "सेवा टिकटहरू",
-      },
-      href: "/collections/service-stamps",
-    },
-  ];
-
-  const revenueDropdown = [
-    {
-      label: {
-        EN: "Income Revenue Stamps",
-        NP: "आय राजस्व टिकट",
-      },
-      href: "/revenue/income-revenue-stamps",
-    },
-    {
-      label: {
-        EN: "Land Revenue Stamps",
-        NP: "भूमि राजस्व टिकट",
-      },
-      href: "/revenue/land-revenue-stamps",
-    },
-    {
-      label: {
-        EN: "Court-fee Stamps",
-        NP: "अदालत शुल्क टिकट",
-      },
-      href: "/revenue/court-fee-stamps",
-    },
-  ];
-
-  const archiveDropdown = [
-    {
-      label: {
-        EN: "Postal Money Order",
-        NP: "हुलाक मनी अर्डर",
-      },
-      href: "/archive/postal-money-order",
-    },
-    {
-      label: {
-        EN: "Other Archives",
-        NP: "अन्य अभिलेख",
-      },
-      href: "/archive/other-archives",
-    },
-  ];
-
-  /* prevent body scroll */
 
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
 
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isMenuOpen]);
 
-  /* close menu when resizing */
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
-        setIsMenuOpen(false);
+        closeMenu();
       }
     };
 
@@ -158,73 +57,214 @@ export default function Navbar() {
     };
   }, []);
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const trimmed = searchQuery.trim();
+
+    if (!trimmed) return;
+
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+  };
+
+  const t = {
+    home: {
+      EN: "Home",
+      NP: "गृहपृष्ठ",
+    },
+
+    collections: {
+      EN: "Collections",
+      NP: "सङ्ग्रहहरू",
+    },
+
+    revenue: {
+      EN: "Revenue",
+      NP: "राजस्व",
+    },
+
+    archive: {
+      EN: "Archive",
+      NP: "अभिलेख",
+    },
+
+    about: {
+      EN: "About",
+      NP: "बारेमा",
+    },
+  };
+
+  const menus = [
+    {
+      key: "collections",
+      title: t.collections[language],
+      path: "/collections",
+
+      items: [
+        {
+          label: {
+            EN: "Stamps",
+            NP: "टिकट",
+          },
+          href: "/collections/stamps",
+        },
+
+        {
+          label: {
+            EN: "Envelopes",
+            NP: "खामहरू",
+          },
+          href: "/collections/envelopes",
+        },
+
+        {
+          label: {
+            EN: "Postcards",
+            NP: "पोस्टकार्डहरू",
+          },
+          href: "/collections/postcards",
+        },
+
+        {
+          label: {
+            EN: "Commemoratives",
+            NP: "स्मारकहरू",
+          },
+          href: "/collections/commemoratives",
+        },
+
+        {
+          label: {
+            EN: "Service Stamps",
+            NP: "सेवा टिकटहरू",
+          },
+          href: "/collections/service-stamps",
+        },
+      ],
+    },
+
+    {
+      key: "revenue",
+      title: t.revenue[language],
+      path: "/revenue",
+
+      items: [
+        {
+          label: {
+            EN: "Income Revenue Stamps",
+            NP: "आय राजस्व टिकट",
+          },
+
+          href: "/revenue/income-revenue-stamps",
+        },
+
+        {
+          label: {
+            EN: "Land Revenue Stamps",
+            NP: "भूमि राजस्व टिकट",
+          },
+
+          href: "/revenue/land-revenue-stamps",
+        },
+
+        {
+          label: {
+            EN: "Court-fee Stamps",
+            NP: "अदालत शुल्क टिकट",
+          },
+
+          href: "/revenue/court-fee-stamps",
+        },
+      ],
+    },
+
+    {
+      key: "archive",
+      title: t.archive[language],
+      path: "/archive",
+
+      items: [
+        {
+          label: {
+            EN: "Postal Money Order",
+            NP: "हुलाक मनी अर्डर",
+          },
+
+          href: "/archive/postal-money-order",
+        },
+
+        {
+          label: {
+            EN: "Other Archives",
+            NP: "अन्य अभिलेख",
+          },
+
+          href: "/archive/other-archives",
+        },
+      ],
+    },
+  ];
+
   return (
     <>
-      <nav className="flex items-center justify-between h-20 px-4 md:px-6 lg:px-20 border-b border-brand-border">
-        {/* Logo */}
+      <nav className="flex items-center justify-between h-16 md:h-20 px-4 md:px-6 lg:px-20 border-b border-brand-border bg-brand-bg relative z-30">
+        {/* logo */}
 
-        <div className="flex items-center gap-2 p-2 text-lg font-semibold font-heading">
-          <div className="w-10 h-10 bg-brand-primary"></div>
-          <Link href="/">Nepali Stamp</Link>
-        </div>
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-7 h-7 md:w-8 md:h-8 bg-brand-primary rounded flex items-center justify-center">
+            <IconRectangle size={14} color="#F5EFEB" />
+          </div>
 
-        {/* Desktop */}
+          <span className="text-sm md:text-base font-semibold font-heading text-brand-text">
+            Nepali Stamps
+          </span>
+        </Link>
 
-        <div className="hidden md:flex items-center gap-5 lg:gap-10">
+        {/* desktop */}
+
+        <div className="hidden lg:flex items-center gap-6 xl:gap-8 flex-1 justify-center">
           <Link
             href="/"
-            className={`h-20 flex items-center border-b-2
+            className={`h-20 flex items-center border-b-2 text-sm
             ${
               isActive("/")
-                ? "text-brand-primary border-brand-primary"
-                : "border-transparent"
+                ? "border-brand-primary text-brand-primary"
+                : "border-transparent text-brand-muted hover:text-brand-text"
             }`}
           >
-            {homeText[language]}
+            {t.home[language]}
           </Link>
 
-          {[
-            {
-              title: collectionText[language],
-              path: "/collections",
-              data: collectionsDropdown,
-            },
-            {
-              title: revenueText[language],
-              path: "/revenue",
-              data: revenueDropdown,
-            },
-            {
-              title: archiveText[language],
-              path: "/archive",
-              data: archiveDropdown,
-            },
-          ].map((menu) => (
-            <div key={menu.path} className="relative h-20 group">
-              <Link
-                href={menu.path}
-                className={`h-full flex items-center gap-1 border-b-2
+          {menus.map((menu) => (
+            <div key={menu.key} className="relative h-20 group">
+              <div
+                className={`h-full flex items-center gap-1 border-b-2 cursor-default text-sm
                 ${
-                  pathName.startsWith(menu.path)
-                    ? "text-brand-primary border-brand-primary"
-                    : "border-transparent"
+                  pathname.startsWith(menu.path)
+                    ? "border-brand-primary text-brand-primary"
+                    : "border-transparent text-brand-muted hover:text-brand-text"
                 }`}
               >
                 {menu.title}
 
                 <IconChevronDown
-                  size={16}
-                  className="transition-transform group-hover:rotate-180"
+                  size={14}
+                  className="group-hover:rotate-180 transition-transform"
                 />
-              </Link>
+              </div>
 
-              <div className="absolute left-0 hidden pt-2 top-full group-hover:block">
-                <div className="p-2 border rounded shadow min-w-44 bg-brand-bg border-brand-border">
-                  {menu.data.map((item) => (
+              <div className="absolute top-full left-0 hidden group-hover:block pt-2 min-w-52 z-50">
+                <div className="bg-brand-bg border border-brand-border rounded-lg shadow-lg p-1">
+                  {menu.items.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="block px-3 py-2 rounded hover:text-brand-primary"
+                      className={`block px-3 py-2 rounded-md text-sm
+                      ${
+                        pathname === item.href
+                          ? "bg-brand-surface text-brand-primary font-medium"
+                          : "text-brand-muted hover:bg-brand-surface hover:text-brand-primary"
+                      }`}
                     >
                       {item.label[language]}
                     </Link>
@@ -236,151 +276,234 @@ export default function Navbar() {
 
           <Link
             href="/about"
-            className={`h-20 flex items-center border-b-2
+            className={`h-20 flex items-center border-b-2 text-sm
             ${
               isActive("/about")
-                ? "text-brand-primary border-brand-primary"
-                : "border-transparent"
+                ? "border-brand-primary text-brand-primary"
+                : "border-transparent text-brand-muted hover:text-brand-text"
             }`}
           >
-            {aboutText[language]}
+            {t.about[language]}
           </Link>
         </div>
 
-        {/* Right section */}
+        {/* right section */}
 
-        <div className="flex items-center gap-3">
-          <div className="flex items-center border rounded h-9">
+        <div className="flex items-center gap-2 lg:gap-3">
+          {/* desktop search */}
+
+          <form
+            onSubmit={handleSearch}
+            className="
+    hidden
+    md:flex
+    items-center
+    flex-1
+    max-w-[220px]
+    md:max-w-[320px]
+    lg:w-44
+    xl:w-64
+    h-10
+    px-3
+    bg-brand-surface
+    border
+    border-brand-border
+    rounded-lg
+    shrink
+  "
+          >
+            <IconSearch size={16} className="text-brand-muted shrink-0" />
+
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search stamps..."
+              className="flex-1 min-w-0 px-2 bg-transparent text-sm outline-none placeholder:text-brand-muted"
+            />
+
+            {searchQuery && (
+              <button type="button" onClick={() => setSearchQuery("")}>
+                <IconX size={15} />
+              </button>
+            )}
+          </form>
+
+          {/* language */}
+
+          <div className="flex border border-brand-border rounded overflow-hidden h-9">
             <button
               onClick={() => setLanguage("EN")}
-              className={`p-2 h-9 ${
+              className={`px-3 text-sm
+              ${
                 language === "EN"
-                  ? "bg-brand-primary text-brand-bg rounded-l"
-                  : ""
+                  ? "bg-brand-primary text-brand-bg"
+                  : "text-brand-muted"
               }`}
             >
               EN
             </button>
 
+            <div className="w-px h-4 bg-brand-border self-center" />
+
             <button
               onClick={() => setLanguage("NP")}
-              className={`p-2 h-9 ${
+              className={`px-3 text-sm
+              ${
                 language === "NP"
-                  ? "bg-brand-primary text-brand-bg rounded-r"
-                  : ""
+                  ? "bg-brand-primary text-brand-bg"
+                  : "text-brand-muted hover:text-brand-text transition-colors"
               }`}
             >
               नेपाली
             </button>
           </div>
 
-          <button onClick={openMenu} className="md:hidden">
-            <IconMenu2 />
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="lg:hidden"
+            aria-label="Open menu"
+          >
+            <IconMenu2 size={20} />
           </button>
         </div>
       </nav>
 
-      {/* overlay */}
+      {/* mobile overlay */}
 
       {isMenuOpen && (
-        <div onClick={openMenu} className="fixed inset-0 bg-black/50 z-40" />
+        <div
+          onClick={closeMenu}
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+        />
       )}
 
-      {/* mobile sidebar */}
+      {/* mobile drawer */}
 
       <div
-        className={`fixed top-0 right-0 h-screen w-72 bg-brand-bg p-6 z-50 overflow-y-auto transition-transform duration-300
+        className={`fixed top-0 right-0 h-full w-72 bg-brand-bg z-50 overflow-y-auto transition-transform duration-300 lg:hidden
         ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
       >
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="font-bold text-lg">Menu</h2>
+        {/* Header */}
 
-          <button onClick={openMenu}>
-            <IconX />
+        <div className="flex justify-between items-center p-5 border-b border-brand-border h-16">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-brand-primary rounded flex items-center justify-center">
+              <IconRectangle size={13} color="#F5EFEB" />
+            </div>
+
+            <span className="font-semibold font-heading text-brand-text">
+              Nepali Stamps
+            </span>
+          </div>
+
+          <button onClick={closeMenu}>
+            <IconX size={18} />
           </button>
         </div>
 
-        <div className="flex flex-col">
+        {/* mobile search */}
+
+        <div className="p-5 border-b border-brand-border">
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center h-11 px-3 bg-brand-surface border border-brand-border rounded-lg"
+          >
+            <IconSearch size={16} className="text-brand-muted" />
+
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search stamps..."
+              className="flex-1 px-2 bg-transparent outline-none text-sm"
+            />
+
+            {searchQuery && (
+              <button type="button" onClick={() => setSearchQuery("")}>
+                <IconX size={15} />
+              </button>
+            )}
+          </form>
+        </div>
+
+        {/* body */}
+
+        <div className="px-5 py-4">
           <Link
             href="/"
-            onClick={openMenu}
-            className={`py-3 border-b border-brand-border ${
-              isActive("/") ? "text-brand-primary font-medium" : ""
+            onClick={closeMenu}
+            className={`block py-3 border-b border-brand-border
+            ${
+              pathname === "/"
+                ? "text-brand-primary font-medium"
+                : "text-brand-text hover:text-brand-primary"
             }`}
           >
-            {homeText[language]}
+            {t.home[language]}
           </Link>
 
-          {[
-            {
-              key: "collections",
-              title: collectionText[language],
-              data: collectionsDropdown,
-            },
-            {
-              key: "revenue",
-              title: revenueText[language],
-              data: revenueDropdown,
-            },
-            {
-              key: "archive",
-              title: archiveText[language],
-              data: archiveDropdown,
-            },
-          ].map((menu) => (
+          {menus.map((menu) => (
             <div key={menu.key} className="border-b border-brand-border">
               <button
-                onClick={() => toggleDropdown(menu.key)}
-                className={`w-full flex justify-between py-3 transition ${
-                  pathName.startsWith(
-                    menu.key === "collections"
-                      ? "/collections"
-                      : menu.key === "revenue"
-                        ? "/revenue"
-                        : "/archive",
-                  )
-                    ? "text-brand-primary"
-                    : ""
-                }`}
+                aria-expanded={openDrawerMenu === menu.key}
+                onClick={() => toggleDrawerMenu(menu.key)}
+                className={`w-full flex justify-between items-center py-3
+                  ${
+                    pathname.startsWith(menu.path)
+                      ? "text-brand-primary font-medium"
+                      : "text-brand-text hover:text-brand-primary"
+                  }`}
               >
                 {menu.title}
 
                 <IconChevronDown
-                  className={`transition-transform ${
-                    openDropdown === menu.key ? "rotate-180" : ""
-                  }`}
+                  size={16}
+                  className={`transition-transform duration-300
+                    ${openDrawerMenu === menu.key ? "rotate-180" : ""}`}
                 />
               </button>
 
-              {openDropdown === menu.key && (
-                <div className="pl-4 pb-3 flex flex-col gap-2">
-                  {menu.data.map((item) => (
+              <div
+                className={`overflow-hidden transition-all duration-300
+                  ${
+                    openDrawerMenu === menu.key
+                      ? "max-h-96 opacity-100"
+                      : "max-h-0 opacity-0"
+                  }`}
+              >
+                <div className="pl-4 pb-2">
+                  {menu.items.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={openMenu}
-                      className={`text-sm py-1 transition ${
-                        pathName === item.href
-                          ? "text-brand-primary font-medium"
-                          : "text-brand-text"
-                      }`}
+                      onClick={closeMenu}
+                      className={`block py-2 text-sm
+                          ${
+                            pathname === item.href
+                              ? "text-brand-primary font-small  "
+                              : "text-brand-text hover:text-brand-primary"
+                          }`}
                     >
                       {item.label[language]}
                     </Link>
                   ))}
                 </div>
-              )}
+              </div>
             </div>
           ))}
 
           <Link
             href="/about"
-            onClick={openMenu}
-            className={`py-3 ${
-              isActive("/about") ? "text-brand-primary font-medium" : ""
+            onClick={closeMenu}
+            className={`block py-3
+            ${
+              pathname === "/about"
+                ? "text-brand-primary font-medium"
+                : "text-brand-text hover:text-brand-primary"
             }`}
           >
-            {aboutText[language]}
+            {t.about[language]}
           </Link>
         </div>
       </div>
