@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -9,29 +10,29 @@ export default function Footer() {
   const [language, setLanguage] = useState<"EN" | "NP">("EN");
   return (
     <>
-      <footer className="bg-brand-text font-meta px-6 md:px-12 lg:px-16 py-10">
+      <footer className="px-6 py-10 bg-brand-text font-meta md:px-12 lg:px-16">
         {/* ================= MOBILE ================= */}
-        <div className="md:hidden flex flex-col">
+        <div className="flex flex-col md:hidden">
           {/* Header */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-brand-primary rounded-sm" />
+              <div className="w-10 h-10 rounded-sm bg-brand-primary" />
 
               <Link
                 href="/"
-                className="text-brand-bg text-lg font-semibold font-body"
+                className="text-lg font-semibold text-brand-bg font-body"
               >
                 Nepali Stamp
               </Link>
             </div>
 
-            <p className="text-brand-bg/75 leading-relaxed">
+            <p className="leading-relaxed text-brand-bg/75">
               A complete digital archive of Nepal's postal history from 1881 to
               the present day.
             </p>
 
             {/* Language */}
-            <div className="inline-flex w-fit border border-brand-bg rounded overflow-hidden h-9">
+            <div className="inline-flex overflow-hidden border rounded w-fit border-brand-bg h-9">
               <button
                 onClick={() => setLanguage("EN")}
                 className={`px-3 text-sm transition-colors ${
@@ -43,7 +44,7 @@ export default function Footer() {
                 EN
               </button>
 
-              <div className="w-px h-4 bg-brand-border/50 self-center" />
+              <div className="self-center w-px h-4 bg-brand-border/50" />
 
               <button
                 onClick={() => setLanguage("NP")}
@@ -58,13 +59,13 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="w-full h-px bg-brand-bg/30 my-8" />
+          <div className="w-full h-px my-8 bg-brand-bg/30" />
 
           {/* Navigation */}
           <div className="grid grid-cols-2 border-b border-brand-bg/20">
             {/* Collections */}
-            <div className="p-6 border-r border-b border-brand-bg/20">
-              <h3 className="text-brand-accent text-sm font-semibold uppercase mb-5">
+            <div className="p-6 border-b border-r border-brand-bg/20">
+              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent">
                 Collections
               </h3>
 
@@ -79,7 +80,7 @@ export default function Footer() {
 
             {/* Revenue */}
             <div className="p-6 border-b border-brand-bg/20">
-              <h3 className="text-brand-accent text-sm font-semibold uppercase mb-5">
+              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent">
                 Revenue
               </h3>
 
@@ -96,7 +97,7 @@ export default function Footer() {
 
             {/* Archives */}
             <div className="p-6 border-r border-brand-bg/20">
-              <h3 className="text-brand-accent text-sm font-semibold uppercase mb-5">
+              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent">
                 Archives
               </h3>
 
@@ -111,7 +112,7 @@ export default function Footer() {
 
             {/* Archive */}
             <div className="p-6">
-              <h3 className="text-brand-accent text-sm font-semibold uppercase mb-5">
+              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent">
                 Archive
               </h3>
 
@@ -125,11 +126,11 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="w-full h-px bg-brand-border/30 my-8" />
+          <div className="w-full h-px my-8 bg-brand-border/30" />
 
           {/* Follow */}
           <div className="flex flex-col gap-5">
-            <h3 className="text-brand-accent text-sm font-semibold uppercase">
+            <h3 className="text-sm font-semibold uppercase text-brand-accent">
               FOLLOW US
             </h3>
 
@@ -139,7 +140,7 @@ export default function Footer() {
                 target="_blank"
                 className="flex items-center gap-2 text-brand-bg/75"
               >
-                <div className="w-11 h-11 border border-brand-bg/30 rounded-md flex items-center justify-center">
+                <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg/30">
                   <IconBrandFacebook size={22} />
                 </div>
                 Facebook
@@ -150,7 +151,7 @@ export default function Footer() {
                 target="_blank"
                 className="flex items-center gap-2 text-brand-bg/75"
               >
-                <div className="w-11 h-11 border border-brand-bg/30 rounded-md flex items-center justify-center">
+                <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg/30">
                   <IconBrandInstagram size={22} />
                 </div>
                 Instagram
@@ -158,13 +159,13 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="w-full h-px bg-brand-bg/15 my-8" />
+          <div className="w-full h-px my-8 bg-brand-bg/15" />
 
           {/* Bottom */}
           <div className="flex flex-col gap-4 text-sm text-brand-bg/40">
             <span>© 2026 Nepal Stamp. All rights reserved.</span>
 
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex flex-wrap gap-3">
               <Link href="/privacy-policy">Privacy Policy</Link>
 
               <span>|</span>
@@ -179,7 +180,7 @@ export default function Footer() {
         </div>
 
         {/* ================= DESKTOP ================= */}
-        <div className="hidden md:flex flex-col gap-10">
+        <div className="flex-col hidden gap-10 md:flex">
           {/* Top */}
           <div className="grid grid-cols-[1.5fr_3fr_1fr] gap-10">
             {/* Left */}
@@ -192,13 +193,13 @@ export default function Footer() {
                 </Link>
               </div>
 
-              <p className="text-brand-bg/75 leading-relaxed">
+              <p className="leading-relaxed text-brand-bg/75">
                 A complete digital archive of Nepal's postal history — from the
                 first 1881 issue to the present day.
               </p>
 
               <div className="w-full h-px bg-brand-bg/15" />
-              <div className="inline-flex w-fit border border-brand-bg rounded overflow-hidden h-9">
+              <div className="inline-flex overflow-hidden border rounded w-fit border-brand-bg h-9">
                 <button
                   onClick={() => setLanguage("EN")}
                   className={`px-3 ${
@@ -210,7 +211,7 @@ export default function Footer() {
                   EN
                 </button>
 
-                <div className="w-px h-4 bg-brand-border/50 self-center" />
+                <div className="self-center w-px h-4 bg-brand-border/50" />
 
                 <button
                   onClick={() => setLanguage("NP")}
@@ -231,7 +232,7 @@ export default function Footer() {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-px bg-brand-accent" />
-                  <h3 className="text-brand-accent text-sm font-semibold">
+                  <h3 className="text-sm font-semibold text-brand-accent">
                     Collections
                   </h3>
                 </div>
@@ -249,7 +250,7 @@ export default function Footer() {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-px bg-brand-accent" />
-                  <h3 className="text-brand-accent text-sm font-semibold">
+                  <h3 className="text-sm font-semibold text-brand-accent">
                     Revenue
                   </h3>
                 </div>
@@ -271,7 +272,7 @@ export default function Footer() {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-px bg-brand-accent" />
-                  <h3 className="text-brand-accent text-sm font-semibold">
+                  <h3 className="text-sm font-semibold text-brand-accent">
                     Archives
                   </h3>
                 </div>
@@ -290,7 +291,7 @@ export default function Footer() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-px bg-brand-accent" />
-                <h3 className="text-brand-accent text-sm font-semibold uppercase">
+                <h3 className="text-sm font-semibold uppercase text-brand-accent">
                   FOLLOW US
                 </h3>
               </div>
@@ -301,7 +302,7 @@ export default function Footer() {
                   target="_blank"
                   className="flex items-center gap-3"
                 >
-                  <div className="w-11 h-11 border border-brand-bg rounded-md flex items-center justify-center">
+                  <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg">
                     <IconBrandFacebook size={30} />
                   </div>
 
@@ -313,7 +314,7 @@ export default function Footer() {
                   target="_blank"
                   className="flex items-center gap-3"
                 >
-                  <div className="w-11 h-11 border border-brand-bg rounded-md flex items-center justify-center">
+                  <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg">
                     <IconBrandInstagram size={30} />
                   </div>
 
@@ -326,7 +327,7 @@ export default function Footer() {
           <div className="w-full h-px bg-brand-bg/15" />
 
           {/* Bottom */}
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 text-sm text-brand-bg/40">
               <span>© 2026 Nepal Stamp. All rights reserved.</span>
 
@@ -346,7 +347,7 @@ export default function Footer() {
                   behavior: "smooth",
                 })
               }
-              className="w-44 h-14 border border-brand-bg/30 rounded-xl text-brand-bg/50 hover:text-brand-bg transition-colors flex items-center justify-center gap-2"
+              className="flex items-center justify-center gap-2 transition-colors border w-44 h-14 border-brand-bg/30 rounded-xl text-brand-bg/50 hover:text-brand-bg"
             >
               <IconArrowUp size={16} />
               Back To Top
