@@ -338,7 +338,7 @@ export default function Navbar() {
               ${
                 language === "EN"
                   ? "bg-brand-primary text-brand-bg"
-                  : "text-brand-muted"
+                  : "text-brand-muted hover:text-brand-text transition-colors"
               }`}
             >
               EN
