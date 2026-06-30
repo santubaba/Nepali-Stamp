@@ -3,6 +3,7 @@ import { EB_Garamond, Inter, Open_Sans } from "next/font/google";
 import Navbar from "./components/Navbar/page";
 import "./globals.css";
 import Footer from "./components/Footer/page";
+import { LanguageProvider } from "./context/LanguageContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,10 +35,12 @@ export default function RootLayout({
       lang="en"
       className={`${ebGaramond.variable} ${inter.variable} ${openSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-brand-bg">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer/>
+      <body className="flex flex-col min-h-full bg-brand-bg">
+        <LanguageProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

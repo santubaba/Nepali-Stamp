@@ -6,11 +6,16 @@ import {
   IconBrandInstagram,
   IconArrowUp,
 } from "@tabler/icons-react";
+import { useContext } from "react";
+import { LanguageContext } from "@/app/context/LanguageContext";
 export default function Footer() {
-  const [language, setLanguage] = useState<"EN" | "NP">("EN");
+  const { language, setLanguage, text } = useContext(LanguageContext)!;
+
+  console.log("Footer Language", language);
+  console.log("Footer render:", language, text.navbar.home);
   return (
     <>
-      <footer className="px-6 py-10 bg-brand-text font-meta md:px-12 lg:px-16">
+      <footer className="px-6 py-10 bg-brand-text md:px-12 lg:px-16">
         {/* ================= MOBILE ================= */}
         <div className="flex flex-col md:hidden">
           {/* Header */}
@@ -20,13 +25,13 @@ export default function Footer() {
 
               <Link
                 href="/"
-                className="text-lg font-semibold text-brand-bg font-body"
+                className="text-lg font-semibold text-brand-bg font-heading"
               >
                 Nepali Stamp
               </Link>
             </div>
 
-            <p className="leading-relaxed text-brand-bg/75">
+            <p className="leading-relaxed text-brand-bg/75 font-meta">
               A complete digital archive of Nepal's postal history from 1881 to
               the present day.
             </p>
@@ -35,7 +40,7 @@ export default function Footer() {
             <div className="inline-flex overflow-hidden border rounded w-fit border-brand-bg h-9">
               <button
                 onClick={() => setLanguage("EN")}
-                className={`px-3 text-sm transition-colors ${
+                className={`px-3 text-sm font-body transition-colors ${
                   language === "EN"
                     ? "bg-[#2F2E2E] text-brand-bg"
                     : "text-brand-bg/80"
@@ -48,7 +53,7 @@ export default function Footer() {
 
               <button
                 onClick={() => setLanguage("NP")}
-                className={`px-3 text-sm transition-colors ${
+                className={`px-3 text-sm font-body transition-colors ${
                   language === "NP"
                     ? "bg-[#2F2E2E] text-brand-bg"
                     : "text-brand-bg/80"
@@ -64,64 +69,69 @@ export default function Footer() {
           {/* Navigation */}
           <div className="grid grid-cols-2 border-b border-brand-bg/20">
             {/* Collections */}
-            <div className="p-6 border-b border-r border-brand-bg/20">
-              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent">
-                Collections
+            <div className="py-6 px-3 border-b border-r border-brand-bg/20">
+              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent font-body">
+                {text.navbar.collections}
               </h3>
 
-              <div className="flex flex-col gap-3 text-brand-bg/75">
-                <Link href="/collections/stamps">Stamps</Link>
-                <Link href="/collections/envelopes">Envelopes</Link>
-                <Link href="/collections/postcards">Postcards</Link>
-                <Link href="/collections/commemoratives">Commemoratives</Link>
-                <Link href="/collections/service-stamps">Service Stamps</Link>
+              <div className="flex flex-col gap-3 text-brand-bg/75 font-body break-words">
+                <Link href="/collections/stamps">
+                  {text.collections.stamps}
+                </Link>
+
+                <Link href="/collections/envelopes">
+                  {text.collections.envelopes}
+                </Link>
+
+                <Link href="/collections/postcards">
+                  {text.collections.postcards}
+                </Link>
+
+                <Link href="/collections/commemoratives">
+                  {text.collections.commemoratives}
+                </Link>
+
+                <Link href="/collections/service-stamps">
+                  {text.collections.serviceStamps}
+                </Link>
               </div>
             </div>
 
             {/* Revenue */}
-            <div className="p-6 border-b border-brand-bg/20">
-              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent">
-                Revenue
+            <div className="py-6 px-3 border-b border-brand-bg/20">
+              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent font-body">
+                {text.navbar.revenue}
               </h3>
 
-              <div className="flex flex-col gap-3 text-brand-bg/75">
+              <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
                 <Link href="/revenue/income-revenue-stamps">
-                  Income Revenue
+                  {text.revenue.incomeRevenue}
                 </Link>
 
-                <Link href="/revenue/land-revenue-stamps">Land Revenue</Link>
+                <Link href="/revenue/land-revenue-stamps">
+                  {text.revenue.landRevenue}
+                </Link>
 
-                <Link href="/revenue/court-fee-stamps">Court-fee Stamps</Link>
+                <Link href="/revenue/court-fee-stamps">
+                  {text.revenue.courtFee}
+                </Link>
               </div>
             </div>
 
             {/* Archives */}
-            <div className="p-6 border-r border-brand-bg/20">
-              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent">
-                Archives
+            <div className="py-6 px-3 border-r border-brand-bg/20">
+              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent font-body">
+                {text.navbar.archive}
               </h3>
 
-              <div className="flex flex-col gap-3 text-brand-bg/75">
-                <Link href="/archives/postal-money-order">
-                  Postal Money Order
+              <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
+                <Link href="/archive/postal-money-order">
+                  {text.archive.postalMoneyOrder}
                 </Link>
 
-                <Link href="/archives/other">Other Archives</Link>
-              </div>
-            </div>
-
-            {/* Archive */}
-            <div className="p-6">
-              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent">
-                Archive
-              </h3>
-
-              <div className="flex flex-col gap-3 text-brand-bg/75">
-                <Link href="/about-project">About Project</Link>
-
-                <Link href="/catalog">Browse Catalog</Link>
-
-                <Link href="/search">Search Records</Link>
+                <Link href="/archive/other-archives">
+                  {text.archive.otherArchives}
+                </Link>
               </div>
             </div>
           </div>
@@ -130,11 +140,11 @@ export default function Footer() {
 
           {/* Follow */}
           <div className="flex flex-col gap-5">
-            <h3 className="text-sm font-semibold uppercase text-brand-accent">
+            <h3 className="text-sm font-semibold uppercase text-brand-accent font-body">
               FOLLOW US
             </h3>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 font-body">
               <Link
                 href="https://facebook.com"
                 target="_blank"
@@ -162,7 +172,7 @@ export default function Footer() {
           <div className="w-full h-px my-8 bg-brand-bg/15" />
 
           {/* Bottom */}
-          <div className="flex flex-col gap-4 text-sm text-brand-bg/40">
+          <div className="flex flex-col gap-4 text-sm text-brand-bg/40 font-body">
             <span>© 2026 Nepal Stamp. All rights reserved.</span>
 
             <div className="flex flex-wrap gap-3">
@@ -182,10 +192,10 @@ export default function Footer() {
         {/* ================= DESKTOP ================= */}
         <div className="flex-col hidden gap-10 md:flex">
           {/* Top */}
-          <div className="grid grid-cols-[1.5fr_3fr_1fr] gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-[1.2fr_2.5fr_.8fr] lg:grid-cols-[1.5fr_3fr_1fr] gap-8 lg:gap-10">
             {/* Left */}
             <div className="flex flex-col gap-8">
-              <div className="flex items-center gap-2 text-lg font-semibold font-body">
+              <div className="flex items-center gap-2 text-lg font-semibold font-heading">
                 <div className="w-10 h-10 bg-brand-primary" />
 
                 <Link href="/" className="text-brand-bg">
@@ -193,16 +203,17 @@ export default function Footer() {
                 </Link>
               </div>
 
-              <p className="leading-relaxed text-brand-bg/75">
+              <p className="leading-relaxed text-brand-bg/75 font-meta">
                 A complete digital archive of Nepal's postal history — from the
                 first 1881 issue to the present day.
               </p>
 
               <div className="w-full h-px bg-brand-bg/15" />
+
               <div className="inline-flex overflow-hidden border rounded w-fit border-brand-bg h-9">
                 <button
                   onClick={() => setLanguage("EN")}
-                  className={`px-3 ${
+                  className={`px-3 font-body ${
                     language === "EN"
                       ? "bg-[#2F2E2E] text-brand-bg"
                       : "text-brand-bg/80"
@@ -215,7 +226,7 @@ export default function Footer() {
 
                 <button
                   onClick={() => setLanguage("NP")}
-                  className={`px-3 ${
+                  className={`px-3 font-body ${
                     language === "NP"
                       ? "bg-[#2F2E2E] text-brand-bg"
                       : "text-brand-bg/80"
@@ -227,22 +238,36 @@ export default function Footer() {
             </div>
 
             {/* Center Navigation */}
-            <div className="grid grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
               {/* Collections */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-px bg-brand-accent" />
-                  <h3 className="text-sm font-semibold text-brand-accent">
-                    Collections
+                  <h3 className="text-sm font-semibold text-brand-accent font-body">
+                    {text.navbar.collections}
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-2 text-brand-bg/75">
-                  <Link href="/collections/stamps">Stamps</Link>
-                  <Link href="/collections/envelopes">Envelopes</Link>
-                  <Link href="/collections/postcards">Postcards</Link>
-                  <Link href="/collections/commemoratives">Commemoratives</Link>
-                  <Link href="/collections/service-stamps">Service Stamps</Link>
+                <div className="flex flex-col gap-2 break-words text-brand-bg/75 font-body">
+                  <Link href="/collections/stamps">
+                    {text.collections.stamps}
+                  </Link>
+
+                  <Link href="/collections/envelopes">
+                    {text.collections.envelopes}
+                  </Link>
+
+                  <Link href="/collections/postcards">
+                    {text.collections.postcards}
+                  </Link>
+
+                  <Link href="/collections/commemoratives">
+                    {text.collections.commemoratives}
+                  </Link>
+
+                  <Link href="/collections/service-stamps">
+                    {text.collections.serviceStamps}
+                  </Link>
                 </div>
               </div>
 
@@ -250,21 +275,23 @@ export default function Footer() {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-px bg-brand-accent" />
-                  <h3 className="text-sm font-semibold text-brand-accent">
-                    Revenue
+                  <h3 className="text-sm font-semibold text-brand-accent font-body">
+                    {text.navbar.revenue}
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-2 text-brand-bg/75">
+                <div className="flex flex-col gap-2 break-words text-brand-bg/75 font-body">
                   <Link href="/revenue/income-revenue-stamps">
-                    Income Revenue Stamps
+                    {text.revenue.incomeRevenue}
                   </Link>
 
                   <Link href="/revenue/land-revenue-stamps">
-                    Land Revenue Stamps
+                    {text.revenue.landRevenue}
                   </Link>
 
-                  <Link href="/revenue/court-fee-stamps">Court-fee Stamps</Link>
+                  <Link href="/revenue/court-fee-stamps">
+                    {text.revenue.courtFee}
+                  </Link>
                 </div>
               </div>
 
@@ -272,17 +299,19 @@ export default function Footer() {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-px bg-brand-accent" />
-                  <h3 className="text-sm font-semibold text-brand-accent">
-                    Archives
+                  <h3 className="text-sm font-semibold text-brand-accent font-body">
+                    {text.navbar.archive}
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-2 text-brand-bg/75">
-                  <Link href="/archives/postal-money-order">
-                    Postal Money Order
+                <div className="flex flex-col gap-2 break-words text-brand-bg/75 font-body">
+                  <Link href="/archive/postal-money-order">
+                    {text.archive.postalMoneyOrder}
                   </Link>
 
-                  <Link href="/archives/other">Other Archives</Link>
+                  <Link href="/archive/other-archives">
+                    {text.archive.otherArchives}
+                  </Link>
                 </div>
               </div>
             </div>
@@ -291,12 +320,12 @@ export default function Footer() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-px bg-brand-accent" />
-                <h3 className="text-sm font-semibold uppercase text-brand-accent">
+                <h3 className="text-sm font-semibold uppercase text-brand-accent font-body">
                   FOLLOW US
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-3 text-brand-bg/75">
+              <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
                 <Link
                   href="https://facebook.com"
                   target="_blank"
@@ -328,7 +357,7 @@ export default function Footer() {
 
           {/* Bottom */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 text-sm text-brand-bg/40">
+            <div className="flex items-center gap-3 text-sm text-brand-bg/40 font-body">
               <span>© 2026 Nepal Stamp. All rights reserved.</span>
 
               <span>|</span>
@@ -347,7 +376,7 @@ export default function Footer() {
                   behavior: "smooth",
                 })
               }
-              className="flex items-center justify-center gap-2 transition-colors border w-44 h-14 border-brand-bg/30 rounded-xl text-brand-bg/50 hover:text-brand-bg"
+              className="flex items-center justify-center gap-2 transition-colors border w-44 h-14 border-brand-bg/30 rounded-xl text-brand-bg/50 hover:text-brand-bg font-body"
             >
               <IconArrowUp size={16} />
               Back To Top
