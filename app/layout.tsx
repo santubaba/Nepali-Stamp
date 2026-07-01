@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar/page";
 import "./globals.css";
 import Footer from "./components/Footer/page";
 import { LanguageProvider } from "./context/LanguageContext";
+import AboutInfo from "./components/AboutInfo/page";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
         <LanguageProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
+          <AboutInfo />
           <Footer />
         </LanguageProvider>
       </body>
