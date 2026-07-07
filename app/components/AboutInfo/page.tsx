@@ -54,7 +54,7 @@ export default function AboutInfo() {
           </div>
 
           <a
-            href="/about/history"
+            href="/about"
             className="mt-14 inline-block font-[var(--font-meta)] text-sm text-[var(--color-brand-accent)] transition hover:translate-x-1"
           >
             Read the full project history →

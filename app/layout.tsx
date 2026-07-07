@@ -40,7 +40,6 @@ export default function RootLayout({
         <LanguageProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
-          <AboutInfo />
           <Footer />
         </LanguageProvider>
       </body>
