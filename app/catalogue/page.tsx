@@ -7,18 +7,16 @@ import { collections } from "./data";
 export default function CollectionsPage() {
   return (
     <main className="min-h-screen bg-brand-bg">
-      <BreadCrumb
-      />
-
       <section className="border-b border-brand-border">
         <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:py-12">
+          <BreadCrumb className="mb-6 " />
           <div className="mb-4 flex items-center gap-3 uppercase tracking-[0.18em] text-[11px] font-medium text-brand-accent">
             <span className="w-6 h-px bg-brand-accent" />
-            Browse Collections
+            Catalogue
           </div>
 
           <h1 className="text-3xl font-medium font-heading text-brand-text sm:text-4xl lg:text-5xl">
-            All Ten Collection Categories
+            Browse the Complete Catalogue
           </h1>
 
           <p className="max-w-2xl mt-4 text-sm leading-7 text-brand-muted sm:text-base">
