@@ -1,40 +1,52 @@
 import Image from "next/image";
+import Link from "next/link";
 
-interface StampsProps {
-  id:number,
+interface StampCardProps {
+  id: number;
+  slug: string; // needed for the detail page link
   title: string;
-  year: Date;
+  year: number; // plain number — DB returns Int, not Date
   country: string;
-  metadata: string;
-  img: string;
+  description: string; // renamed from metadata — more honest about what it is
+  img: string; // R2 public URL — Phase 5 wires this from DB
 }
 
-export default function StampCard(info: StampsProps) {
+export default function StampCard({
+  slug,
+  title,
+  year,
+  country,
+  description,
+  img,
+}: StampCardProps) {
   return (
-    <main className="m-2">
-      <div className="p-3 transition-all bg-white border shadow-sm w-44 rounded-xl border-brand-border hover:-translate-y-1 hover:shadow-md">
+    <Link
+      href={`/stamps/${slug}`}
+      className="group block overflow-hidden bg-white border border-brand-border rounded-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-primary/40"
+    >
+      {/* Image area */}
+      <div className="relative w-full aspect-[4/5] border-b border-brand-border bg-brand-surface">
         <Image
-          src={info.img}
-          alt={info.title}
-          width={160}
-          height={200}
-          className="object-cover w-full h-auto border rounded-lg border-brand-border"
+          src={img}
+          alt={title}
+          fill
+          className="object-contain p-2"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
         />
-
-        <div className="mt-3">
-          <h2 className="text-base font-bold leading-tight font-heading text-brand-text">
-            {info.title}
-          </h2>
-
-          <p className="mt-2 text-sm font-meta text-brand-muted">
-            {info.country} • {info.year.getFullYear()}
-          </p>
-
-          <p className="mt-1 text-sm font-meta text-brand-secondary">
-            {info.metadata}
-          </p>
-        </div>
       </div>
-    </main>
+
+      {/* Info area */}
+      <div className="p-3">
+        <h2 className="text-sm font-medium font-heading text-brand-text leading-tight line-clamp-2">
+          {title}
+        </h2>
+
+        <p className="mt-1.5 text-xs font-meta text-brand-primary">{year}</p>
+
+        <p className="mt-0.5 text-xs font-meta text-brand-muted line-clamp-1">
+          {country} · {description}
+        </p>
+      </div>
+    </Link>
   );
 }
