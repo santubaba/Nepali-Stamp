@@ -4,7 +4,8 @@ import SearchBar from "@/app/components/Search/SearchBar";
 import StampGrid from "@/app/components/StampGrid/stampgrid";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import Pagination from "@/app/components/Pagination/Pagination";
 export default function Stamps() {
   const stamps = [
     {
@@ -12,59 +13,58 @@ export default function Stamps() {
       slug: "np-01",
       title: "Blue Heron",
       year: 1985,
-      country: "Canada",
+      country: "Nepal",
       description: "Wildlife Series",
       img: "/stamps/stamp2.jpg",
     },
     {
       id: 2,
       slug: "np-02",
-      title: "Cherry Blossom",
+      title: "Test",
       year: 1881,
-      country: "Japan",
+      country: "Nepal",
       description: "Spring Collection",
       img: "/stamps/stamp2.jpg",
     },
     {
       id: 3,
       slug: "np-03",
-      title: "Golden Temple",
+      title: "Golden ",
       year: 1955,
-      country: "India",
+      country: "Nepal",
       description: "Heritage Series",
       img: "/stamps/stamp2.jpg",
     },
     {
       id: 4,
       slug: "np-04",
-      title: "Golden Temple",
+      title: "Golden Temple1",
       year: 1955,
-      country: "India",
+      country: "Nepal",
       description: "Heritage Series",
       img: "/stamps/stamp2.jpg",
     },
     {
       id: 5,
       slug: "np-05",
-      title: "Golden Temple",
+      title: "Golden Temple2",
       year: 1955,
-      country: "India",
+      country: "Nepal",
       description: "Heritage Series",
       img: "/stamps/stamp2.jpg",
     },
     {
       id: 6,
       slug: "np-06",
-      title: "Golden Temple",
+      title: "Golden Temple3",
       year: 1955,
-      country: "India",
+      country: "Nepal",
       description: "Heritage Series",
       img: "/stamps/stamp2.jpg",
     },
   ];
 
   // Temporary mock data.
-  // Later replace this with the API response.
   const decades = [
     {
       decade: "2020-2029",
@@ -102,7 +102,13 @@ export default function Stamps() {
   const [openDecades, setOpenDecades] = useState<string[]>(["2020-2029"]);
   const [query, setQuery] = useState("");
   const [debounceQuery, setDebounceQuery] = useState("");
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedStamps = stamps.slice(startIndex, startIndex + itemsPerPage);
+  const totalRecords = stamps.length;
+  const totalPages = Math.ceil(totalRecords / itemsPerPage);
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebounceQuery(query);
@@ -110,6 +116,25 @@ export default function Stamps() {
 
     return () => clearTimeout(timer);
   }, [query]);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const q = searchParams.get("q") ?? "";
+
+    setQuery(q);
+    setDebounceQuery(q);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debounceQuery) {
+      params.set("q", debounceQuery);
+    }
+    router.replace(`${pathname}?${params.toString()}`);
+  }, [debounceQuery, router, pathname]);
 
   const toggleDecade = (decade: string) => {
     setOpenDecades((prev) =>
@@ -199,7 +224,14 @@ export default function Stamps() {
             })}
           </div>
 
-          <StampGrid stamps={stamps} />
+          <StampGrid stamps={paginatedStamps} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalRecords={totalRecords}
+            itemName="Stamps"
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>
