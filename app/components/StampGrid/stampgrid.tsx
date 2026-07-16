@@ -1,4 +1,4 @@
-import StampCard from "@/app/components/StampCard/StampCard";
+import StampCard from "../StampCard/StampCard"; // keep your existing import path
 
 type Stamp = {
   id: number;
@@ -24,7 +24,7 @@ export default function StampGrid({ stamps }: StampGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
       {stamps.map((stamp) => (
         <StampCard key={stamp.id} {...stamp} />
       ))}

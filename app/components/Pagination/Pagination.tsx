@@ -19,32 +19,40 @@ export default function Pagination({
   const hasPrevious = currentPage > 1;
   const hasNext = currentPage < totalPages;
 
-  const goPrevious = () => {
-    if (hasPrevious) {
-      onPageChange(currentPage - 1);
-    }
-  };
-
-  const goNext = () => {
-    if (hasNext) {
-      onPageChange(currentPage + 1);
-    }
-  };
-
   return (
-    <div>
-      <button disabled={!hasPrevious} onClick={goPrevious}>
-        <ChevronLeft />
+    <div className="flex items-center justify-center gap-4 py-4">
+      <button
+        type="button"
+        disabled={!hasPrevious}
+        onClick={() => hasPrevious && onPageChange(currentPage - 1)}
+        className={`flex items-center gap-1.5 rounded-lg border px-4 py-2 font-meta text-sm transition-colors
+          ${
+            hasPrevious
+              ? "cursor-pointer border-brand-border bg-white text-brand-muted hover:border-brand-secondary hover:text-brand-text"
+              : "cursor-not-allowed border-brand-border bg-brand-surface text-brand-muted/40"
+          }`}
+      >
+        <ChevronLeft size={15} />
         Previous
       </button>
 
-      <span>
+      <span className="font-meta text-sm text-brand-muted">
         {currentPage} of {totalPages} {itemName} · {totalRecords} records
       </span>
 
-      <button disabled={!hasNext} onClick={goNext}>
+      <button
+        type="button"
+        disabled={!hasNext}
+        onClick={() => hasNext && onPageChange(currentPage + 1)}
+        className={`flex items-center gap-1.5 rounded-lg border px-4 py-2 font-meta text-sm transition-colors
+          ${
+            hasNext
+              ? "cursor-pointer border-brand-border bg-white text-brand-muted hover:border-brand-secondary hover:text-brand-text"
+              : "cursor-not-allowed border-brand-border bg-brand-surface text-brand-muted/40"
+          }`}
+      >
         Next
-        <ChevronRight />
+        <ChevronRight size={15} />
       </button>
     </div>
   );

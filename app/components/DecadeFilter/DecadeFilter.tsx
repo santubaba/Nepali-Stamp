@@ -34,15 +34,18 @@ export default function DecadeFilter({
   };
 
   return (
-    // hidden on mobile — lg:block shows it on desktop only
-    <aside className="flex-shrink-0 hidden w-48 pr-6 border-r lg:block border-brand-border">
+    <aside className="hidden lg:flex flex-col flex-shrink-0 w-48 pr-6 border-r border-brand-border">
 
-      {/* Section label — matches design system eyebrow style */}
-      <p className="mb-4 font-meta text-[9px] font-medium uppercase tracking-widest text-brand-muted">
+      {/* Label */}
+      <p className="mb-4 font-meta text-[9px] font-medium uppercase tracking-widest text-brand-muted flex-shrink-0">
         Browse by decade
       </p>
 
-      <nav aria-label="Browse by decade">
+      {/* Scrollable list */}
+      <nav
+        aria-label="Browse by decade"
+        className="overflow-y-auto max-h-[calc(100vh-220px)] pr-1 scrollbar-thin scrollbar-thumb-brand-border scrollbar-track-transparent"
+      >
         {data.map((group) => {
           const open = openGroups.has(group.decade);
 
@@ -50,11 +53,11 @@ export default function DecadeFilter({
             <div key={group.decade} className="mb-1">
               <button
                 onClick={() => toggleGroup(group.decade)}
-                className="flex items-center w-full gap-2 py-2 text-left transition-colors hover:text-brand-primary"
+                className="flex items-center w-full gap-2 py-1.5 text-left transition-colors hover:text-brand-primary"
                 aria-expanded={open}
               >
                 {open
-                  ? <ChevronDown size={14} className="flex-shrink-0 text-brand-muted" />
+                  ? <ChevronDown  size={14} className="flex-shrink-0 text-brand-muted" />
                   : <ChevronRight size={14} className="flex-shrink-0 text-brand-muted" />
                 }
                 <span className="text-sm font-medium font-body text-brand-text">
@@ -73,7 +76,9 @@ export default function DecadeFilter({
                         className="flex items-center justify-between w-full px-2 py-1.5 mb-1 rounded-md transition-all hover:bg-brand-surface"
                       >
                         <span className={`font-body text-sm ${
-                          active ? "text-brand-primary font-medium" : "text-brand-muted"
+                          active
+                            ? "text-brand-primary font-medium"
+                            : "text-brand-muted"
                         }`}>
                           {year.year}
                         </span>
