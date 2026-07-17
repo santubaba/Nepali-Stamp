@@ -21,8 +21,8 @@ export default function StampCard({
 }: StampCardProps) {
   return (
     <Link
-      href={`/stamps/${slug}`}
-      className="group block overflow-hidden bg-white border border-brand-border rounded-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-primary/40"
+      href={`/collections/stamps/${slug}`}
+      className="block overflow-hidden transition-all duration-200 bg-white border group border-brand-border rounded-xl hover:-translate-y-1 hover:shadow-md hover:border-brand-primary/40"
     >
       {/* Image area */}
       <div className="relative w-full aspect-[4/5] border-b border-brand-border bg-brand-surface">
@@ -37,7 +37,7 @@ export default function StampCard({
 
       {/* Info area */}
       <div className="p-3">
-        <h2 className="text-sm font-medium font-heading text-brand-text leading-tight line-clamp-2">
+        <h2 className="text-sm font-medium leading-tight font-heading text-brand-text line-clamp-2">
           {title}
         </h2>
 
