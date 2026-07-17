@@ -9,43 +9,98 @@ import Pagination from "@/app/components/Pagination/Pagination";
 
 export default function Stamps() {
   const stamps = [
-    { id: 1, slug: "np-01", title: "Blue Heron",     year: 1985, country: "Nepal", description: "Wildlife Series",   img: "/stamps/stamp2.jpg" },
-    { id: 2, slug: "np-02", title: "Test",            year: 1881, country: "Nepal", description: "Spring Collection", img: "/stamps/stamp2.jpg" },
-    { id: 3, slug: "np-03", title: "Golden ",         year: 1955, country: "Nepal", description: "Heritage Series",   img: "/stamps/stamp2.jpg" },
-    { id: 4, slug: "np-04", title: "Golden Temple1",  year: 1955, country: "Nepal", description: "Heritage Series",   img: "/stamps/stamp2.jpg" },
-    { id: 5, slug: "np-05", title: "Golden Temple2",  year: 1955, country: "Nepal", description: "Heritage Series",   img: "/stamps/stamp2.jpg" },
-    { id: 6, slug: "np-06", title: "Golden Temple3",  year: 1955, country: "Nepal", description: "Heritage Series",   img: "/stamps/stamp2.jpg" },
+    {
+      id: 1,
+      slug: "np-01",
+      title: "Blue Heron",
+      year: 1985,
+      country: "Nepal",
+      description: "Wildlife Series",
+      img: "/stamps/stamp2.jpg",
+    },
+    {
+      id: 2,
+      slug: "np-02",
+      title: "Test",
+      year: 1881,
+      country: "Nepal",
+      description: "Spring Collection",
+      img: "/stamps/stamp2.jpg",
+    },
+    {
+      id: 3,
+      slug: "np-03",
+      title: "Golden ",
+      year: 1955,
+      country: "Nepal",
+      description: "Heritage Series",
+      img: "/stamps/stamp2.jpg",
+    },
+    {
+      id: 4,
+      slug: "np-04",
+      title: "Golden Temple1",
+      year: 1955,
+      country: "Nepal",
+      description: "Heritage Series",
+      img: "/stamps/stamp2.jpg",
+    },
+    {
+      id: 5,
+      slug: "np-05",
+      title: "Golden Temple2",
+      year: 1955,
+      country: "Nepal",
+      description: "Heritage Series",
+      img: "/stamps/stamp2.jpg",
+    },
+    {
+      id: 6,
+      slug: "np-06",
+      title: "Golden Temple3",
+      year: 1955,
+      country: "Nepal",
+      description: "Heritage Series",
+      img: "/stamps/stamp2.jpg",
+    },
   ];
 
-  const currentYear   = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
   const currentDecade = `${Math.floor(currentYear / 10) * 10}-${Math.floor(currentYear / 10) * 10 + 9}`;
 
   const decades = [
-    { decade: "2020-2029", years: [{ year: 2026, count: 7 }, { year: 2025, count: 8 }] },
+    {
+      decade: "2020-2029",
+      years: [
+        { year: 2026, count: 7 },
+        { year: 2025, count: 8 },
+      ],
+    },
     { decade: "2010-2019", years: [] },
     { decade: "2000-2009", years: [] },
     { decade: "1990-1999", years: [] },
     { decade: "1980-1989", years: [] },
     { decade: "1970-1979", years: [] },
     { decade: "1960-1969", years: [] },
-    { decade: "1950-1969", years: [] },
-    { decade: "1940-1969", years: [] },
-    { decade: "1930-1969", years: [] },
-    { decade: "1920-1969", years: [] },
-    { decade: "1910-1969", years: [] },
+    { decade: "1950-1959", years: [] },
+    { decade: "1940-1949", years: [] },
+    { decade: "1930-1939", years: [] },
+    { decade: "1920-1929", years: [] },
+    { decade: "1910-1919", years: [] },
+    { decade: "1881-1909", years: [] },
   ];
 
-  const [openDecades,   setOpenDecades]   = useState<string[]>([currentDecade]);
-  const [query,         setQuery]         = useState("");
+  const [openDecades, setOpenDecades] = useState<string[]>([currentDecade]);
+  const [query, setQuery] = useState("");
   const [debounceQuery, setDebounceQuery] = useState("");
-  const [currentPage,   setCurrentPage]   = useState(1);
-  const [sidebarOpen,   setSidebarOpen]   = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const itemsPerPage    = 3;
-  const startIndex      = (currentPage - 1) * itemsPerPage;
+  const itemsPerPage = 3;
+  const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedStamps = stamps.slice(startIndex, startIndex + itemsPerPage);
-  const totalRecords    = stamps.length;
-  const totalPages      = Math.ceil(totalRecords / itemsPerPage);
+  const totalRecords = stamps.length;
+  const totalPages = Math.ceil(totalRecords / itemsPerPage);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -54,8 +109,8 @@ export default function Stamps() {
     return () => clearTimeout(timer);
   }, [query]);
 
-  const router       = useRouter();
-  const pathname     = usePathname();
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -74,20 +129,19 @@ export default function Stamps() {
     setOpenDecades((prev) =>
       prev.includes(decade)
         ? prev.filter((item) => item !== decade)
-        : [...prev, decade]
+        : [...prev, decade],
     );
   };
 
   return (
-    <div className="min-h-screen bg-brand-bg px-4 sm:px-6 lg:px-20">
-
+    <div className="min-h-screen px-4 bg-brand-bg sm:px-6 lg:px-20">
       {/* ── Page header ───────────────────────────────────── */}
       <div className="py-6">
         <BreadCrumb />
         <h2 className="mt-3 text-[30px] font-heading text-brand-text">
           Stamp Archive
         </h2>
-        <p className="text-brand-secondary font-body text-sm">
+        <p className="text-sm text-brand-secondary font-body">
           Postal stationery and envelopes from Nepal (1881–2026)
         </p>
         <hr className="mt-4 border-brand-border" />
@@ -98,42 +152,45 @@ export default function Stamps() {
         <button
           type="button"
           onClick={() => setSidebarOpen((prev) => !prev)}
-          className="flex items-center gap-2 rounded-lg border border-brand-border bg-white px-4 py-2 font-meta text-sm text-brand-muted"
+          className="flex items-center gap-2 px-4 py-2 text-sm bg-white border rounded-lg border-brand-border font-meta text-brand-muted"
         >
-          {sidebarOpen
-            ? <ChevronDown  size={15} />
-            : <ChevronRight size={15} />
-          }
+          {sidebarOpen ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
           Browse by decade
         </button>
 
         {sidebarOpen && (
-          <div className="mt-3 rounded-lg border border-brand-border bg-white p-4 max-h-64 overflow-y-auto">
+          <div className="p-4 mt-3 overflow-y-auto bg-white border rounded-lg border-brand-border max-h-64">
             {decades.map((item) => {
               const isOpen = openDecades.includes(item.decade);
               return (
                 <div key={item.decade} className="mb-3">
                   <div
-                    className="flex cursor-pointer items-center gap-2"
+                    className="flex items-center gap-2 cursor-pointer"
                     onClick={() => toggleDecade(item.decade)}
                   >
-                    {isOpen
-                      ? <ChevronDown  size={16} />
-                      : <ChevronRight size={16} />
-                    }
-                    <span className="font-body text-sm font-semibold text-brand-text">
+                    {isOpen ? (
+                      <ChevronDown size={16} />
+                    ) : (
+                      <ChevronRight size={16} />
+                    )}
+                    <span className="text-sm font-semibold font-body text-brand-text">
                       {item.decade}
                     </span>
                   </div>
                   {isOpen && item.years.length > 0 && (
-                    <div className="ml-4 mt-2 space-y-2 border-l border-brand-primary pl-2">
+                    <div className="pl-2 mt-2 ml-4 space-y-2 border-l border-brand-primary">
                       {item.years.map((year) => (
-                        <div key={year.year} className="flex items-center justify-between">
-                          <span className={`font-body text-sm ${
-                            year.year === currentYear
-                              ? "text-brand-primary font-medium"
-                              : "text-brand-text"
-                          }`}>
+                        <div
+                          key={year.year}
+                          className="flex items-center justify-between"
+                        >
+                          <span
+                            className={`font-body text-sm ${
+                              year.year === currentYear
+                                ? "text-brand-primary font-medium"
+                                : "text-brand-text"
+                            }`}
+                          >
                             {year.year}
                           </span>
                           <span className="rounded-md bg-brand-surface px-2 py-0.5 text-xs text-brand-muted">
@@ -151,10 +208,9 @@ export default function Stamps() {
       </div>
 
       {/* ── Main layout ───────────────────────────────────── */}
-      <div className="flex gap-0 mb-15">
-
+      <div className="flex gap-0 mb-16">
         {/* ── LEFT: Decade sidebar — hidden below lg ────────── */}
-        <div className="hidden lg:block w-52 flex-shrink-0 border-r border-brand-border pr-6">
+        <div className="flex-shrink-0 hidden pr-6 border-r lg:block w-52 border-brand-border">
           <h1 className="mb-4 text-lg font-semibold uppercase font-meta text-brand-secondary">
             Browse By Decade
           </h1>
@@ -167,26 +223,35 @@ export default function Stamps() {
                     className="flex items-center gap-2 cursor-pointer py-1.5 hover:text-brand-primary transition-colors"
                     onClick={() => toggleDecade(item.decade)}
                   >
-                    {isOpen
-                      ? <ChevronDown  size={14} className="flex-shrink-0 text-brand-muted" />
-                      : <ChevronRight size={14} className="flex-shrink-0 text-brand-muted" />
-                    }
-                    <span className="font-semibold font-body text-brand-text text-sm">
+                    {isOpen ? (
+                      <ChevronDown
+                        size={14}
+                        className="flex-shrink-0 text-brand-muted"
+                      />
+                    ) : (
+                      <ChevronRight
+                        size={14}
+                        className="flex-shrink-0 text-brand-muted"
+                      />
+                    )}
+                    <span className="text-sm font-semibold font-body text-brand-text">
                       {item.decade}
                     </span>
                   </div>
                   {isOpen && item.years.length > 0 && (
-                    <div className="ml-4 mt-1 border-l border-brand-border pl-3 space-y-1">
+                    <div className="pl-3 mt-1 ml-4 space-y-1 border-l border-brand-border">
                       {item.years.map((year) => (
                         <div
                           key={year.year}
                           className="flex items-center justify-between px-1 py-1.5 rounded-md cursor-pointer hover:bg-brand-surface transition-colors"
                         >
-                          <span className={`font-body text-sm ${
-                            year.year === currentYear
-                              ? "text-brand-primary font-medium"
-                              : "text-brand-text"
-                          }`}>
+                          <span
+                            className={`font-body text-sm ${
+                              year.year === currentYear
+                                ? "text-brand-primary font-medium"
+                                : "text-brand-text"
+                            }`}
+                          >
                             {year.year}
                           </span>
                           <span className="rounded-md bg-brand-surface px-2 py-0.5 text-xs font-meta text-brand-muted">
@@ -204,15 +269,14 @@ export default function Stamps() {
 
         {/* ── RIGHT: Search + sort + grid + pagination ──────── */}
         <div className="w-full lg:flex-1 lg:min-w-0 lg:pl-8">
-
           {/* Controls row */}
           <div className="flex items-center gap-3 mb-6">
             <SearchBar query={query} setQuery={setQuery} />
-            <div className="flex flex-shrink-0 items-center gap-2">
-              <span className="hidden sm:inline font-meta text-sm text-brand-secondary">
+            <div className="flex items-center flex-shrink-0 gap-2">
+              <span className="hidden text-sm sm:inline font-meta text-brand-secondary">
                 Sort
               </span>
-              <select className="border rounded border-brand-border px-4 py-2 font-meta text-sm cursor-pointer">
+              <select className="px-4 py-2 text-sm border rounded cursor-pointer border-brand-border font-meta">
                 <option>Latest</option>
                 <option>Oldest</option>
               </select>
