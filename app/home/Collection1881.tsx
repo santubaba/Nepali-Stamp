@@ -73,7 +73,7 @@ export default function Collection1881() {
           {/* CTA */}
           <div className="pt-6 mt-auto">
             <Link
-              href="/1881"
+              href="/Detail1881"
               className="inline-flex items-center gap-2 bg-brand-primary text-white font-meta text-sm font-semibold tracking-wide px-6 py-3 rounded-[var(--radius-md)] transition-colors duration-200 hover:bg-brand-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
             >
               <span aria-hidden="true">→</span>

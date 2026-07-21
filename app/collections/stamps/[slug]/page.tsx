@@ -36,7 +36,7 @@ export default async function StampDetail({ params }: PageProps) {
               text-sm md:text-base
               whitespace-nowrap
               [&_a]:text-brand-text/60
-              [&_a:hover]:text-brand-bg
+              [&_a:hover]:text-brand-text
             "
           />
         </div>
