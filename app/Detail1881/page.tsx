@@ -50,60 +50,9 @@ const stamp = {
     "Initial print runs relied entirely on imported European paper. Later editions used a mix of imported white wove paper and locally produced native wove paper, resulting in variations in print quality ranging from high-quality impressions to poorer impressions.",
     "These stamps were denominated in Anna currency and prominently featured the inscription of the Gorkha Government.",
   ],
-  related: [
-    {
-      id: "1",
-      image: "/images/stamps/np-1975-perf-1.jpg",
-      condition: "Perforated",
-      denomination: "One anna",
-      origin: "Nepal · 1975",
-    },
-    {
-      id: "2",
-      image: "/images/stamps/np-1975-perf-2.jpg",
-      condition: "Perforated",
-      denomination: "One anna",
-      origin: "Nepal · 1975",
-    },
-    {
-      id: "3",
-      image: "/images/stamps/np-1975-perf-3.jpg",
-      condition: "Perforated",
-      denomination: "One anna",
-      origin: "Nepal · 1975",
-    },
-    {
-      id: "4",
-      image: "/images/stamps/np-1975-perf-4.jpg",
-      condition: "Perforated",
-      denomination: "One anna",
-      origin: "Nepal · 1975",
-    },
-    {
-      id: "5",
-      image: "/images/stamps/np-1975-perf-5.jpg",
-      condition: "Perforated",
-      denomination: "One anna",
-      origin: "Nepal · 1975",
-    },
-    {
-      id: "6",
-      image: "/images/stamps/np-1975-perf-6.jpg",
-      condition: "Perforated",
-      denomination: "One anna",
-      origin: "Nepal · 1975",
-    },
-  ],
 };
 
 type SpecRow = { label: string; value: string };
-type RelatedStamp = {
-  id: string;
-  image: string;
-  condition: string;
-  denomination: string;
-  origin: string;
-};
 
 // ---------------------------------------------------------------------------
 // Local pieces — co-located in this file rather than split out, since this
@@ -201,13 +150,11 @@ function IdentityBlock({
   eyebrow,
   title,
   tags,
-  recordId,
   keyAttributes,
 }: {
   eyebrow: string;
   title: string;
   tags: string[];
-  recordId: string;
   keyAttributes: string[];
 }) {
   return (
@@ -306,7 +253,6 @@ export default function Detail1881() {
             eyebrow={stamp.eyebrow}
             title={stamp.title}
             tags={stamp.tags}
-            recordId={stamp.recordId}
             keyAttributes={stamp.keyAttributes}
           />
         </section>
