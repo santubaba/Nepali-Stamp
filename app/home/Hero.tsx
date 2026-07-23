@@ -4,20 +4,22 @@ import { Search, SquareMenu } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section className="bg-brand-bg">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24">
-        <div className="grid items-center gap-20 lg:grid-cols-2">
+    <section className="bg-brand-bg border-b border-brand-border">
+      <div className="mx-auto max-w-[1285px] px-6 py-16 lg:px-10 lg:py-20">
+        <div className="grid items-start gap-16 lg:grid-cols-[1fr_1.25fr] lg:gap-24">
           {/* Left Side */}
-          <div className="space-y-10">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col">
+            {/* Eyebrow */}
+            <div className="mb-5 flex items-center gap-4">
               <div className="h-px w-8 bg-brand-accent" />
-              <span className="text-xs uppercase tracking-[0.2em] text-brand-accent">
+              <span className="uppercase tracking-[0.2em] text-brand-accent">
                 Nepal Philatelic Archive
               </span>
             </div>
 
-            <div className="space-y-6">
-              <h1 className="font-heading text-5xl leading-none text-brand-text md:text-6xl lg:text-7xl">
+            {/* Heading + Description */}
+            <div className="max-w-xl">
+              <h1 className="font-heading text-5xl leading-[01.05] text-brand-text md:text-6xl lg:text-7xl">
                 Preserving
                 <br />
                 the philatelic
@@ -27,13 +29,14 @@ export default function Hero() {
                 <span className="text-brand-primary">Himalayas</span>
               </h1>
 
-              <p className="max-w-lg text-lg leading-9 text-brand-muted">
+              <p className="mt-8 max-w-md text-lg leading-9 text-brand-muted">
                 A complete digital archive of Nepal's postal history from 1881 —
                 stamps, envelopes, revenue documents, and more.
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 sm:flex-row">
+            {/* Buttons */}
+            <div className="mt-14 flex flex-col gap-4 sm:flex-row">
               <Link
                 href="/collections/stamps"
                 className="flex items-center justify-center gap-3 rounded-lg bg-brand-primary px-8 py-4 font-medium text-white transition hover:opacity-90"
@@ -53,11 +56,14 @@ export default function Hero() {
           </div>
 
           {/* Right Side */}
-          {/* Right Side */}
-          <div className="relative">
-            <div className="relative h-[430px] overflow-hidden rounded-3xl border border-brand-border bg-brand-surface sm:h-[540px] md:h-[620px] lg:h-[680px]">
+          <div className="relative lg:pt-16">
+            <div
+              className="relative h-[430px] overflow-hidden rounded-3xl border border-brand-border bg-brand-surface p-8 sm:h-[420px]
+                md:h-[460px]
+                lg:h-[500px] lg:p-10"
+            >
               {/* Top Left */}
-              <div className="absolute left-2 top-8 rotate-[-15deg]">
+              <div className="absolute left-2 top-0 rotate-[-10deg]">
                 <Image
                   src="/stamps/1 Ana.jpg"
                   alt=""
@@ -68,7 +74,7 @@ export default function Hero() {
               </div>
 
               {/* Top Middle */}
-              <div className="absolute left-[34%] top-3 rotate-[5deg] z-20">
+              <div className="absolute left-[25%] top-1 rotate-[5deg] z-20">
                 <Image
                   src="/stamps/2 Ana.jpg"
                   alt=""
@@ -79,18 +85,18 @@ export default function Hero() {
               </div>
 
               {/* Top Right */}
-              <div className="absolute right-3 top-10 rotate-[14deg]">
+              <div className="absolute right-[-15] top-[-50] rotate-[30deg]">
                 <Image
                   src="/stamps/2p.jpg"
                   alt=""
                   width={130}
                   height={170}
-                  className="w-28 md:w-36 lg:w-40 drop-shadow-lg"
+                  className="w-28 md:w-36 lg:w-50 drop-shadow-lg"
                 />
               </div>
 
               {/* Small Left */}
-              <div className="absolute left-10 top-[34%] rotate-[8deg]">
+              <div className="absolute left-2 top-[40%] rotate-[-20deg]">
                 <Image
                   src="/stamps/4 Ana.jpg"
                   alt=""
@@ -101,7 +107,7 @@ export default function Hero() {
               </div>
 
               {/* Large Center */}
-              <div className="absolute left-1/2 top-[30%] z-30 -translate-x-1/2 rotate-[2deg]">
+              <div className="absolute left-1/2 top-[30%] z-30 -translate-x-1/2 rotate-[5deg]">
                 <Image
                   src="/stamps/4p.jpg"
                   alt=""
@@ -112,7 +118,7 @@ export default function Hero() {
               </div>
 
               {/* Mid Left */}
-              <div className="absolute left-24 bottom-28 rotate-[-7deg]">
+              <div className="absolute left-1 bottom-28 rotate-[12deg]">
                 <Image
                   src="/stamps/8p.jpg"
                   alt=""
@@ -123,7 +129,7 @@ export default function Hero() {
               </div>
 
               {/* Mid Right */}
-              <div className="absolute right-8 top-[45%] rotate-[12deg]">
+              <div className="absolute right-0 top-[40%] rotate-[-12deg]">
                 <Image
                   src="/stamps/16p.jpg"
                   alt=""
@@ -134,7 +140,7 @@ export default function Hero() {
               </div>
 
               {/* Bottom Left */}
-              <div className="absolute left-50 bottom-8 rotate-[-12deg]">
+              <div className="absolute left-[-20] bottom-2 top-95 rotate-[95deg]">
                 <Image
                   src="/stamps/24p.jpg"
                   alt=""
@@ -145,35 +151,35 @@ export default function Hero() {
               </div>
 
               {/* Bottom Center */}
-              <div className="absolute left-[42%] bottom-4 rotate-[6deg]">
+              <div className="absolute left-[30%] bottom-1 rotate-[6deg]">
                 <Image
                   src="/stamps/32p.jpg"
                   alt=""
-                  width={120}
-                  height={150}
-                  className="w-24 md:w-32 lg:w-36 drop-shadow-lg"
+                  width={200}
+                  height={120}
+                  className="w-24 md:w-32 lg:w-50 drop-shadow-lg"
                 />
               </div>
 
               {/* Bottom Right */}
-              <div className="absolute right-2 bottom-6 rotate-[15deg]">
+              <div className="absolute right-1 bottom-2 rotate-[15deg]">
                 <Image
                   src="/stamps/Envelope.png"
                   alt=""
                   width={170}
                   height={120}
-                  className="w-28 md:w-40 lg:w-44 drop-shadow-lg"
+                  className="w-28 md:w-40 lg:w-60 drop-shadow-lg"
                 />
               </div>
 
               {/* Extra Small Top */}
-              <div className="absolute left-[65%] top-[18%] rotate-[-18deg]">
+              <div className="absolute left-[65%] top-[10%] rotate-[5deg]">
                 <Image
                   src="/stamps/first.jpg"
                   alt=""
                   width={90}
                   height={120}
-                  className="w-20 md:w-24 lg:w-28 drop-shadow"
+                  className="w-20 md:w-24 lg:w-40 drop-shadow"
                 />
               </div>
 
@@ -199,7 +205,7 @@ export default function Hero() {
                 </p>
               </div>
             </div>
-          </div>    
+          </div>
         </div>
       </div>
     </section>
