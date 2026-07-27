@@ -508,8 +508,8 @@ const stamps = [
   ],
 },
 {
-  id: 12,
-  slug: "np-12",
+  id: 13,
+  slug: "np-13",
   featured: true,
   title: "10th Anniversary Human Rights Day",
   year: 1958,
@@ -599,8 +599,8 @@ const stamps = [
   ],
 },
 {
-  id: 13,
-  slug: "np-13",
+  id: 14,
+  slug: "np-14",
   featured: true,
   title: "First General Election",
   year: 1959,
@@ -691,8 +691,8 @@ const stamps = [
   ],
 },
 {
-  id: 14,
-  slug: "np-14",
+  id: 15,
+  slug: "np-15",
   featured: true,
   title: "First Anniversary of the Admission to the United Nations",
   year: 1956,

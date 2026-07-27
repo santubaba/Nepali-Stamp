@@ -79,30 +79,47 @@ export default function Navbar() {
   const { text } = ctx;
   const menus = [
     {
-      key: "collections",
-      title: text.navbar.collections,
-      path: "/collections",
+      key: "stampsFdc",
+      title: text.navbar.stamps,
+      path: "/stamps",
 
       items: [
         {
-          label: text.collections.stamps,
-          href: "/collections/stamps",
+          label: text.stamps.stampsFdc,
+          href: "/stamps/stamps-fdc",
         },
         {
-          label: text.collections.envelopes,
-          href: "/collections/envelopes",
+          label: text.stamps.serviceStamps,
+          href: "/stamps/service-stamps",
         },
         {
-          label: text.collections.postcards,
-          href: "/collections/postcards",
+          label: text.stamps.commemoratives,
+          href: "/stamps/commemoratives-special-covers",
+        },
+      ],
+    },
+
+    {
+      key: "postalStationery",
+      title: text.navbar.postalStationery,
+      path: "/postal-stationery",
+
+      items: [
+        {
+          label: text.postalStationery.envelopes,
+          href: "/postal-stationery/envelopes",
         },
         {
-          label: text.collections.commemoratives,
-          href: "/collections/commemoratives",
+          label: text.postalStationery.postcards,
+          href: "/postal-stationery/postcards",
         },
         {
-          label: text.collections.serviceStamps,
-          href: "/collections/service-stamps",
+          label: text.postalStationery.aerogrammes,
+          href: "/postal-stationery/aerogrammes",
+        },
+        {
+          label: text.postalStationery.moneyOrder,
+          href: "/postal-stationery/money-order",
         },
       ],
     },
@@ -114,33 +131,41 @@ export default function Navbar() {
 
       items: [
         {
-          label: text.revenue.incomeRevenue,
-          href: "/revenue/income-revenue-stamps",
-        },
-        {
-          label: text.revenue.landRevenue,
-          href: "/revenue/land-revenue-stamps",
+          label: text.revenue.landlordStamps,
+          href: "/revenue/landlord-stamps",
         },
         {
           label: text.revenue.courtFee,
           href: "/revenue/court-fee-stamps",
         },
+        {
+          label: text.revenue.incomeRevenue,
+          href: "/revenue/income-revenue-stamps",
+        },
       ],
     },
 
     {
-      key: "archive",
-      title: text.navbar.archive,
-      path: "/archive",
+      key: "otherArchive",
+      title: text.navbar.otherArchive,
+      path: "/other-archive",
 
       items: [
         {
-          label: text.archive.postalMoneyOrder,
-          href: "/archive/postal-money-order",
+          label: text.otherArchive.publishedBooks,
+          href: "/other-archive/published-books-literature",
         },
         {
-          label: text.archive.otherArchives,
-          href: "/archive/other-archives",
+          label: text.otherArchive.cancellationMarks,
+          href: "/other-archive/post-office-cancellation-marks",
+        },
+        {
+          label: text.otherArchive.administrativeBulletins,
+          href: "/other-archive/administrative-bulletins",
+        },
+        {
+          label: text.otherArchive.franklin,
+          href: "/other-archive/franklin",
         },
       ],
     },
@@ -155,7 +180,7 @@ export default function Navbar() {
             <IconRectangle size={14} color="#F5EFEB" />
           </div>
 
-          <span className="text-sm font-semibold md:text-base font-heading text-brand-text">
+          <span className="text-sm font-semibold md:text-base font-heading text-brand-text ">
             Nepali Stamps
           </span>
         </Link>
@@ -216,7 +241,7 @@ export default function Navbar() {
 
           <Link
             href="/about"
-            className={`h-20 flex items-center border-b-2 text-sm
+            className={`h-20 flex items-center border-b-2 text-sm mr-5
               ${
                 isActive("/about")
                   ? "border-brand-primary text-brand-primary"
@@ -241,8 +266,8 @@ export default function Navbar() {
             flex-1
             max-w-[220px]
             md:max-w-[320px]
-            lg:w-44
-            xl:w-64
+            lg:w-40
+            xl:w-56
             h-10
             px-3
             bg-brand-surface

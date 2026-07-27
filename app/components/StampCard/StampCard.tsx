@@ -21,7 +21,7 @@ export default function StampCard({
 }: StampCardProps) {
   return (
     <Link
-      href={`/collections/stamps/${slug}`}
+      href={`/stamps/stamps-fdc/${slug}`}
       className="block overflow-hidden transition-all duration-200 bg-white border group border-brand-border rounded-xl hover:-translate-y-1 hover:shadow-md hover:border-brand-primary/40"
     >
       {/* Image area */}

@@ -1,28 +1,36 @@
 export const en = {
   navbar: {
     home: "Home",
-    collections: "Collections",
+    stamps: "Stamps",
+    postalStationery: "Postal Stationery",
     revenue: "Revenue",
-    archive: "Archive",
+    otherArchive: "Other Archive",
     about: "About",
   },
 
-  collections: {
-  stamps: "Stamps",
-  envelopes: "Envelopes",
-  postcards: "Postcards",
-  commemoratives: "Commemoratives",
-  serviceStamps: "Service Stamps",
-},
+  stamps: {
+    stampsFdc: "Stamps & FDC",
+    serviceStamps: "Service Stamps",
+    commemoratives: "Commemoratives & Special Covers",
+  },
 
-revenue: {
-  incomeRevenue: "Income Revenue Stamps",
-  landRevenue: "Land Revenue Stamps",
-  courtFee: "Court-fee Stamps",
-},
+  postalStationery: {
+    envelopes: "Envelopes",
+    postcards: "Postcards",
+    aerogrammes: "Aerogrammes",
+    moneyOrder: "Money Order",
+  },
 
-archive: {
-  postalMoneyOrder: "Postal Money Order",
-  otherArchives: "Other Archives",
-}
+  revenue: {
+    incomeRevenue: "Income Revenue Stamps",
+    landlordStamps: "Landlord Stamps",
+    courtFee: "Court-fee Stamps",
+  },
+
+  otherArchive: {
+    publishedBooks: "Published Books & Literature",
+    cancellationMarks: "Post Office Cancellation Marks",
+    administrativeBulletins: "Administrative Bulletins",
+    franklin: "Franklin",
+  },
 };

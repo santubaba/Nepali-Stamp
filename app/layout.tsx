@@ -4,7 +4,6 @@ import Navbar from "./components/Navbar/page";
 import "./globals.css";
 import Footer from "./components/Footer/page";
 import { LanguageProvider } from "./context/LanguageContext";
-import AboutInfo from "./components/AboutInfo/page";
 
 const inter = Inter({
   subsets: ["latin"],

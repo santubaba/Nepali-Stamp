@@ -1,4 +1,4 @@
-import stamps from "../collections/stamps/mock-data";
+import stamps from "../stamps/stamps-fdc/mock-data";
 import StampCard from "../components/StampCard/StampCard";
 
 export default function FeaturedStamps() {
@@ -7,7 +7,7 @@ export default function FeaturedStamps() {
   return (
     <section className="px-4 py-10 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="mb-8">
-        <h2 className="text-2xl font-heading font-semibold text-brand-text sm:text-3xl">
+        <h2 className="text-2xl font-semibold font-heading text-brand-text sm:text-3xl">
           Featured Stamps
         </h2>
 
