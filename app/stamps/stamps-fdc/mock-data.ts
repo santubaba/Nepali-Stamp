@@ -67,28 +67,6 @@ const stamps = [
           "10P. – 5 million, 25P. – 3 million, 50P. – 5 million",
       },
     },
-    related: [
-  {
-    id: 7,
-    slug: "np-07",
-    title: "National Crest",
-    year: 1968,
-    country: "Nepal",
-    description:
-      "A commemorative issue released for the 18th National Day featuring Nepal's official Coat of Arms and national symbols.",
-    img: "/stamps/stamp2.jpg",
-  },
-  {
-    id: 8,
-    slug: "np-08",
-    title: "Wildlife Conservation Series",
-    year: 1975,
-    country: "Nepal",
-    description:
-      "A three-stamp conservation series highlighting protected wildlife under Nepal's National Parks and Wild Life Conservation Act 2029.",
-    img: "/stamps/stamp2.jpg",
-  },
-],
   },
 
   {
@@ -218,29 +196,6 @@ const stamps = [
       printRun: "1 million per denomination",
     },
   },
-
-  related: [
-    {
-      id: 10,
-      slug: "np-10",
-      title: "Panchayat System",
-      year: 1963,
-      country: "Nepal",
-      description:
-        "A four-stamp commemorative issue promoting the Panchayat System of Governance on the 13th National Day.",
-      img: "/stamps/stamp6.jpg",
-    },
-    {
-      id: 12,
-      slug: "np-12",
-      title: "First General Election",
-      year: 1959,
-      country: "Nepal",
-      description:
-        "A commemorative issue celebrating Nepal's first General Election under the multi-party democratic system.",
-      img: "/stamps/stamp8.jpg",
-    },
-  ],
 },
 {
   id: 10,
@@ -304,28 +259,6 @@ const stamps = [
     },
   },
 
-  related: [
-    {
-      id: 9,
-      slug: "np-09",
-      title: "East-West Highway",
-      year: 1964,
-      country: "Nepal",
-      description:
-        "A commemorative issue highlighting Nepal's East-West Highway project.",
-      img: "/stamps/stamp5.jpg",
-    },
-    {
-      id: 13,
-      slug: "np-13",
-      title: "First Anniversary of the Admission to the United Nations",
-      year: 1956,
-      country: "Nepal",
-      description:
-        "A commemorative triangular stamp celebrating Nepal's first anniversary as a United Nations member.",
-      img: "/stamps/stamp9.jpg",
-    },
-  ],
 },
 {
   id: 11,
@@ -393,28 +326,6 @@ const stamps = [
     },
   },
 
-  related: [
-    {
-      id: 12,
-      slug: "np-12",
-      title: "10th Anniversary Human Rights Day",
-      year: 1958,
-      country: "Nepal",
-      description:
-        "A commemorative issue celebrating the tenth anniversary of the Universal Declaration of Human Rights.",
-      img: "/stamps/stamp8.jpg",
-    },
-    {
-      id: 13,
-      slug: "np-13",
-      title: "First General Election",
-      year: 1959,
-      country: "Nepal",
-      description:
-        "A commemorative issue honoring Nepal's first democratic General Election.",
-      img: "/stamps/stamp9.jpg",
-    },
-  ],
 },
 {
   id: 12,
@@ -484,28 +395,6 @@ const stamps = [
     },
   },
 
-  related: [
-    {
-      id: 11,
-      slug: "np-11",
-      title: "First Air Mail Issue",
-      year: 1958,
-      country: "Nepal",
-      description:
-        "A commemorative issue celebrating the introduction of Nepal's domestic air mail service.",
-      img: "/stamps/stamp7.jpg",
-    },
-    {
-      id: 13,
-      slug: "np-13",
-      title: "First General Election",
-      year: 1959,
-      country: "Nepal",
-      description:
-        "A commemorative issue honoring Nepal's first democratic General Election.",
-      img: "/stamps/stamp9.jpg",
-    },
-  ],
 },
 {
   id: 13,
@@ -575,28 +464,6 @@ const stamps = [
     },
   },
 
-  related: [
-    {
-      id: 11,
-      slug: "np-11",
-      title: "First Air Mail Issue",
-      year: 1958,
-      country: "Nepal",
-      description:
-        "A commemorative issue celebrating the introduction of Nepal's domestic air mail service.",
-      img: "/stamps/stamp7.jpg",
-    },
-    {
-      id: 13,
-      slug: "np-13",
-      title: "First General Election",
-      year: 1959,
-      country: "Nepal",
-      description:
-        "A commemorative issue honoring Nepal's first democratic General Election.",
-      img: "/stamps/stamp9.jpg",
-    },
-  ],
 },
 {
   id: 14,
@@ -667,28 +534,6 @@ const stamps = [
     },
   },
 
-  related: [
-    {
-      id: 10,
-      slug: "np-10",
-      title: "Panchayat System",
-      year: 1963,
-      country: "Nepal",
-      description:
-        "A commemorative issue promoting the Panchayat System of Governance.",
-      img: "/stamps/stamp6.jpg",
-    },
-    {
-      id: 12,
-      slug: "np-12",
-      title: "10th Anniversary Human Rights Day",
-      year: 1958,
-      country: "Nepal",
-      description:
-        "A commemorative issue celebrating the tenth anniversary of the Universal Declaration of Human Rights.",
-      img: "/stamps/stamp8.jpg",
-    },
-  ],
 },
 {
   id: 15,
@@ -759,28 +604,6 @@ const stamps = [
     },
   },
 
-  related: [
-    {
-      id: 12,
-      slug: "np-12",
-      title: "10th Anniversary Human Rights Day",
-      year: 1958,
-      country: "Nepal",
-      description:
-        "A commemorative issue celebrating the tenth anniversary of the Universal Declaration of Human Rights.",
-      img: "/stamps/stamp8.jpg",
-    },
-    {
-      id: 13,
-      slug: "np-13",
-      title: "First General Election",
-      year: 1959,
-      country: "Nepal",
-      description:
-        "A commemorative issue honoring Nepal's first General Election under the democratic system.",
-      img: "/stamps/stamp9.jpg",
-    },
-  ],
 },
 
 ];

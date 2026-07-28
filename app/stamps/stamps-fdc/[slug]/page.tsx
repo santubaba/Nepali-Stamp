@@ -18,12 +18,14 @@ export default async function StampDetail({ params }: PageProps) {
   if (!stamp) {
     notFound();
   }
-  console.log(stamp);
+  const featuredStamps = stamps
+    .filter((item) => item.featured && item.id !== stamp.id)
+    .slice(0, 4);
   return (
     <div>
       <div className="mx-auto flex items-center gap-3 px-4 py-5 sm:px-8 sm:py-6 md:px-12 md:py-8">
         <Link
-          href="/collections/stamps"
+          href="/stamps/stamps-fdc"
           className="flex shrink-0 items-center justify-center rounded-full p-1 text-brand-secondary transition hover:bg-brand-surface hover:text-brand-primary"
           aria-label="Back to Stamps"
         >
@@ -124,17 +126,20 @@ export default async function StampDetail({ params }: PageProps) {
           </div>
         </div>
       </div>
-      {/* Related Stamps Section */}
-      {stamp.related && stamp.related.length > 0 && (
+      {/* Featured Stamps Section */}
+      {featuredStamps.length > 0 && (
         <section className="mx-auto mt-16 border-t border-brand-border px-12 py-8">
           <h2 className="mb-6 font-heading text-xl font-semibold">
-            Related Stamps
+            Featured Stamps
           </h2>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {stamp.related.map((related) => (
-              <div key={related.id} className="mx-auto w-full max-w-[220px]">
-                <StampCard {...related} />
+            {featuredStamps.map((featuredStamp) => (
+              <div
+                key={featuredStamp.id}
+                className="mx-auto w-full max-w-[220px]"
+              >
+                <StampCard {...featuredStamp} />
               </div>
             ))}
           </div>
