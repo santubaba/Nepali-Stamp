@@ -16,7 +16,7 @@ export const catalogues = [
   {
     slug: "stamps-fdc",
     href: "/stamps/stamps-fdc",
-    title: "Stamps",
+    title: "Stamps & FDC",
     description:
       "Postage stamps and First Day Covers issued by Nepal Postal Services.",
     count: 620,

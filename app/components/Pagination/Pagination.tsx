@@ -7,6 +7,8 @@ type PaginationProps = {
   totalRecords: number;
   itemName: string;
   onPageChange: (page: number) => void;
+  canGoPrevious?: boolean;
+  canGoNext?: boolean;
 };
 
 export default function Pagination({
@@ -15,16 +17,18 @@ export default function Pagination({
   totalRecords,
   itemName,
   onPageChange,
+  canGoPrevious,
+  canGoNext,
 }: PaginationProps) {
-  const hasPrevious = currentPage > 1;
-  const hasNext = currentPage < totalPages;
+  const hasPrevious = canGoPrevious ?? currentPage > 1;
+  const hasNext = canGoNext ?? currentPage < totalPages;
 
   return (
     <div className="flex items-center justify-center gap-4 py-4">
       <button
         type="button"
         disabled={!hasPrevious}
-        onClick={() => hasPrevious && onPageChange(currentPage - 1)}
+        onClick={() => onPageChange(currentPage - 1)}
         className={`flex items-center gap-1.5 rounded-lg border px-4 py-2 font-meta text-sm transition-colors
           ${
             hasPrevious
@@ -43,7 +47,7 @@ export default function Pagination({
       <button
         type="button"
         disabled={!hasNext}
-        onClick={() => hasNext && onPageChange(currentPage + 1)}
+        onClick={() => onPageChange(currentPage + 1)}
         className={`flex items-center gap-1.5 rounded-lg border px-4 py-2 font-meta text-sm transition-colors
           ${
             hasNext

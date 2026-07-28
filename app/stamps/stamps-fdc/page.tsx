@@ -1,6 +1,5 @@
 "use client";
 import BreadCrumb from "@/app/breadcrumbs/page";
-import SearchBar from "@/app/components/Search/SearchBar";
 import StampGrid from "@/app/components/StampGrid/stampgrid";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -9,45 +8,88 @@ import Pagination from "@/app/components/Pagination/Pagination";
 import stamps from "./mock-data";
 
 export default function Stamps() {
-  
-
   const currentYear = new Date().getFullYear();
-  const currentDecade = `${Math.floor(currentYear / 10) * 10}-${Math.floor(currentYear / 10) * 10 + 9}`;
+  const availableYears = [...new Set(stamps.map((stamp) => stamp.year))].sort(
+    (a, b) => a - b,
+  );
 
-  const decades = [
-    {
-      decade: "2020-2029",
-      years: [
-        { year: 2026, count: 7 },
-        { year: 2025, count: 8 },
-      ],
+  const [selectedYear, setSelectedYear] = useState(
+    availableYears.includes(currentYear)
+      ? currentYear
+      : availableYears[availableYears.length - 1],
+  );
+  const selectedDecade =
+    selectedYear >= 1881 && selectedYear <= 1909
+      ? "1881-1909"
+      : `${Math.floor(selectedYear / 10) * 10}-${Math.floor(selectedYear / 10) * 10 + 9}`;
+
+  const [openDecades, setOpenDecades] = useState<string[]>([selectedDecade]);
+  const yearCounts = stamps.reduce(
+    (acc, stamp) => {
+      acc[stamp.year] = (acc[stamp.year] || 0) + 1;
+      return acc;
     },
-    { decade: "2010-2019", years: [] },
-    { decade: "2000-2009", years: [] },
-    { decade: "1990-1999", years: [] },
-    { decade: "1980-1989", years: [] },
-    { decade: "1970-1979", years: [] },
-    { decade: "1960-1969", years: [] },
-    { decade: "1950-1959", years: [] },
-    { decade: "1940-1949", years: [] },
-    { decade: "1930-1939", years: [] },
-    { decade: "1920-1929", years: [] },
-    { decade: "1910-1919", years: [] },
-    { decade: "1881-1909", years: [] },
-  ];
+    {} as Record<number, number>,
+  );
 
-  const [openDecades, setOpenDecades] = useState<string[]>([currentDecade]);
+  const decades = Object.entries(yearCounts)
+    .reduce(
+      (acc, [year, count]) => {
+        const numericYear = Number(year);
+
+        const decade =
+          numericYear >= 1881 && numericYear <= 1909
+            ? "1881-1909"
+            : `${Math.floor(numericYear / 10) * 10}-${Math.floor(numericYear / 10) * 10 + 9}`;
+
+        let group = acc.find((d) => d.decade === decade);
+
+        if (!group) {
+          group = {
+            decade,
+            years: [],
+          };
+
+          acc.push(group);
+        }
+
+        group.years.push({
+          year: numericYear,
+          count,
+        });
+
+        return acc;
+      },
+      [] as { decade: string; years: { year: number; count: number }[] }[],
+    )
+    .map((decade) => ({
+      ...decade,
+      years: decade.years.sort((a, b) => b.year - a.year),
+    }))
+    .sort(
+      (a, b) => Number(b.decade.split("-")[0]) - Number(a.decade.split("-")[0]),
+    );
+
   const [query, setQuery] = useState("");
   const [debounceQuery, setDebounceQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const itemsPerPage = 3;
+  const filteredStamps = stamps.filter((stamp) => stamp.year === selectedYear);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedStamps = stamps.slice(startIndex, startIndex + itemsPerPage);
-  const totalRecords = stamps.length;
-  const totalPages = Math.ceil(totalRecords / itemsPerPage);
+  const paginatedStamps = filteredStamps.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
+  const totalRecords = filteredStamps.length;
+  const totalPages = Math.max(1, Math.ceil(totalRecords / itemsPerPage));
+  const currentYearIndex = availableYears.indexOf(selectedYear);
 
+  const canGoPrevious = currentPage > 1 || currentYearIndex > 0;
+
+  const canGoNext =
+    currentPage < totalPages || currentYearIndex < availableYears.length - 1;
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebounceQuery(query);
@@ -78,7 +120,58 @@ export default function Stamps() {
         : [...prev, decade],
     );
   };
+  const handlePageChange = (page: number) => {
+    // Normal pagination
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      return;
+    }
 
+    const currentYearIndex = availableYears.indexOf(selectedYear);
+
+    // Next Year
+    if (page > totalPages) {
+      const nextYear = availableYears[currentYearIndex + 1];
+
+      if (nextYear !== undefined) {
+        setSelectedYear(nextYear);
+        const nextDecade =
+          nextYear >= 1881 && nextYear <= 1909
+            ? "1881-1909"
+            : `${Math.floor(nextYear / 10) * 10}-${Math.floor(nextYear / 10) * 10 + 9}`;
+
+        setOpenDecades([nextDecade]);
+        setCurrentPage(1);
+      }
+      return;
+    }
+
+    // Previous Year
+    if (page < 1) {
+      const previousYear = availableYears[currentYearIndex - 1];
+
+      if (previousYear !== undefined) {
+        const previousYearRecords = stamps.filter(
+          (stamp) => stamp.year === previousYear,
+        ).length;
+
+        const previousYearPages = Math.max(
+          1,
+          Math.ceil(previousYearRecords / itemsPerPage),
+        );
+
+        setSelectedYear(previousYear);
+        setSelectedYear(previousYear);
+        const previousDecade =
+          previousYear >= 1881 && previousYear <= 1909
+            ? "1881-1909"
+            : `${Math.floor(previousYear / 10) * 10}-${Math.floor(previousYear / 10) * 10 + 9}`;
+
+        setOpenDecades([previousDecade]);
+        setCurrentPage(previousYearPages);
+      }
+    }
+  };
   return (
     <div className="min-h-screen px-4 bg-brand-bg sm:px-6 lg:px-20">
       {/* ── Page header ───────────────────────────────────── */}
@@ -128,11 +221,22 @@ export default function Stamps() {
                       {item.years.map((year) => (
                         <div
                           key={year.year}
-                          className="flex items-center justify-between"
+                          onClick={() => {
+                            setSelectedYear(year.year);
+                            setCurrentPage(1);
+
+                            const decade =
+                              year.year >= 1881 && year.year <= 1909
+                                ? "1881-1909"
+                                : `${Math.floor(year.year / 10) * 10}-${Math.floor(year.year / 10) * 10 + 9}`;
+
+                            setOpenDecades([decade]);
+                          }}
+                          className="flex items-center justify-between cursor-pointer"
                         >
                           <span
                             className={`font-body text-sm ${
-                              year.year === currentYear
+                              year.year === selectedYear
                                 ? "text-brand-primary font-medium"
                                 : "text-brand-text"
                             }`}
@@ -189,11 +293,21 @@ export default function Stamps() {
                       {item.years.map((year) => (
                         <div
                           key={year.year}
+                          onClick={() => {
+                            setSelectedYear(year.year);
+                            setCurrentPage(1);
+                            const decade =
+                              year.year >= 1881 && year.year <= 1909
+                                ? "1881-1909"
+                                : `${Math.floor(year.year / 10) * 10}-${Math.floor(year.year / 10) * 10 + 9}`;
+
+                            setOpenDecades([decade]);
+                          }}
                           className="flex items-center justify-between px-1 py-1.5 rounded-md cursor-pointer hover:bg-brand-surface transition-colors"
                         >
                           <span
                             className={`font-body text-sm ${
-                              year.year === currentYear
+                              year.year === selectedYear
                                 ? "text-brand-primary font-medium"
                                 : "text-brand-text"
                             }`}
@@ -213,22 +327,8 @@ export default function Stamps() {
           </div>
         </div>
 
-        {/* ── RIGHT: Search + sort + grid + pagination ──────── */}
+        {/* ── RIGHT: pagination ──────── */}
         <div className="w-full lg:flex-1 lg:min-w-0 lg:pl-8">
-          {/* Controls row */}
-          <div className="flex items-center gap-3 mb-6">
-            <SearchBar query={query} setQuery={setQuery} />
-            <div className="flex items-center flex-shrink-0 gap-2">
-              <span className="hidden text-sm sm:inline font-meta text-brand-secondary">
-                Sort
-              </span>
-              <select className="px-4 py-2 text-sm border rounded cursor-pointer border-brand-border font-meta">
-                <option>Latest</option>
-                <option>Oldest</option>
-              </select>
-            </div>
-          </div>
-
           {/* Stamp grid */}
           <StampGrid stamps={paginatedStamps} />
 
@@ -239,7 +339,9 @@ export default function Stamps() {
               totalPages={totalPages}
               totalRecords={totalRecords}
               itemName="Stamps"
-              onPageChange={setCurrentPage}
+              canGoPrevious={canGoPrevious}
+              canGoNext={canGoNext}
+              onPageChange={handlePageChange}
             />
           </div>
         </div>
