@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { LayoutGrid, List } from "lucide-react";
+import { ArrowRight, LayoutGrid, List } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -12,6 +12,17 @@ import {
 } from "@/components/ui/select";
 import BreadCrumb from "@/app/breadcrumbs/page";
 import { catalogues } from "./data";
+
+const viewOptions = [
+  { value: "Grid", label: "Grid View", Icon: LayoutGrid },
+  { value: "List", label: "List View", Icon: List },
+] as const;
+
+const selectItemClass = cn(
+  "cursor-pointer rounded-sm py-3 transition-colors",
+  "data-[highlighted]:bg-brand-primary/10",
+  "data-[state=checked]:bg-brand-primary data-[state=checked]:text-white",
+);
 
 export default function CollectionsPage() {
   const [view, setView] = useState<"Grid" | "List">("Grid");
@@ -30,38 +41,43 @@ export default function CollectionsPage() {
             Browse the Complete Catalogue
           </h1>
 
-          <div className="flex items-end justify-between mt-4">
+          <div className="flex flex-col gap-4 mt-4 sm:flex-row sm:items-end sm:justify-between">
             <p className="max-w-2xl text-sm leading-7 text-brand-muted sm:text-base">
               Select a collection to browse its records — stamps, envelopes,
               revenue documents, and more.
             </p>
 
-            <div className="ml-6">
-              <Select
-                value={view}
-                onValueChange={(value) => setView(value as "Grid" | "List")}
+            <Select
+              value={view}
+              onValueChange={(value) => setView(value as "Grid" | "List")}
+            >
+              <SelectTrigger
+                className={cn(
+                  "w-44 h-11 rounded-lg border border-brand-border bg-brand-surface",
+                  "text-brand-secondary font-medium shadow-sm transition-colors",
+                  "hover:border-brand-primary/30 hover:bg-white",
+                  "focus:ring-2 focus:ring-brand-primary/20",
+                  "data-[state=open]:border-brand-primary",
+                )}
               >
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue />
-                </SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
 
-                <SelectContent>
-                  <SelectItem value="Grid" >
-                    <span className="flex items-center gap-2">
-                      <LayoutGrid className="w-4 h-4" />
-                      Grid
-                    </span>
+              <SelectContent className="rounded-lg border border-brand-border bg-white shadow-xl overflow-hidden">
+                {viewOptions.map(({ value, label, Icon }) => (
+                  <SelectItem
+                    key={value}
+                    value={value}
+                    className={selectItemClass}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Icon className="h-4 w-4" />
+                      <span>{label}</span>
+                    </div>
                   </SelectItem>
-
-                  <SelectItem value="List">
-                    <span className="flex items-center gap-2">
-                      <List className="w-4 h-4" />
-                      List
-                    </span>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </section>
@@ -87,7 +103,6 @@ export default function CollectionsPage() {
                     : "flex items-center p-5"
                 }`}
               >
-                {/* GRID VIEW */}
                 {view === "Grid" ? (
                   <>
                     <div className="relative flex items-center justify-center h-32 border-b border-brand-border bg-brand-surface sm:h-36">
@@ -125,7 +140,6 @@ export default function CollectionsPage() {
                     </div>
                   </>
                 ) : (
-                  /* LIST VIEW */
                   <>
                     <div className="flex items-center justify-center flex-shrink-0 w-24 h-24 rounded-xl bg-brand-surface">
                       <Icon

@@ -20,7 +20,7 @@ export default async function StampDetail({ params }: PageProps) {
   }
   const featuredStamps = stamps
     .filter((item) => item.featured && item.id !== stamp.id)
-    .slice(0, 4);
+    .slice(0, 5);
   return (
     <div>
       <div className="mx-auto flex items-center gap-3 px-4 py-5 sm:px-8 sm:py-6 md:px-12 md:py-8">
@@ -133,7 +133,7 @@ export default async function StampDetail({ params }: PageProps) {
             Featured Stamps
           </h2>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
             {featuredStamps.map((featuredStamp) => (
               <div
                 key={featuredStamp.id}
