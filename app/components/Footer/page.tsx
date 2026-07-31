@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 import {
   IconBrandFacebook,
   IconBrandInstagram,
@@ -21,7 +22,15 @@ export default function Footer() {
           {/* Header */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-sm bg-brand-primary" />
+              <div className="flex items-center justify-center w-20 h-20 shrink-0">
+                <Image
+                  src="/stamps/nepali-stamps-logo.webp"
+                  width={200}
+                  height={275}
+                  alt="Nepali Stamp Logo"
+                  className="w-full h-full object-contain"
+                />
+              </div>
 
               <Link
                 href="/"
@@ -75,9 +84,7 @@ export default function Footer() {
               </h3>
 
               <div className="flex flex-col gap-3 text-brand-bg/75 font-body ">
-                <Link href="/stamps/stamps-fdc">
-                  {text.stamps.stampsFdc}
-                </Link>
+                <Link href="/stamps/stamps-fdc">{text.stamps.stampsFdc}</Link>
 
                 <Link href="/stamps/service-stamps">
                   {text.stamps.serviceStamps}
@@ -220,8 +227,16 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-[1.2fr_2.5fr_.8fr] lg:grid-cols-[1.5fr_3fr_1fr] gap-8 lg:gap-10">
             {/* Left */}
             <div className="flex flex-col gap-8">
-              <div className="flex items-center gap-2 text-lg font-semibold font-heading">
-                <div className="w-10 h-10 bg-brand-primary" />
+              <div className="flex items-center gap-3 text-lg font-semibold font-heading">
+                <div className="flex items-center justify-center w-18 h-18 shrink-0">
+                  <Image
+                    src="/stamps/nepali-stamps-logo.webp"
+                    width={200}
+                    height={275}
+                    alt="Nepali Stamp Logo"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
 
                 <Link href="/" className="text-brand-bg">
                   Nepali Stamp
@@ -274,9 +289,7 @@ export default function Footer() {
                 </div>
 
                 <div className="flex flex-col gap-2 text-brand-bg/75 font-body">
-                  <Link href="/stamps/stamps-fdc">
-                    {text.stamps.stampsFdc}
-                  </Link>
+                  <Link href="/stamps/stamps-fdc">{text.stamps.stampsFdc}</Link>
                   <Link href="/stamps/commemoratives-special-covers">
                     {text.stamps.commemoratives}
                   </Link>

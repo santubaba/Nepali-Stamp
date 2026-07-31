@@ -7,7 +7,7 @@ import {
   IconX,
   IconRectangle,
 } from "@tabler/icons-react";
-
+import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -175,12 +175,19 @@ export default function Navbar() {
       <nav className="relative z-30 flex items-center justify-between h-16 px-4 border-b md:h-20 md:px-6 lg:px-20 border-brand-border bg-brand-bg">
         {/* logo */}
 
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex items-center justify-center rounded w-7 h-7 md:w-8 md:h-8 bg-brand-primary">
-            <IconRectangle size={14} color="#F5EFEB" />
+        <Link href="/" className="flex items-center">
+          <div className="flex items-center justify-center rounded w-12 h-12 md:w-16 md:h-16">
+            <Image
+              src="/stamps/nepali-stamps-logo.webp"
+              width={200}
+              height={275}
+              alt="Nepali Stamp Logo"
+              className="w-full h-full object-contain"
+              priority
+            />
           </div>
 
-          <span className="text-sm font-semibold md:text-base font-heading text-brand-text ">
+          <span className="text-sm font-semibold md:text-base font-heading text-brand-text">
             Nepali Stamps
           </span>
         </Link>
