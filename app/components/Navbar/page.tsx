@@ -172,17 +172,17 @@ export default function Navbar() {
   ];
   return (
     <>
-      <nav className="relative z-30 flex items-center justify-between h-16 px-4 border-b md:h-20 md:px-6 lg:px-20 border-brand-border bg-brand-bg">
+      <nav className="relative z-30 flex items-center justify-between h-16 px-4 border-b md:h-24 md:px-6 lg:px-15 border-brand-border bg-brand-bg">
         {/* logo */}
 
-        <Link href="/" className="flex items-center">
-          <div className="flex items-center justify-center rounded w-12 h-12 md:w-16 md:h-16">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-16 h-16">
             <Image
-              src="/stamps/nepali-stamps-logo.webp"
-              width={200}
-              height={275}
+              src="/stamps/Simplified Logo.svg"
+              width={56}
+              height={56}
               alt="Nepali Stamp Logo"
-              className="w-full h-full object-contain"
+              className="object-contain"
               priority
             />
           </div>

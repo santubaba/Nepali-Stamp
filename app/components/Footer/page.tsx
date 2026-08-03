@@ -24,7 +24,7 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-20 h-20 shrink-0">
                 <Image
-                  src="/stamps/nepali-stamps-logo.webp"
+                  src="/stamps/Simplified Logo.svg"
                   width={200}
                   height={275}
                   alt="Nepali Stamp Logo"
@@ -230,7 +230,7 @@ export default function Footer() {
               <div className="flex items-center gap-3 text-lg font-semibold font-heading">
                 <div className="flex items-center justify-center w-18 h-18 shrink-0">
                   <Image
-                    src="/stamps/nepali-stamps-logo.webp"
+                    src="/stamps/Simplified Logo Dark.svg"
                     width={200}
                     height={275}
                     alt="Nepali Stamp Logo"
