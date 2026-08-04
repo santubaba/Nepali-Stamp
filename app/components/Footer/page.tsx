@@ -185,7 +185,6 @@ export default function Footer() {
                 <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg/30">
                   <IconBrandFacebook size={22} />
                 </div>
-                Facebook
               </Link>
 
               <Link
@@ -196,7 +195,6 @@ export default function Footer() {
                 <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg/30">
                   <IconBrandInstagram size={22} />
                 </div>
-                Instagram
               </Link>
             </div>
           </div>
@@ -390,30 +388,28 @@ export default function Footer() {
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
-                <Link
-                  href="https://facebook.com"
-                  target="_blank"
-                  className="flex items-center gap-3"
-                >
-                  <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg">
-                    <IconBrandFacebook size={30} />
-                  </div>
+              <div className="flex flex-col gap-3  text-brand-bg/75 font-body">
+                <div className="flex flex-col gap-3 text-brand-bg/75">
+                  <Link
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                    className="flex-start"
+                  >
+                    <IconBrandFacebook size={45} stroke={1.2}/>
+                  </Link>
 
-                  <span>Facebook</span>
-                </Link>
-
-                <Link
-                  href="https://instagram.com"
-                  target="_blank"
-                  className="flex items-center gap-3"
-                >
-                  <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg">
-                    <IconBrandInstagram size={30} />
-                  </div>
-
-                  <span>Instagram</span>
-                </Link>
+                  <Link
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="flex-start"
+                  >
+                    <IconBrandInstagram size={45} stroke={1.2} />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
