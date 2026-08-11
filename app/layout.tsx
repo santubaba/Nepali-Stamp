@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Inter, Open_Sans } from "next/font/google";
+import { EB_Garamond, Inter, Open_Sans, Geist } from "next/font/google";
 import Navbar from "./components/Navbar/page";
 import "./globals.css";
 import Footer from "./components/Footer/page";
 import { LanguageProvider } from "./context/LanguageContext";
-import AboutInfo from "./components/AboutInfo/page";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,7 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ebGaramond.variable} ${inter.variable} ${openSans.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", ebGaramond.variable, inter.variable, openSans.variable, "font-sans", geist.variable)}
     >
       <body className="flex flex-col min-h-full bg-brand-bg">
         <LanguageProvider>

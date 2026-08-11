@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 import {
   IconBrandFacebook,
   IconBrandInstagram,
@@ -21,7 +22,15 @@ export default function Footer() {
           {/* Header */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-sm bg-brand-primary" />
+              <div className="flex items-center justify-center w-20 h-20 shrink-0">
+                <Image
+                  src="/stamps/Simplified Logo.svg"
+                  width={200}
+                  height={275}
+                  alt="Nepali Stamp Logo"
+                  className="w-full h-full object-contain"
+                />
+              </div>
 
               <Link
                 href="/"
@@ -68,69 +77,92 @@ export default function Footer() {
 
           {/* Navigation */}
           <div className="grid grid-cols-2 border-b border-brand-bg/20">
-            {/* Collections */}
-            <div className="py-6 px-3 border-b border-r border-brand-bg/20">
+            {/* Stamps & FDC */}
+            <div className="px-3 py-6 border-b border-r border-brand-bg/20">
               <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent font-body">
-                {text.navbar.collections}
+                {text.navbar.stamps}
               </h3>
 
-              <div className="flex flex-col gap-3 text-brand-bg/75 font-body break-words">
-                <Link href="/collections/stamps">
-                  {text.collections.stamps}
+              <div className="flex flex-col gap-3 text-brand-bg/75 font-body ">
+                <Link href="/stamps/stamps-fdc">{text.stamps.stampsFdc}</Link>
+
+                <Link href="/stamps/service-stamps">
+                  {text.stamps.serviceStamps}
                 </Link>
 
-                <Link href="/collections/envelopes">
-                  {text.collections.envelopes}
+                <Link href="/stamps/commemoratives-special-covers">
+                  {text.stamps.commemoratives}
+                </Link>
+              </div>
+            </div>
+
+            {/* Postal Stationery */}
+            <div className="px-3 py-6 border-b border-brand-bg/20">
+              <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent font-body">
+                {text.navbar.postalStationery}
+              </h3>
+
+              <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
+                <Link href="/postal-stationery/envelopes">
+                  {text.postalStationery.envelopes}
                 </Link>
 
-                <Link href="/collections/postcards">
-                  {text.collections.postcards}
+                <Link href="/postal-stationery/postcards">
+                  {text.postalStationery.postcards}
                 </Link>
 
-                <Link href="/collections/commemoratives">
-                  {text.collections.commemoratives}
+                <Link href="/postal-stationery/aerogrammes">
+                  {text.postalStationery.aerogrammes}
                 </Link>
 
-                <Link href="/collections/service-stamps">
-                  {text.collections.serviceStamps}
+                <Link href="/postal-stationery/money-order">
+                  {text.postalStationery.moneyOrder}
                 </Link>
               </div>
             </div>
 
             {/* Revenue */}
-            <div className="py-6 px-3 border-b border-brand-bg/20">
+            <div className="px-3 py-6 border-r border-brand-bg/20">
               <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent font-body">
                 {text.navbar.revenue}
               </h3>
 
               <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
+                <Link href="/revenue/court-fee-stamps">
+                  {text.revenue.courtFee}
+                </Link>
+
                 <Link href="/revenue/income-revenue-stamps">
                   {text.revenue.incomeRevenue}
                 </Link>
 
-                <Link href="/revenue/land-revenue-stamps">
-                  {text.revenue.landRevenue}
-                </Link>
-
-                <Link href="/revenue/court-fee-stamps">
-                  {text.revenue.courtFee}
+                <Link href="/revenue/landlord-stamps">
+                  {text.revenue.landlordStamps}
                 </Link>
               </div>
             </div>
 
-            {/* Archives */}
-            <div className="py-6 px-3 border-r border-brand-bg/20">
+            {/* Other Archive */}
+            <div className="px-3 py-6">
               <h3 className="mb-5 text-sm font-semibold uppercase text-brand-accent font-body">
-                {text.navbar.archive}
+                {text.navbar.otherArchive}
               </h3>
 
               <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
-                <Link href="/archive/postal-money-order">
-                  {text.archive.postalMoneyOrder}
+                <Link href="/other-archive/published-books-literature">
+                  {text.otherArchive.publishedBooks}
                 </Link>
 
-                <Link href="/archive/other-archives">
-                  {text.archive.otherArchives}
+                <Link href="/other-archive/post-office-cancellation-marks">
+                  {text.otherArchive.cancellationMarks}
+                </Link>
+
+                <Link href="/other-archive/administrative-bulletins">
+                  {text.otherArchive.administrativeBulletins}
+                </Link>
+
+                <Link href="/other-archive/franklin">
+                  {text.otherArchive.franklin}
                 </Link>
               </div>
             </div>
@@ -153,7 +185,6 @@ export default function Footer() {
                 <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg/30">
                   <IconBrandFacebook size={22} />
                 </div>
-                Facebook
               </Link>
 
               <Link
@@ -164,7 +195,6 @@ export default function Footer() {
                 <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg/30">
                   <IconBrandInstagram size={22} />
                 </div>
-                Instagram
               </Link>
             </div>
           </div>
@@ -195,8 +225,16 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-[1.2fr_2.5fr_.8fr] lg:grid-cols-[1.5fr_3fr_1fr] gap-8 lg:gap-10">
             {/* Left */}
             <div className="flex flex-col gap-8">
-              <div className="flex items-center gap-2 text-lg font-semibold font-heading">
-                <div className="w-10 h-10 bg-brand-primary" />
+              <div className="flex items-center gap-3 text-lg font-semibold font-heading">
+                <div className="flex items-center justify-center w-18 h-18 shrink-0">
+                  <Image
+                    src="/stamps/Simplified Logo Dark.svg"
+                    width={200}
+                    height={275}
+                    alt="Nepali Stamp Logo"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
 
                 <Link href="/" className="text-brand-bg">
                   Nepali Stamp
@@ -238,35 +276,24 @@ export default function Footer() {
             </div>
 
             {/* Center Navigation */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-              {/* Collections */}
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10">
+              {/* Stamps & FDCs */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-px bg-brand-accent" />
                   <h3 className="text-sm font-semibold text-brand-accent font-body">
-                    {text.navbar.collections}
+                    {text.navbar.stamps}
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-2 break-words text-brand-bg/75 font-body">
-                  <Link href="/collections/stamps">
-                    {text.collections.stamps}
+                <div className="flex flex-col gap-2 text-brand-bg/75 font-body">
+                  <Link href="/stamps/stamps-fdc">{text.stamps.stampsFdc}</Link>
+                  <Link href="/stamps/commemoratives-special-covers">
+                    {text.stamps.commemoratives}
                   </Link>
 
-                  <Link href="/collections/envelopes">
-                    {text.collections.envelopes}
-                  </Link>
-
-                  <Link href="/collections/postcards">
-                    {text.collections.postcards}
-                  </Link>
-
-                  <Link href="/collections/commemoratives">
-                    {text.collections.commemoratives}
-                  </Link>
-
-                  <Link href="/collections/service-stamps">
-                    {text.collections.serviceStamps}
+                  <Link href="/stamps/service-stamps">
+                    {text.stamps.serviceStamps}
                   </Link>
                 </div>
               </div>
@@ -280,17 +307,45 @@ export default function Footer() {
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-2 break-words text-brand-bg/75 font-body">
+                <div className="flex flex-col gap-2 text-brand-bg/75 font-body">
+                  <Link href="/revenue/landlord-stamps">
+                    {text.revenue.landlordStamps}
+                  </Link>
+
                   <Link href="/revenue/income-revenue-stamps">
                     {text.revenue.incomeRevenue}
                   </Link>
 
-                  <Link href="/revenue/land-revenue-stamps">
-                    {text.revenue.landRevenue}
-                  </Link>
-
                   <Link href="/revenue/court-fee-stamps">
                     {text.revenue.courtFee}
+                  </Link>
+                </div>
+              </div>
+
+              {/* Postal Stationery */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-px bg-brand-accent" />
+                  <h3 className="text-sm font-semibold text-brand-accent font-body">
+                    {text.navbar.postalStationery}
+                  </h3>
+                </div>
+
+                <div className="flex flex-col gap-2 text-brand-bg/75 font-body">
+                  <Link href="/postal-stationery/envelopes">
+                    {text.postalStationery.envelopes}
+                  </Link>
+
+                  <Link href="/postal-stationery/postcards">
+                    {text.postalStationery.postcards}
+                  </Link>
+
+                  <Link href="/postal-stationery/aerogrammes">
+                    {text.postalStationery.aerogrammes}
+                  </Link>
+
+                  <Link href="/postal-stationery/money-order">
+                    {text.postalStationery.moneyOrder}
                   </Link>
                 </div>
               </div>
@@ -300,17 +355,25 @@ export default function Footer() {
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-px bg-brand-accent" />
                   <h3 className="text-sm font-semibold text-brand-accent font-body">
-                    {text.navbar.archive}
+                    {text.navbar.otherArchive}
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-2 break-words text-brand-bg/75 font-body">
-                  <Link href="/archive/postal-money-order">
-                    {text.archive.postalMoneyOrder}
+                <div className="flex flex-col gap-2 text-brand-bg/75 font-body">
+                  <Link href="/other-archive/published-books-literature">
+                    {text.otherArchive.publishedBooks}
                   </Link>
 
-                  <Link href="/archive/other-archives">
-                    {text.archive.otherArchives}
+                  <Link href="/other-archive/post-office-cancellation-marks">
+                    {text.otherArchive.cancellationMarks}
+                  </Link>
+
+                  <Link href="/other-archive/administrative-bulletins">
+                    {text.otherArchive.administrativeBulletins}
+                  </Link>
+
+                  <Link href="/other-archive/franklin">
+                    {text.otherArchive.franklin}
                   </Link>
                 </div>
               </div>
@@ -325,30 +388,28 @@ export default function Footer() {
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
-                <Link
-                  href="https://facebook.com"
-                  target="_blank"
-                  className="flex items-center gap-3"
-                >
-                  <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg">
-                    <IconBrandFacebook size={30} />
-                  </div>
+              <div className="flex flex-col gap-3  text-brand-bg/75 font-body">
+                <div className="flex flex-col gap-3 text-brand-bg/75">
+                  <Link
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                    className="flex-start"
+                  >
+                    <IconBrandFacebook size={45} stroke={1.2}/>
+                  </Link>
 
-                  <span>Facebook</span>
-                </Link>
-
-                <Link
-                  href="https://instagram.com"
-                  target="_blank"
-                  className="flex items-center gap-3"
-                >
-                  <div className="flex items-center justify-center border rounded-md w-11 h-11 border-brand-bg">
-                    <IconBrandInstagram size={30} />
-                  </div>
-
-                  <span>Instagram</span>
-                </Link>
+                  <Link
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="flex-start"
+                  >
+                    <IconBrandInstagram size={45} stroke={1.2} />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

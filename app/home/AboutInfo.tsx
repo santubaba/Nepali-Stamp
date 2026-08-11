@@ -19,7 +19,7 @@ export default function AboutInfo() {
   ];
 
   return (
-    <section className="bg-[var(--color-brand-secondary)] py-24 px-6 lg:px-12">
+    <section className="bg-[var(--color-brand-secondary)] py-24 px-6 lg:px-20">
       <div className="mx-auto max-w-7xl grid gap-14 lg:grid-cols-[1.1fr_1fr]">
         {/* Left content */}
         <div className="text-[var(--color-brand-surface)]">
