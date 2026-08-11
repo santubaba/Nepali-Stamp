@@ -197,7 +197,7 @@ export default function Navbar() {
         <div className="items-center justify-center flex-1 hidden gap-6 lg:flex xl:gap-8">
           <Link
             href="/"
-            className={`h-20 flex items-center border-b-2 text-sm
+            className={`h-24 flex items-center border-b-2 text-sm
               ${
                 isActive("/")
                   ? "border-brand-primary text-brand-primary"
@@ -208,7 +208,7 @@ export default function Navbar() {
           </Link>
 
           {menus.map((menu) => (
-            <div key={menu.key} className="relative h-20 group">
+            <div key={menu.key} className="relative h-24 group">
               <div
                 className={`h-full flex items-center gap-1 border-b-2 cursor-default text-sm
                   ${
@@ -248,7 +248,7 @@ export default function Navbar() {
 
           <Link
             href="/about"
-            className={`h-20 flex items-center border-b-2 text-sm mr-5
+            className={`h-24 flex items-center border-b-2 text-sm mr-5
               ${
                 isActive("/about")
                   ? "border-brand-primary text-brand-primary"
