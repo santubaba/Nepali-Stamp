@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Stamp{
+  id                  Int           @id @default(autoincrement())
+  title               String
+  slug                String        @unique
+  eyebrow             String?
+  image               String?
+  featured            Boolean  @default(false)
+
+  categoryId          Int
+  category            Category @relation(fields: [categoryId], references: [id])
+
+  tags                Json?
+  keyAttributes       Json?
+  physicalProperties  Json?
+  printingProduction  Json?
+  issuance            Json?
+  historicalContext   Json?
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Category{
+  id                Int       @id @default(autoincrement())
+  name              String
+  slug              String    @unique
+
+  stamps            Stamp[]
+}
+
+model Admin{
+  id         Int      @id @default(autoincrement())
+  username   String
+  email      String   @unique
+  password   String
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+}

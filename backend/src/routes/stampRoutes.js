@@ -1,11 +1,9 @@
 const express = require("express")
 
+const {getStamps} = require("../controllers/stampController")
+
 const router = express.Router()
 
-router.get("/",(req,res)=>{
-    res.json({
-        message:"Stamp route is working"
-    })
-})
+router.get("/", getStamps)
 
 module.exports = router
