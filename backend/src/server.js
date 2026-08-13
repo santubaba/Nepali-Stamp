@@ -2,12 +2,10 @@ require("dotenv").config()
 
 const express = require("express")
 
-const testRoutes = require("./routes/testRoute")
-
+const stampRoutes = require("./routes/stampRoutes")
 const app = express()
 
-app.use("/api/test",testRoutes)
-
+app.use("/api/stamps", stampRoutes)
 app.get("/",(req,res)=>{
     res.json({message:"Backend is running"})
 })
