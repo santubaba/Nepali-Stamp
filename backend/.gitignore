@@ -1,7 +1,0 @@
-node_modules/
-.env
-/src/generated/prisma
-.windsurf/
-.agents/
-.claude/
-!.env.example
