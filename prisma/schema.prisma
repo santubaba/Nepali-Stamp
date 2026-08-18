@@ -20,8 +20,8 @@ model Stamp{
   image               String?
   featured            Boolean  @default(false)
 
-  categoryId          Int
-  category            Category @relation(fields: [categoryId], references: [id])
+  categoryId          Int?
+  category            Category? @relation(fields: [categoryId], references: [id])
 
   tags                Json?
   keyAttributes       Json?

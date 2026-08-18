@@ -226,7 +226,7 @@ export type StampGroupByOutputType = {
   eyebrow: string | null
   image: string | null
   featured: boolean
-  categoryId: number
+  categoryId: number | null
   tags: runtime.JsonValue | null
   keyAttributes: runtime.JsonValue | null
   physicalProperties: runtime.JsonValue | null
@@ -267,7 +267,7 @@ export type StampWhereInput = {
   eyebrow?: Prisma.StringNullableFilter<"Stamp"> | string | null
   image?: Prisma.StringNullableFilter<"Stamp"> | string | null
   featured?: Prisma.BoolFilter<"Stamp"> | boolean
-  categoryId?: Prisma.IntFilter<"Stamp"> | number
+  categoryId?: Prisma.IntNullableFilter<"Stamp"> | number | null
   tags?: Prisma.JsonNullableFilter<"Stamp">
   keyAttributes?: Prisma.JsonNullableFilter<"Stamp">
   physicalProperties?: Prisma.JsonNullableFilter<"Stamp">
@@ -276,7 +276,7 @@ export type StampWhereInput = {
   historicalContext?: Prisma.JsonNullableFilter<"Stamp">
   createdAt?: Prisma.DateTimeFilter<"Stamp"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Stamp"> | Date | string
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
 }
 
 export type StampOrderByWithRelationInput = {
@@ -286,7 +286,7 @@ export type StampOrderByWithRelationInput = {
   eyebrow?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   featured?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrderInput | Prisma.SortOrder
   keyAttributes?: Prisma.SortOrderInput | Prisma.SortOrder
   physicalProperties?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -308,7 +308,7 @@ export type StampWhereUniqueInput = Prisma.AtLeast<{
   eyebrow?: Prisma.StringNullableFilter<"Stamp"> | string | null
   image?: Prisma.StringNullableFilter<"Stamp"> | string | null
   featured?: Prisma.BoolFilter<"Stamp"> | boolean
-  categoryId?: Prisma.IntFilter<"Stamp"> | number
+  categoryId?: Prisma.IntNullableFilter<"Stamp"> | number | null
   tags?: Prisma.JsonNullableFilter<"Stamp">
   keyAttributes?: Prisma.JsonNullableFilter<"Stamp">
   physicalProperties?: Prisma.JsonNullableFilter<"Stamp">
@@ -317,7 +317,7 @@ export type StampWhereUniqueInput = Prisma.AtLeast<{
   historicalContext?: Prisma.JsonNullableFilter<"Stamp">
   createdAt?: Prisma.DateTimeFilter<"Stamp"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Stamp"> | Date | string
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
+  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
 }, "id" | "slug">
 
 export type StampOrderByWithAggregationInput = {
@@ -327,7 +327,7 @@ export type StampOrderByWithAggregationInput = {
   eyebrow?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   featured?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrderInput | Prisma.SortOrder
   keyAttributes?: Prisma.SortOrderInput | Prisma.SortOrder
   physicalProperties?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -353,7 +353,7 @@ export type StampScalarWhereWithAggregatesInput = {
   eyebrow?: Prisma.StringNullableWithAggregatesFilter<"Stamp"> | string | null
   image?: Prisma.StringNullableWithAggregatesFilter<"Stamp"> | string | null
   featured?: Prisma.BoolWithAggregatesFilter<"Stamp"> | boolean
-  categoryId?: Prisma.IntWithAggregatesFilter<"Stamp"> | number
+  categoryId?: Prisma.IntNullableWithAggregatesFilter<"Stamp"> | number | null
   tags?: Prisma.JsonNullableWithAggregatesFilter<"Stamp">
   keyAttributes?: Prisma.JsonNullableWithAggregatesFilter<"Stamp">
   physicalProperties?: Prisma.JsonNullableWithAggregatesFilter<"Stamp">
@@ -378,7 +378,7 @@ export type StampCreateInput = {
   historicalContext?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  category: Prisma.CategoryCreateNestedOneWithoutStampsInput
+  category?: Prisma.CategoryCreateNestedOneWithoutStampsInput
 }
 
 export type StampUncheckedCreateInput = {
@@ -388,7 +388,7 @@ export type StampUncheckedCreateInput = {
   eyebrow?: string | null
   image?: string | null
   featured?: boolean
-  categoryId: number
+  categoryId?: number | null
   tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   keyAttributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   physicalProperties?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -413,7 +413,7 @@ export type StampUpdateInput = {
   historicalContext?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  category?: Prisma.CategoryUpdateOneRequiredWithoutStampsNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutStampsNestedInput
 }
 
 export type StampUncheckedUpdateInput = {
@@ -423,7 +423,7 @@ export type StampUncheckedUpdateInput = {
   eyebrow?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   keyAttributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   physicalProperties?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -441,7 +441,7 @@ export type StampCreateManyInput = {
   eyebrow?: string | null
   image?: string | null
   featured?: boolean
-  categoryId: number
+  categoryId?: number | null
   tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   keyAttributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   physicalProperties?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -475,7 +475,7 @@ export type StampUncheckedUpdateManyInput = {
   eyebrow?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  categoryId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   keyAttributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   physicalProperties?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -566,6 +566,14 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type IntFieldUpdateOperationsInput = {
   set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
@@ -683,7 +691,7 @@ export type StampScalarWhereInput = {
   eyebrow?: Prisma.StringNullableFilter<"Stamp"> | string | null
   image?: Prisma.StringNullableFilter<"Stamp"> | string | null
   featured?: Prisma.BoolFilter<"Stamp"> | boolean
-  categoryId?: Prisma.IntFilter<"Stamp"> | number
+  categoryId?: Prisma.IntNullableFilter<"Stamp"> | number | null
   tags?: Prisma.JsonNullableFilter<"Stamp">
   keyAttributes?: Prisma.JsonNullableFilter<"Stamp">
   physicalProperties?: Prisma.JsonNullableFilter<"Stamp">
@@ -779,7 +787,7 @@ export type StampSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   historicalContext?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Stamp$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["stamp"]>
 
 export type StampSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -798,7 +806,7 @@ export type StampSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   historicalContext?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Stamp$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["stamp"]>
 
 export type StampSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -817,7 +825,7 @@ export type StampSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   historicalContext?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Stamp$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["stamp"]>
 
 export type StampSelectScalar = {
@@ -840,19 +848,19 @@ export type StampSelectScalar = {
 
 export type StampOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "eyebrow" | "image" | "featured" | "categoryId" | "tags" | "keyAttributes" | "physicalProperties" | "printingProduction" | "issuance" | "historicalContext" | "createdAt" | "updatedAt", ExtArgs["result"]["stamp"]>
 export type StampInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Stamp$categoryArgs<ExtArgs>
 }
 export type StampIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Stamp$categoryArgs<ExtArgs>
 }
 export type StampIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  category?: boolean | Prisma.Stamp$categoryArgs<ExtArgs>
 }
 
 export type $StampPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Stamp"
   objects: {
-    category: Prisma.$CategoryPayload<ExtArgs>
+    category: Prisma.$CategoryPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -861,7 +869,7 @@ export type $StampPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     eyebrow: string | null
     image: string | null
     featured: boolean
-    categoryId: number
+    categoryId: number | null
     tags: runtime.JsonValue | null
     keyAttributes: runtime.JsonValue | null
     physicalProperties: runtime.JsonValue | null
@@ -1264,7 +1272,7 @@ readonly fields: StampFieldRefs;
  */
 export interface Prisma__StampClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  category<T extends Prisma.Stamp$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Stamp$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1707,6 +1715,25 @@ export type StampDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Stamps to delete.
    */
   limit?: number
+}
+
+/**
+ * Stamp.category
+ */
+export type Stamp$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
 }
 
 /**
