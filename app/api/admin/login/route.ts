@@ -1,12 +1,26 @@
 import { prisma } from "@/lib/prisma"
 import { verifyPassword, createToken } from "@/lib/auth"
 import { cookies } from "next/headers"
+import { adminLoginSchema } from "@/lib/validations/admin"
 
 export async function POST(request: Request) {
   const body = await request.json()
+  const result = adminLoginSchema.safeParse(body)
+
+  if (!result.success) {
+    return Response.json(
+      {
+        message: "Invalid request",
+        errors: result.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    )
+}
+
+const { email, password } = result.data
   const admin = await prisma.admin.findUnique({
     where: {
-      email: body.email,
+      email,
     },
   })
 
@@ -18,7 +32,7 @@ export async function POST(request: Request) {
   }
 
   const passwordValid = await verifyPassword(
-    body.password,
+    password,
     admin.password
   )
 
