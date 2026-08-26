@@ -11,9 +11,6 @@ import { useContext } from "react";
 import { LanguageContext } from "@/app/context/LanguageContext";
 export default function Footer() {
   const { language, setLanguage, text } = useContext(LanguageContext)!;
-
-  console.log("Footer Language", language);
-  console.log("Footer render:", language, text.navbar.home);
   return (
     <>
       <footer className="px-6 py-10 bg-brand-text md:px-12 lg:px-16">
@@ -28,7 +25,7 @@ export default function Footer() {
                   width={200}
                   height={275}
                   alt="Nepali Stamp Logo"
-                  className="w-full h-full object-contain"
+                  className="object-contain w-full h-full"
                 />
               </div>
 
@@ -232,7 +229,7 @@ export default function Footer() {
                     width={200}
                     height={275}
                     alt="Nepali Stamp Logo"
-                    className="w-full h-full object-contain"
+                    className="object-contain w-full h-full"
                   />
                 </div>
 
@@ -388,16 +385,16 @@ export default function Footer() {
                 </h3>
               </div>
 
-              <div className="flex flex-col gap-3  text-brand-bg/75 font-body">
+              <div className="flex flex-col gap-3 text-brand-bg/75 font-body">
                 <div className="flex flex-col gap-3 text-brand-bg/75">
                   <Link
-                    href="https://facebook.com"
+                    href="https://www.facebook.com/people/Nepali-Stamps-%E0%A4%A8%E0%A5%87%E0%A4%AA%E0%A4%BE%E0%A4%B2%E0%A4%95%E0%A4%BE-%E0%A4%B9%E0%A5%81%E0%A4%B2%E0%A4%BE%E0%A4%95-%E0%A4%9F%E0%A4%BF%E0%A4%95%E0%A4%9F/61557430067797/?rdid=7oC6EgYSYXH1zfIx&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1EupMKzroK%2F"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Facebook"
                     className="flex-start"
                   >
-                    <IconBrandFacebook size={45} stroke={1.2}/>
+                    <IconBrandFacebook size={45} stroke={1.2} />
                   </Link>
 
                   <Link
