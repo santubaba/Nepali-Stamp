@@ -1,8 +1,13 @@
 "use client";
-import { useState } from "react";
+
+import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowRight, LayoutGrid, List } from "lucide-react";
+import gsap from "gsap";
+import { Flip } from "gsap/Flip";
+import { useGSAP } from "@gsap/react";
+import BreadCrumb from "@/app/breadcrumbs/page";
 import {
   Select,
   SelectContent,
@@ -10,8 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import BreadCrumb from "@/app/breadcrumbs/page";
 import { catalogues } from "./data";
+
+gsap.registerPlugin(Flip, useGSAP);
 
 const viewOptions = [
   { value: "Grid", label: "Grid View", Icon: LayoutGrid },
@@ -24,66 +30,295 @@ const selectItemClass = cn(
   "data-[state=checked]:bg-brand-primary data-[state=checked]:text-white",
 );
 
+const ENTRANCE_SELECTORS = [
+  ".catalogue-breadcrumb",
+  ".catalogue-eyebrow",
+  ".catalogue-heading",
+  ".catalogue-description",
+  ".catalogue-view-select",
+  ".catalogue-card",
+];
+
 export default function CollectionsPage() {
   const [view, setView] = useState<"Grid" | "List">("Grid");
+
+  const pageRef = useRef<HTMLElement>(null);
+  const catalogueGridRef = useRef<HTMLDivElement>(null);
+
+  /*
+   * --------------------------------------------------------------------------
+   * Reduced motion
+   * --------------------------------------------------------------------------
+   */
+
+  const prefersReducedMotion = useRef(false);
+
+  useGSAP(
+    () => {
+      const mediaQuery = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      );
+
+      const updateReducedMotion = () => {
+        prefersReducedMotion.current = mediaQuery.matches;
+      };
+
+      updateReducedMotion();
+
+      mediaQuery.addEventListener("change", updateReducedMotion);
+
+      return () => {
+        mediaQuery.removeEventListener("change", updateReducedMotion);
+      };
+    },
+    { dependencies: [] },
+  );
+
+  /*
+   * --------------------------------------------------------------------------
+   * Flip timeline tracking (for the Grid <-> List transition)
+   * --------------------------------------------------------------------------
+   */
+
+  const flipTimelineRef = useRef<gsap.core.Timeline | gsap.core.Tween | null>(
+    null,
+  );
+
+  useGSAP(() => {
+    return () => {
+      flipTimelineRef.current?.kill();
+    };
+  }, []);
+
+  /*
+   * --------------------------------------------------------------------------
+   * Initial page-load animation
+   * --------------------------------------------------------------------------
+   */
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion.current) {
+        gsap.set(ENTRANCE_SELECTORS, {
+          opacity: 1,
+          y: 0,
+        });
+
+        return;
+      }
+
+      const tl = gsap.timeline({
+        defaults: {
+          ease: "power3.out",
+        },
+      });
+
+      tl.fromTo(
+        ".catalogue-breadcrumb",
+        {
+          opacity: 0,
+          y: 15,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+        },
+      )
+        .fromTo(
+          ".catalogue-eyebrow",
+          {
+            opacity: 0,
+            y: 15,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          "-=0.25",
+        )
+        .fromTo(
+          ".catalogue-heading",
+          {
+            opacity: 0,
+            y: 35,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+          },
+          "-=0.25",
+        )
+        .fromTo(
+          ".catalogue-description",
+          {
+            opacity: 0,
+            y: 20,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+          },
+          "-=0.4",
+        )
+        .fromTo(
+          ".catalogue-view-select",
+          {
+            opacity: 0,
+            y: 15,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          "-=0.35",
+        )
+        .fromTo(
+          ".catalogue-card",
+          {
+            opacity: 0,
+            y: 25,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            stagger: 0.08,
+          },
+          "-=0.2",
+        );
+
+      return () => {
+        tl.kill();
+      };
+    },
+    { scope: pageRef, dependencies: [], revertOnUpdate: true },
+  );
+
+  /*
+   * --------------------------------------------------------------------------
+   * Grid <-> List transition
+   * --------------------------------------------------------------------------
+   */
+
+  const switchView = (nextView: "Grid" | "List") => {
+    if (nextView === view) return;
+
+    const cards = catalogueGridRef.current?.querySelectorAll<HTMLElement>(
+      ".catalogue-card",
+    );
+
+    if (!cards || cards.length === 0) {
+      setView(nextView);
+      return;
+    }
+
+    // Kill any in-flight transition before reading positions again,
+    // so rapid Grid/List/Grid clicks don't fight over the same elements.
+    flipTimelineRef.current?.kill();
+
+    // Capture the current position and size of every card
+    const state = Flip.getState(cards);
+
+    // Let React change the layout
+    setView(nextView);
+
+    // Wait for React to render the new layout
+    requestAnimationFrame(() => {
+      const updatedCards =
+        catalogueGridRef.current?.querySelectorAll<HTMLElement>(
+          ".catalogue-card",
+        );
+
+      if (!updatedCards || updatedCards.length === 0) return;
+
+      if (prefersReducedMotion.current) {
+        return;
+      }
+
+      flipTimelineRef.current = Flip.from(state, {
+        targets: updatedCards,
+        duration: 0.55,
+        ease: "power3.out",
+        stagger: 0.025,
+        absolute: false,
+        nested: true,
+        prune: true,
+      });
+    });
+  };
+
   return (
-    <main className="min-h-screen bg-brand-bg">
+    <main ref={pageRef} className="min-h-screen bg-brand-bg">
+      {/* Header */}
       <section className="border-b border-brand-border">
         <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:py-12">
-          <BreadCrumb className="mb-6" />
+          <div className="opacity-0 catalogue-breadcrumb">
+            <BreadCrumb className="mb-6" />
+          </div>
 
-          <div className="mb-4 flex items-center gap-3 uppercase tracking-[0.18em] text-[11px] font-medium text-brand-accent">
+          <div className="catalogue-eyebrow opacity-0 mb-4 flex items-center gap-3 uppercase tracking-[0.18em] text-[11px] font-medium text-brand-accent">
             <span className="w-6 h-px bg-brand-accent" />
             Catalogue
           </div>
 
-          <h1 className="text-3xl font-medium font-heading text-brand-text sm:text-4xl lg:text-5xl">
+          <h1 className="text-3xl font-medium opacity-0 catalogue-heading font-heading text-brand-text sm:text-4xl lg:text-5xl">
             Browse the Complete Catalogue
           </h1>
 
           <div className="flex flex-col gap-4 mt-4 sm:flex-row sm:items-end sm:justify-between">
-            <p className="max-w-2xl text-sm leading-7 text-brand-muted sm:text-base">
+            <p className="max-w-2xl text-sm leading-7 opacity-0 catalogue-description text-brand-muted sm:text-base">
               Select a collection to browse its records — stamps, envelopes,
               revenue documents, and more.
             </p>
 
-            <Select
-              value={view}
-              onValueChange={(value) => setView(value as "Grid" | "List")}
-            >
-              <SelectTrigger
-                className={cn(
-                  "w-44 h-11 rounded-lg border border-brand-border bg-brand-surface",
-                  "text-brand-secondary font-medium shadow-sm transition-colors",
-                  "hover:border-brand-primary/30 hover:bg-white",
-                  "focus:ring-2 focus:ring-brand-primary/20",
-                  "data-[state=open]:border-brand-primary",
-                )}
+            <div className="opacity-0 catalogue-view-select">
+              <Select
+                value={view}
+                onValueChange={(value) => {
+                  switchView(value as "Grid" | "List");
+                }}
               >
-                <SelectValue />
-              </SelectTrigger>
+                <SelectTrigger
+                  className={cn(
+                    "w-44 h-11 rounded-lg border border-brand-border bg-brand-surface",
+                    "text-brand-secondary font-medium shadow-sm transition-colors",
+                    "hover:border-brand-primary/30 hover:bg-white",
+                    "focus:ring-2 focus:ring-brand-primary/20",
+                    "data-[state=open]:border-brand-primary",
+                  )}
+                >
+                  <SelectValue />
+                </SelectTrigger>
 
-              <SelectContent className="rounded-lg border border-brand-border bg-white shadow-xl overflow-hidden">
-                {viewOptions.map(({ value, label, Icon }) => (
-                  <SelectItem
-                    key={value}
-                    value={value}
-                    className={selectItemClass}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon className="h-4 w-4" />
-                      <span>{label}</span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <SelectContent className="overflow-hidden bg-white border rounded-lg shadow-xl border-brand-border">
+                  {viewOptions.map(({ value, label, Icon }) => (
+                    <SelectItem
+                      key={value}
+                      value={value}
+                      className={selectItemClass}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className="w-4 h-4" />
+                        <span>{label}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Catalogue */}
       <section className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:py-10">
         <div
+          ref={catalogueGridRef}
           className={
             view === "Grid"
               ? "grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
@@ -97,7 +332,7 @@ export default function CollectionsPage() {
               <Link
                 key={catalogue.slug}
                 href={catalogue.href}
-                className={`overflow-hidden transition-all duration-300 bg-white border rounded-xl border-brand-border group hover:border-brand-primary/40 hover:shadow-lg ${
+                className={`catalogue-card opacity-0 overflow-hidden transition-all duration-300 bg-white border rounded-xl border-brand-border group hover:border-brand-primary/40 hover:shadow-lg ${
                   view === "Grid"
                     ? "hover:-translate-y-1"
                     : "flex items-center p-5"
