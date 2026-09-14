@@ -2,10 +2,10 @@
 import BreadCrumb from "@/app/breadcrumbs/page";
 import StampGrid from "@/app/components/StampGrid/stampgrid";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import Pagination from "@/app/components/Pagination/Pagination";
 import stamps from "./mock-data";
+import { useStampListEntrance } from "@/lib/animations/useStampListEntrance";
 
 export default function Stamps() {
   const currentYear = new Date().getFullYear();
@@ -70,8 +70,6 @@ export default function Stamps() {
       (a, b) => Number(b.decade.split("-")[0]) - Number(a.decade.split("-")[0]),
     );
 
-  const [query, setQuery] = useState("");
-  const [debounceQuery, setDebounceQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -90,28 +88,11 @@ export default function Stamps() {
 
   const canGoNext =
     currentPage < totalPages || currentYearIndex < availableYears.length - 1;
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebounceQuery(query);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [query]);
 
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const q = searchParams.get("q") ?? "";
-    setQuery(q);
-    setDebounceQuery(q);
-  }, []);
-
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (debounceQuery) params.set("q", debounceQuery);
-    router.replace(`${pathname}?${params.toString()}`);
-  }, [debounceQuery, router, pathname]);
+  // ── GSAP entrance (header on mount, grid on every filter change) ──
+  const { headerRef, gridWrapperRef } = useStampListEntrance(
+    `${selectedYear}-${currentPage}`,
+  );
 
   const toggleDecade = (decade: string) => {
     setOpenDecades((prev) =>
@@ -175,7 +156,7 @@ export default function Stamps() {
   return (
     <div className="min-h-screen px-4 bg-brand-bg sm:px-6 lg:px-20">
       {/* ── Page header ───────────────────────────────────── */}
-      <div className="py-6">
+      <div ref={headerRef} className="py-6 ">
         <BreadCrumb />
         <h2 className="mt-3 text-[30px] font-heading text-brand-text">
           Stamp Archive
@@ -328,7 +309,7 @@ export default function Stamps() {
         </div>
 
         {/* ── RIGHT: pagination ──────── */}
-        <div className="w-full lg:flex-1 lg:min-w-0 lg:pl-8">
+        <div ref={gridWrapperRef} className="w-full lg:flex-1 lg:min-w-0 lg:pl-8">
           {/* Stamp grid */}
           <StampGrid stamps={paginatedStamps} />
 
