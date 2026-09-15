@@ -76,6 +76,10 @@ export default function Navbar() {
           label: text.stamps.commemoratives,
           href: "/stamps/commemoratives-special-covers",
         },
+        {
+          label: text.stamps.maximaCards,
+          href: "/stamps/maxima-cards",
+        },
       ],
     },
 
@@ -794,7 +798,7 @@ export default function Navbar() {
 
       <div
         ref={mobileDrawerRef}
-        className="fixed top-0 right-0 z-50 h-full w-72 bg-brand-bg overflow-y-auto lg:hidden"
+        className="fixed top-0 right-0 z-50 h-full overflow-y-auto w-72 bg-brand-bg lg:hidden"
       >
         {/* Header */}
 
