@@ -1,6 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const metadata = [
   { label: "Issued", value: "1881 CE · BS 1938" },
@@ -10,8 +16,90 @@ const metadata = [
 ];
 
 export default function Collection1881() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: {
+          ease: "power3.out",
+        },
+      });
+
+      // Historical image
+      tl.from(".collection-image", {
+        opacity: 0,
+        y: 30,
+        duration: 0.9,
+      })
+
+        // Right-side content
+        .from(
+          ".collection-eyebrow",
+          {
+            opacity: 0,
+            y: 15,
+            duration: 0.5,
+          },
+          "-=0.5",
+        )
+        .from(
+          ".collection-heading",
+          {
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+          },
+          "-=0.2",
+        )
+        .from(
+          ".collection-copy",
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.7,
+          },
+          "-=0.35",
+        )
+        .from(
+          ".collection-metadata",
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.7,
+          },
+          "-=0.25",
+        )
+        .from(
+          ".collection-cta",
+          {
+            opacity: 0,
+            y: 15,
+            duration: 0.5,
+          },
+          "-=0.25",
+        );
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 80%",
+
+        onEnter: () => {
+          tl.restart();
+        },
+
+        onEnterBack: () => {
+          tl.restart();
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="w-full bg-brand-bg">
+    <section ref={sectionRef} className="w-full bg-brand-bg">
       <div className="grid items-stretch grid-cols-1 gap-12 px-6 py-16 mx-auto max-w-7xl md:px-12 lg:px-20 md:py-24 md:grid-cols-2 md:gap-16 lg:gap-20">
         {/* Left: cover image */}
         <Image
@@ -20,30 +108,31 @@ export default function Collection1881() {
           width={600}
           height={400}
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="w-full h-auto rounded-lg mt-14"
+          className="collection-image w-full h-auto rounded-lg mt-14"
         />
 
         {/* Right: content */}
         <div className="flex flex-col h-full gap-3">
           <div className="flex flex-col gap-6">
             {/* Eyebrow */}
-            <div className="flex items-center gap-3">
+            <div className="collection-eyebrow flex items-center gap-3">
               <span
                 aria-hidden="true"
                 className="block w-8 h-px bg-brand-accent"
               />
+
               <span className="text-xs tracking-widest uppercase font-meta text-brand-accent">
                 1881 Collection
               </span>
             </div>
 
             {/* Heading */}
-            <h2 className="text-4xl font-bold leading-tight font-heading md:text-5xl text-brand-text">
+            <h2 className="collection-heading text-4xl font-bold leading-tight font-heading md:text-5xl text-brand-text">
               Nepal&rsquo;s first postal issue
             </h2>
 
             {/* Body copy */}
-            <p className="text-base leading-relaxed font-body md:text-lg text-brand-secondary max-w-prose">
+            <p className="collection-copy text-base leading-relaxed font-body md:text-lg text-brand-secondary max-w-prose">
               Issued in 1881 using the Chisa Pani Press in Kathmandu,
               Nepal&rsquo;s first postal stamps featured the iconic Crown and
               Crossed Khukuries design and marked the beginning of the
@@ -53,14 +142,14 @@ export default function Collection1881() {
             </p>
 
             {/* Metadata card */}
-            <div className="rounded-[var(--radius-xl)] border border-brand-border bg-brand-surface px-5 py-4">
+            <div className="collection-metadata rounded-[var(--radius-xl)] border border-brand-border bg-brand-surface px-5 py-4">
               <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2">
                 {metadata.map(({ label, value }) => (
-                  // key on the Fragment, not on dt/dd individually
                   <React.Fragment key={label}>
                     <dt className="text-sm font-meta text-brand-muted whitespace-nowrap">
                       {label}
                     </dt>
+
                     <dd className="text-sm font-semibold font-meta text-brand-text">
                       {value}
                     </dd>
@@ -71,7 +160,7 @@ export default function Collection1881() {
           </div>
 
           {/* CTA */}
-          <div className="pt-6 mt-auto">
+          <div className="collection-cta pt-6 mt-auto">
             <Link
               href="/Detail1881"
               className="inline-flex items-center gap-2 bg-brand-primary text-white font-meta text-sm font-semibold tracking-wide px-6 py-3 rounded-[var(--radius-md)] transition-colors duration-200 hover:bg-brand-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
@@ -85,3 +174,4 @@ export default function Collection1881() {
     </section>
   );
 }
+  

@@ -12,6 +12,7 @@ export const en = {
     stampsFdc: "Stamps & FDC",
     serviceStamps: "Service Stamps",
     commemoratives: "Commemoratives & Special Covers",
+    maximaCards: "Maxima Cards"
   },
 
   postalStationery: {

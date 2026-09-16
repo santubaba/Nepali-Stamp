@@ -12,6 +12,7 @@ export const np = {
     stampsFdc: "टिकट तथा प्रथम-दिवस आवरण",
     serviceStamps: "सेवा टिकट",
     commemoratives: "स्मारक तथा विशेष आवरण",
+    maximaCards: "अधिकतम कार्डहरू"
   },
 
   postalStationery: {
