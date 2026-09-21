@@ -45,3 +45,6 @@ next-env.d.ts
 # Parser output
 scripts/output/
 scripts/images/
+
+# Client source documents
+scripts/*.docx
