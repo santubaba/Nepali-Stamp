@@ -41,6 +41,13 @@ SECTION_GROUPS = {
         "complete-breakdown-of-the-front",
         "reverse-side",
         "sender-information",
+        "1-the-left-slip",
+        "2-the-main-nepal-postal-order",
+        "header-core-warning",
+        "top-instructions",
+        "denomination-panels",
+        "redemption-receipt-section",
+        "official-cancellation-rings",
     ],
     "localProduction": [
         "local-production",
@@ -54,6 +61,11 @@ SECTION_GROUPS = {
         "withdrawal-and-modern-collectibility",
         "philatelic-and-historical-legacy",
     ],
+    "denominationOverview": [
+    "denominations-color-tiers-and-paper-stocks",
+    "denominations-and-color-schemes",
+    "denomination-checklist-and-visual-iconography",
+],
 }
 
 def extract_images(doc, category_slug, images_dir):
@@ -172,10 +184,15 @@ def extract_production_and_issuance(sections):
     if demonetized_match:
         issuance["demonetized"] = demonetized_match.group(1).strip().rstrip('.')
 
-    # Issue date fallback
-    issue_date_match = re.search(r'(\d{1,2}(?:st|nd|rd|th)?\s+\w+\s+\d{4})', full_text)
-    if issue_date_match and not issuance:
-        issuance["issueDate"] = issue_date_match.group(1).strip()
+    # Issue date fallback — extract both BS and AD dates
+    bs_match = re.search(r'(\d{1,2}(?:st|nd|rd|th)?\s+\w+\s+\d{4}\s*B\.?S\.?)', full_text)
+    ad_match = re.search(r'(\d{1,2}(?:st|nd|rd|th)?\s+\w+\s+\d{4}\s*A\.?D\.?)', full_text)
+
+    if (bs_match or ad_match) and not issuance:
+        if ad_match:
+            issuance["issueDate"] = ad_match.group(1).strip().rstrip('.')
+        if bs_match:
+            issuance["issueDateBS"] = bs_match.group(1).strip().rstrip('.')
 
     return (
         production if production else None,
@@ -186,21 +203,49 @@ def extract_eyebrow(doc):
     for para in doc.paragraphs:
         text = para.text.strip()
         if text:
-            match = re.search(r'(\d{4}[^:,\n]{0,60}(?:Series|Issue|Order|Stamps|Aerogrammes))', text, re.IGNORECASE)
+            # Try year-based series name
+            match = re.search(r'(\d{4}[^:,\n]{0,60}(?:Series|Issue|Orders|Order|Stamps|Aerogrammes))', text, re.IGNORECASE)
+            if match:
+                return match.group(1).strip()
+            # Try "Nepal's X (year)" pattern — handle curly and straight apostrophes
+            match = re.search(r"Nepal[\u2019']s\s+([^(]+)\s*\(\d{4}", text, re.IGNORECASE)
             if match:
                 return match.group(1).strip()
             return text[:80]
     return ""
 
 def find_denomination_table(doc):
+    best_table = None
+    best_row_count = 0
+
     for table in doc.tables:
         if len(table.rows) < 2:
             continue
         headers = [cell.text.strip().lower() for cell in table.rows[0].cells]
-        for header in headers:
-            if any(kw in header for kw in ["denomination", "value", "face", "denom", "year", "value group"]):
-                return table
-    return None
+
+        # Prefer tables with individual denomination headers
+        priority_keywords = ["denomination", "inscription", "denomination (face value)"]
+        fallback_keywords = ["value", "face", "denom", "year", "value group"]
+
+        is_priority = any(
+            any(kw in header for kw in priority_keywords)
+            for header in headers
+        )
+        is_fallback = any(
+            any(kw in header for kw in fallback_keywords)
+            for header in headers
+        )
+
+        if is_priority:
+            # Always prefer this table and pick the one with most rows
+            if len(table.rows) > best_row_count:
+                best_table = table
+                best_row_count = len(table.rows)
+        elif is_fallback and best_table is None:
+            best_table = table
+            best_row_count = len(table.rows)
+
+    return best_table
 
 def parse_table_row(headers, row_cells, category_slug, image_map, row_index, eyebrow, sections, production, issuance):
     data = {}
