@@ -4,14 +4,14 @@ import type { NextRequest } from "next/server"
 import { verifyToken } from "@/lib/auth"
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname === "/admin/login" || 
+  if (
+    request.nextUrl.pathname === "/admin/login" ||
     request.nextUrl.pathname === "/api/admin/login"
   ) {
     return NextResponse.next()
   }
 
-  const isApiRequest =
-    request.nextUrl.pathname.startsWith("/api/")
+  const isApiRequest = request.nextUrl.pathname.startsWith("/api/")
 
   const token = request.cookies.get("admin_token")?.value
 
@@ -30,7 +30,6 @@ export async function middleware(request: NextRequest) {
 
   try {
     await verifyToken(token)
-
     return NextResponse.next()
   } catch {
     if (isApiRequest) {
@@ -49,6 +48,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/admin/:path*",
-    "/api/:admin/:path*",
+    "/api/admin/:path*",
   ],
 }

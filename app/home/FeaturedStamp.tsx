@@ -19,7 +19,7 @@ export default function FeaturedStamps() {
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {featuredStamps.map((stamp) => (
-          <StampCard key={stamp.id} {...stamp} />
+          <StampCard key={stamp.id} {...stamp} basePath="/stamps/stamps-fdc" />
         ))}
       </div>
     </section>

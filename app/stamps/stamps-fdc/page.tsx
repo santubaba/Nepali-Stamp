@@ -330,7 +330,7 @@ export default function Stamps() {
         {/* ── RIGHT: pagination ──────── */}
         <div className="w-full lg:flex-1 lg:min-w-0 lg:pl-8">
           {/* Stamp grid */}
-          <StampGrid stamps={paginatedStamps} />
+          <StampGrid stamps={paginatedStamps} basePath="/stamps/stamps-fdc" />
 
           {/* Pagination */}
           <div className="mt-20">

@@ -1,20 +1,22 @@
-import StampCard from "../StampCard/StampCard"; // keep your existing import path
+import StampCard from "../StampCard/StampCard";
 
 type Stamp = {
   id: number;
   slug: string;
   title: string;
-  year: number;
-  country: string;
-  description: string;
+  eyebrow?: string;
+  year?: number;
+  country?: string;
+  description?: string;
   img: string;
 };
 
 type StampGridProps = {
   stamps: Stamp[];
+  basePath: string;
 };
 
-export default function StampGrid({ stamps }: StampGridProps) {
+export default function StampGrid({ stamps, basePath }: StampGridProps) {
   if (stamps.length === 0) {
     return (
       <div className="py-16 text-sm text-center font-meta text-brand-muted">
@@ -26,7 +28,7 @@ export default function StampGrid({ stamps }: StampGridProps) {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
       {stamps.map((stamp) => (
-        <StampCard key={stamp.id} {...stamp} />
+        <StampCard key={stamp.id} {...stamp} basePath={basePath} />
       ))}
     </div>
   );
