@@ -24,6 +24,7 @@ async function main() {
     { name: "Income Revenue Stamps", slug: "income-revenue-stamps" },
     { name: "Court Fee Stamps", slug: "court-fee-stamps" },
     { name: "Postal Money Order", slug: "postal-money-order" },
+    { name: "Landlord Stamps", slug: "landlord-stamps" },
   ]
 
   for (const cat of categories) {

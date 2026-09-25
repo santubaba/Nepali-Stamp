@@ -18,11 +18,13 @@ SECTION_GROUPS = {
         "nepals-1922-court-fee",
         "messages-across-the-clouds",
         "introduction",
+        "nepal-the-landlord-stamps",
     ],
     "genesisAndTimeline": [
         "genesis-production-and-administrative-timeline",
         "a-new-era-of-financial-remittance",
         "the-birth-of-airborne-correspondence",
+        "administrative-purpose-context",
     ],
     "legalFramework": [
         "the-legal-framework",
@@ -48,10 +50,12 @@ SECTION_GROUPS = {
         "denomination-panels",
         "redemption-receipt-section",
         "official-cancellation-rings",
+        "inscriptions-design-analysis",
     ],
     "localProduction": [
         "local-production",
         "proliferation-of-varieties",
+        "production-physical-characteristics",
     ],
     "judicialSecurity": [
         "judicial-security",
@@ -60,11 +64,13 @@ SECTION_GROUPS = {
         "collecting-significance",
         "withdrawal-and-modern-collectibility",
         "philatelic-and-historical-legacy",
+        "archival-collector-significance",
     ],
     "denominationOverview": [
         "denominations-color-tiers-and-paper-stocks",
         "denominations-and-color-schemes",
         "denomination-checklist-and-visual-iconography",
+        "denominations-philatelic-status",
     ],
 }
 
