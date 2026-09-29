@@ -11,12 +11,30 @@ cloudinary.config({
 const IMAGES_DIR = path.join(__dirname, "images");
 const OUTPUT_DIR = path.join(__dirname, "output");
 
-async function uploadImage(filePath, publicId) {
+async function uploadImage(filePath, publicId, categorySlug) {
   const result = await cloudinary.uploader.upload(filePath, {
     public_id: publicId,
-    folder: "nepali-stamps",
+    folder: `nepali-stamps/${categorySlug}`,
     overwrite: true,
   });
+  return result.secure_url;
+}
+
+async function uploadDocumentReference() {
+  const imagePath = path.join(IMAGES_DIR, "money-order-para-2.jpg");
+
+  if (!fs.existsSync(imagePath)) {
+    console.log("  money-order-para-2.jpg not found — skipping");
+    return null;
+  }
+
+  const result = await cloudinary.uploader.upload(imagePath, {
+    public_id: "money-order-reverse-side",
+    folder: "nepali-stamps/money-order",
+    overwrite: true,
+  });
+
+  console.log(`  ✓ Reverse side uploaded → ${result.secure_url}`);
   return result.secure_url;
 }
 
@@ -45,7 +63,7 @@ async function processCategory(categorySlug) {
     }
 
     console.log(`  Uploading ${stamp.image}...`);
-    const url = await uploadImage(imagePath, `${categorySlug}/${stamp.slug}`);
+    const url = await uploadImage(imagePath, `${stamp.slug}`, categorySlug);
     stamp.image = url;
     updated = true;
     console.log(`  ✓ ${stamp.title} → ${url}`);
@@ -61,14 +79,17 @@ async function main() {
   const categories = [
     "income-revenue-stamps",
     "court-fee-stamps",
-    "postal-money-order",
     "landlord-stamps",
+    "money-order",
   ];
 
   for (const category of categories) {
     console.log(`\nProcessing ${category}...`);
     await processCategory(category);
   }
+
+  console.log("\nUploading document reference images...");
+  await uploadDocumentReference();
 
   console.log("\nDone. All images uploaded.");
 }

@@ -19,11 +19,11 @@ async function main() {
 
   console.log(`Admin: ${admin.email}`)
 
-  // ── Categories + Stamps ───────────────────────────────
+  // ── Categories + Stamps ────────────────────────────────
   const categories = [
     { name: "Income Revenue Stamps", slug: "income-revenue-stamps" },
     { name: "Court Fee Stamps", slug: "court-fee-stamps" },
-    { name: "Postal Money Order", slug: "postal-money-order" },
+    { name: "Money Order", slug: "money-order" },
     { name: "Landlord Stamps", slug: "landlord-stamps" },
   ]
 
@@ -40,7 +40,6 @@ async function main() {
       continue
     }
 
-    // Upsert category
     const category = await prisma.category.upsert({
       where: { slug: cat.slug },
       update: {},
