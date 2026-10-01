@@ -46,7 +46,7 @@ function Lightbox({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
@@ -54,25 +54,24 @@ function Lightbox({
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-6 top-6 rounded-full border border-white/30 px-3 py-1.5 font-meta text-sm text-white transition-colors hover:bg-white/10"
+        className="absolute right-6 top-6 z-10 rounded-full border border-white/30 px-3 py-1.5 font-meta text-sm text-white transition-colors hover:bg-white/10"
         aria-label="Close image view"
       >
         Close ✕
       </button>
 
       <div
-        className="relative max-h-[85vh] w-full max-w-lg"
+        className="relative max-h-[90vh] max-w-[90vw]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl bg-brand-surface">
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            sizes="90vw"
-            className="object-contain"
-          />
-        </div>
+        <Image
+          src={src}
+          alt={alt}
+          width={1200}
+          height={1200}
+          className="block max-h-[90vh] w-auto max-w-[90vw] rounded-xl object-contain"
+          sizes="90vw"
+        />
       </div>
     </div>
   );
@@ -80,32 +79,38 @@ function Lightbox({
 
 function DenominationCard({ stamp }: { stamp: StampRecord }) {
   const [isOpen, setIsOpen] = useState(false);
+
   const tags = stamp.tags;
   const keyAttributes = stamp.keyAttributes;
   const physical = stamp.physicalProperties;
 
   return (
     <>
-      <div className="overflow-hidden bg-white border border-brand-border rounded-xl">
+      <div className="overflow-hidden rounded-xl border border-brand-border bg-white">
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="relative block w-full border-b group border-brand-border bg-brand-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="relative block w-full border-b border-brand-border bg-brand-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
           aria-label={`View full image of ${stamp.title}`}
         >
-          <div className="relative w-full aspect-[4/5]">
-            <Image
-              src={stamp.image ?? "/placeholder.jpg"}
+          {stamp.image ? (
+            <img
+              src={stamp.image}
               alt={stamp.title}
-              fill
-              className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.02]"
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="block h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
+              loading="lazy"
             />
-          </div>
+          ) : (
+            <div className="flex aspect-square w-full items-center justify-center bg-brand-surface">
+              <span className="text-xs font-meta text-brand-muted">
+                No image
+              </span>
+            </div>
+          )}
         </button>
 
         <div className="p-3">
-          <h4 className="text-sm font-medium font-heading text-brand-text">
+          <h4 className="font-heading text-sm font-medium text-brand-text">
             {stamp.title}
           </h4>
 
@@ -116,7 +121,7 @@ function DenominationCard({ stamp }: { stamp: StampRecord }) {
           )}
 
           {keyAttributes?.motif && (
-            <p className="mt-0.5 text-xs font-meta text-brand-muted line-clamp-2">
+            <p className="mt-0.5 line-clamp-2 text-xs font-meta text-brand-muted">
               {keyAttributes.motif}
             </p>
           )}
@@ -150,9 +155,9 @@ function SpecTable({
   if (rows.length === 0) return null;
 
   return (
-    <div className="overflow-hidden bg-white border rounded-xl border-brand-border">
-      <div className="px-6 py-4 bg-brand-surface">
-        <h2 className="text-xl font-heading text-brand-text">{title}</h2>
+    <div className="overflow-hidden rounded-xl border border-brand-border bg-white">
+      <div className="bg-brand-surface px-6 py-4">
+        <h2 className="font-heading text-xl text-brand-text">{title}</h2>
       </div>
 
       <dl className="divide-y divide-brand-border">
@@ -161,11 +166,9 @@ function SpecTable({
             key={row.label}
             className="flex items-center justify-between gap-6 px-6 py-4"
           >
-            <dt className="text-sm font-body text-brand-muted">
-              {row.label}
-            </dt>
+            <dt className="font-body text-sm text-brand-muted">{row.label}</dt>
 
-            <dd className="text-sm font-semibold text-right font-body text-brand-text">
+            <dd className="text-right font-body text-sm font-semibold text-brand-text">
               {row.value}
             </dd>
           </div>
@@ -226,12 +229,11 @@ export default function CourtFeeStamps() {
 
   if (loading) {
     return (
-      <div className="min-h-screen px-4 bg-brand-bg sm:px-6 lg:px-20">
+      <div className="min-h-screen bg-brand-bg px-4 sm:px-6 lg:px-20">
         <div className="py-6">
           <BreadCrumb />
-          <p className="mt-4 text-sm text-brand-muted font-meta">
-            Loading...
-          </p>
+
+          <p className="mt-4 font-meta text-sm text-brand-muted">Loading...</p>
         </div>
       </div>
     );
@@ -244,7 +246,7 @@ export default function CourtFeeStamps() {
 
         <div className="mt-3">
           {firstStamp?.eyebrow && (
-            <p className="text-xs tracking-widest uppercase font-meta text-brand-primary">
+            <p className="font-meta text-xs uppercase tracking-widest text-brand-primary">
               {firstStamp.eyebrow}
             </p>
           )}
@@ -253,7 +255,7 @@ export default function CourtFeeStamps() {
             Court Fee Stamps
           </h1>
 
-          <p className="text-sm text-brand-secondary font-body">
+          <p className="font-body text-sm text-brand-secondary">
             Court fee stamps from Nepal&apos;s administrative history
           </p>
         </div>
@@ -262,7 +264,7 @@ export default function CourtFeeStamps() {
       </div>
 
       <div className="px-4 sm:px-6 lg:px-20">
-        <h3 className="mb-4 text-xs font-semibold tracking-widest uppercase font-meta text-brand-secondary">
+        <h3 className="mb-4 font-meta text-xs font-semibold uppercase tracking-widest text-brand-secondary">
           Denominations · {stamps.length} issues
         </h3>
 
@@ -274,15 +276,12 @@ export default function CourtFeeStamps() {
       </div>
 
       {(productionRows.length > 0 || issuanceRows.length > 0) && (
-        <div className="px-4 mt-16 sm:px-6 lg:px-20">
+        <div className="mt-16 px-4 sm:px-6 lg:px-20">
           <hr className="mb-10 border-brand-border" />
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {productionRows.length > 0 && (
-              <SpecTable
-                title="Printing & Production"
-                rows={productionRows}
-              />
+              <SpecTable title="Printing & Production" rows={productionRows} />
             )}
 
             {issuanceRows.length > 0 && (
@@ -293,7 +292,7 @@ export default function CourtFeeStamps() {
       )}
 
       {historicalContext && (
-        <div className="px-4 mt-16 mb-16 sm:px-6 lg:px-20">
+        <div className="mt-16 mb-16 px-4 sm:px-6 lg:px-20">
           <hr className="mb-10 border-brand-border" />
 
           {Object.entries(historicalContext).map(([key, value]) => {
@@ -304,11 +303,11 @@ export default function CourtFeeStamps() {
 
             return (
               <div key={key} className="mb-8">
-                <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
+                <h3 className="mb-3 font-heading text-lg font-semibold text-brand-text">
                   {heading}
                 </h3>
 
-                <p className="text-sm leading-7 text-brand-secondary font-body">
+                <p className="font-body text-sm leading-7 text-brand-secondary">
                   {value}
                 </p>
               </div>

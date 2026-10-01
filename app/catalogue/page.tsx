@@ -3,29 +3,12 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ArrowRight, LayoutGrid, List } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import BreadCrumb from "@/app/breadcrumbs/page";
 import { catalogues } from "./data";
 
-const viewOptions = [
-  { value: "Grid", label: "Grid View", Icon: LayoutGrid },
-  { value: "List", label: "List View", Icon: List },
-] as const;
-
-const selectItemClass = cn(
-  "cursor-pointer rounded-sm py-3 transition-colors",
-  "data-[highlighted]:bg-brand-primary/10",
-  "data-[state=checked]:bg-brand-primary data-[state=checked]:text-white",
-);
-
 export default function CollectionsPage() {
   const [view, setView] = useState<"Grid" | "List">("Grid");
+
   return (
     <main className="min-h-screen bg-brand-bg">
       <section className="border-b border-brand-border">
@@ -47,37 +30,38 @@ export default function CollectionsPage() {
               revenue documents, and more.
             </p>
 
-            <Select
-              value={view}
-              onValueChange={(value) => setView(value as "Grid" | "List")}
-            >
-              <SelectTrigger
+            {/* View Toggle */}
+            <div className="flex items-center gap-1 rounded-lg border border-brand-border bg-brand-surface p-1 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setView("Grid")}
+                aria-label="Grid view"
+                title="Grid view"
                 className={cn(
-                  "w-44 h-11 rounded-lg border border-brand-border bg-brand-surface",
-                  "text-brand-secondary font-medium shadow-sm transition-colors",
-                  "hover:border-brand-primary/30 hover:bg-white",
-                  "focus:ring-2 focus:ring-brand-primary/20",
-                  "data-[state=open]:border-brand-primary",
+                  "flex h-9 w-9 items-center justify-center rounded-md transition-colors",
+                  view === "Grid"
+                    ? "bg-brand-primary text-white shadow-sm"
+                    : "text-brand-muted hover:bg-white hover:text-brand-text",
                 )}
               >
-                <SelectValue />
-              </SelectTrigger>
+                <LayoutGrid className="h-4 w-4" />
+              </button>
 
-              <SelectContent className="rounded-lg border border-brand-border bg-white shadow-xl overflow-hidden">
-                {viewOptions.map(({ value, label, Icon }) => (
-                  <SelectItem
-                    key={value}
-                    value={value}
-                    className={selectItemClass}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon className="h-4 w-4" />
-                      <span>{label}</span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <button
+                type="button"
+                onClick={() => setView("List")}
+                aria-label="List view"
+                title="List view"
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-md transition-colors",
+                  view === "List"
+                    ? "bg-brand-primary text-white shadow-sm"
+                    : "text-brand-muted hover:bg-white hover:text-brand-text",
+                )}
+              >
+                <List className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </section>

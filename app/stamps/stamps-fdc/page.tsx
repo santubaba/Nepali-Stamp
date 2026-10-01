@@ -3,7 +3,6 @@ import BreadCrumb from "@/app/breadcrumbs/page";
 import StampGrid from "@/app/components/StampGrid/stampgrid";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Pagination from "@/app/components/Pagination/Pagination";
 import stamps from "./mock-data";
 
@@ -97,21 +96,6 @@ export default function Stamps() {
     return () => clearTimeout(timer);
   }, [query]);
 
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const q = searchParams.get("q") ?? "";
-    setQuery(q);
-    setDebounceQuery(q);
-  }, []);
-
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (debounceQuery) params.set("q", debounceQuery);
-    router.replace(`${pathname}?${params.toString()}`);
-  }, [debounceQuery, router, pathname]);
 
   const toggleDecade = (decade: string) => {
     setOpenDecades((prev) =>
