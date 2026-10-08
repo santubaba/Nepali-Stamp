@@ -41,14 +41,16 @@ function Lightbox({
     };
 
     window.addEventListener("keydown", handleKey);
+
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80"
       role="dialog"
       aria-modal="true"
+      aria-label={alt}
       onClick={onClose}
     >
       <button
@@ -86,12 +88,19 @@ function DenominationCard({ stamp }: { stamp: StampRecord }) {
 
   return (
     <>
-      <div className="overflow-hidden rounded-xl border border-brand-border bg-white">
+      <div className="overflow-hidden bg-white border rounded-xl border-brand-border">
         <button
           type="button"
-          onClick={() => setIsOpen(true)}
-          className="relative block w-full border-b border-brand-border bg-brand-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-          aria-label={`View full image of ${stamp.title}`}
+          onClick={() => {
+            if (stamp.image) setIsOpen(true);
+          }}
+          disabled={!stamp.image}
+          className="relative block w-full border-b group border-brand-border bg-brand-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:cursor-default"
+          aria-label={
+            stamp.image
+              ? `View full image of ${stamp.title}`
+              : `No image available for ${stamp.title}`
+          }
         >
           {stamp.image ? (
             <img
@@ -101,7 +110,7 @@ function DenominationCard({ stamp }: { stamp: StampRecord }) {
               loading="lazy"
             />
           ) : (
-            <div className="flex aspect-square w-full items-center justify-center bg-brand-surface">
+            <div className="flex items-center justify-center w-full aspect-square bg-brand-surface">
               <span className="text-xs font-meta text-brand-muted">
                 No image
               </span>
@@ -110,7 +119,7 @@ function DenominationCard({ stamp }: { stamp: StampRecord }) {
         </button>
 
         <div className="p-3">
-          <h4 className="font-heading text-sm font-medium text-brand-text">
+          <h4 className="text-sm font-medium font-heading text-brand-text">
             {stamp.title}
           </h4>
 
@@ -155,9 +164,9 @@ function SpecTable({
   if (rows.length === 0) return null;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-brand-border bg-white">
-      <div className="bg-brand-surface px-6 py-4">
-        <h2 className="font-heading text-xl text-brand-text">{title}</h2>
+    <div className="overflow-hidden bg-white border rounded-xl border-brand-border">
+      <div className="px-6 py-4 bg-brand-surface">
+        <h2 className="text-xl font-heading text-brand-text">{title}</h2>
       </div>
 
       <dl className="divide-y divide-brand-border">
@@ -166,9 +175,9 @@ function SpecTable({
             key={row.label}
             className="flex items-center justify-between gap-6 px-6 py-4"
           >
-            <dt className="font-body text-sm text-brand-muted">{row.label}</dt>
+            <dt className="text-sm font-body text-brand-muted">{row.label}</dt>
 
-            <dd className="text-right font-body text-sm font-semibold text-brand-text">
+            <dd className="text-sm font-semibold text-right font-body text-brand-text">
               {row.value}
             </dd>
           </div>
@@ -184,12 +193,22 @@ export default function CourtFeeStamps() {
 
   useEffect(() => {
     fetch("/api/stamps/court-fee-stamps")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch court fee stamps");
+        }
+
+        return res.json();
+      })
       .then((data) => {
         setStamps(data.stamps ?? []);
-        setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((error) => {
+        console.error("Error fetching court fee stamps:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const firstStamp = stamps[0];
@@ -229,11 +248,11 @@ export default function CourtFeeStamps() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-brand-bg px-4 sm:px-6 lg:px-20">
+      <div className="min-h-screen px-4 bg-brand-bg sm:px-6 lg:px-20">
         <div className="py-6">
           <BreadCrumb />
 
-          <p className="mt-4 font-meta text-sm text-brand-muted">Loading...</p>
+          <p className="mt-4 text-sm font-meta text-brand-muted">Loading...</p>
         </div>
       </div>
     );
@@ -241,49 +260,57 @@ export default function CourtFeeStamps() {
 
   return (
     <div className="min-h-screen bg-brand-bg">
+      {/* ── Page header ─────────────────────────────────── */}
       <div className="px-4 py-6 sm:px-6 lg:px-20">
         <BreadCrumb />
-
         <div className="mt-3">
           {firstStamp?.eyebrow && (
-            <p className="font-meta text-xs uppercase tracking-widest text-brand-primary">
+            <p className="text-xs tracking-widest uppercase font-meta text-brand-primary">
               {firstStamp.eyebrow}
             </p>
           )}
-
           <h1 className="mt-1 font-heading text-[30px] text-brand-text">
             Court Fee Stamps
           </h1>
-
-          <p className="font-body text-sm text-brand-secondary">
+          <p className="text-sm font-body text-brand-secondary">
             Court fee stamps from Nepal&apos;s administrative history
           </p>
         </div>
-
         <hr className="mt-4 border-brand-border" />
       </div>
 
-      <div className="px-4 sm:px-6 lg:px-20">
-        <h3 className="mb-4 font-meta text-xs font-semibold uppercase tracking-widest text-brand-secondary">
-          Denominations · {stamps.length} issues
-        </h3>
-
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {stamps.map((stamp) => (
-            <DenominationCard key={stamp.id} stamp={stamp} />
-          ))}
+      {/* ── Historical context ───────────────────────────── */}
+      {historicalContext && Object.keys(historicalContext).length > 0 && (
+        <div className="px-4 sm:px-6 lg:px-20">
+          {Object.entries(historicalContext)
+            .filter(([key]) => key !== "denominationOverview")
+            .map(([key, value]) => {
+              const heading = key
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (str) => str.toUpperCase())
+                .trim();
+              return (
+                <div key={key} className="mb-8">
+                  <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
+                    {heading}
+                  </h3>
+                  <p className="text-sm leading-7 font-body text-brand-secondary">
+                    {value}
+                  </p>
+                </div>
+              );
+            })}
         </div>
-      </div>
+      )}
 
+      {/* ── Spec tables ──────────────────────────────────── */}
       {(productionRows.length > 0 || issuanceRows.length > 0) && (
-        <div className="mt-16 px-4 sm:px-6 lg:px-20">
+        <div className="px-4 mt-8 sm:px-6 lg:px-20">
           <hr className="mb-10 border-brand-border" />
-
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {productionRows.length > 0 && (
               <SpecTable title="Printing & Production" rows={productionRows} />
             )}
-
             {issuanceRows.length > 0 && (
               <SpecTable title="Issuance" rows={issuanceRows} />
             )}
@@ -291,30 +318,28 @@ export default function CourtFeeStamps() {
         </div>
       )}
 
-      {historicalContext && (
-        <div className="mt-16 mb-16 px-4 sm:px-6 lg:px-20">
-          <hr className="mb-10 border-brand-border" />
+      {/* ── Denomination Overview + Grid ─────────────────── */}
+      <div className="px-4 mb-16 sm:px-6 lg:px-20">
+        <hr className="mb-10 border-brand-border" />
 
-          {Object.entries(historicalContext).map(([key, value]) => {
-            const heading = key
-              .replace(/([A-Z])/g, " $1")
-              .replace(/^./, (str) => str.toUpperCase())
-              .trim();
+        {historicalContext?.denominationOverview && (
+          <div className="mb-8">
+            <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
+              Denomination Overview
+            </h3>
+            <p className="text-sm leading-7 font-body text-brand-secondary">
+              {historicalContext.denominationOverview}
+            </p>
+          </div>
+        )}
 
-            return (
-              <div key={key} className="mb-8">
-                <h3 className="mb-3 font-heading text-lg font-semibold text-brand-text">
-                  {heading}
-                </h3>
-
-                <p className="font-body text-sm leading-7 text-brand-secondary">
-                  {value}
-                </p>
-              </div>
-            );
-          })}
+        
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {stamps.map((stamp) => (
+            <DenominationCard key={stamp.id} stamp={stamp} />
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }

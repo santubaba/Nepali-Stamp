@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import BreadCrumb from "@/app/breadcrumbs/page";
 
-// ── Types ──────────────────────────────────────────────
 type StampRecord = {
   id: number;
   slug: string;
@@ -27,7 +26,6 @@ type StampRecord = {
   historicalContext: Record<string, string> | null;
 };
 
-// ── Lightbox ───────────────────────────────────────────
 function Lightbox({
   src,
   alt,
@@ -41,86 +39,102 @@ function Lightbox({
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
+
     window.addEventListener("keydown", handleKey);
+
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80"
       role="dialog"
       aria-modal="true"
+      aria-label={alt}
       onClick={onClose}
     >
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-6 top-6 rounded-full border border-white/30 px-3 py-1.5 font-meta text-sm text-white transition-colors hover:bg-white/10"
+        className="absolute right-6 top-6 z-10 rounded-full border border-white/30 px-3 py-1.5 font-meta text-sm text-white transition-colors hover:bg-white/10"
         aria-label="Close image view"
       >
         Close ✕
       </button>
+
       <div
-        className="relative max-h-[85vh] w-full max-w-lg"
+        className="relative max-h-[90vh] max-w-[90vw]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl bg-brand-surface">
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            sizes="90vw"
-            className="object-contain"
-          />
-        </div>
+        <Image
+          src={src}
+          alt={alt}
+          width={1200}
+          height={1200}
+          className="block max-h-[90vh] w-auto max-w-[90vw] rounded-xl object-contain"
+          sizes="90vw"
+        />
       </div>
     </div>
   );
 }
 
-// ── Denomination Card ──────────────────────────────────
 function DenominationCard({ stamp }: { stamp: StampRecord }) {
   const [isOpen, setIsOpen] = useState(false);
+
   const tags = stamp.tags;
   const keyAttributes = stamp.keyAttributes;
   const physical = stamp.physicalProperties;
 
   return (
     <>
-      <div className="bg-white border border-brand-border rounded-xl overflow-hidden">
-        {/* Image — clickable */}
+      <div className="overflow-hidden bg-white border rounded-xl border-brand-border">
         <button
           type="button"
-          onClick={() => setIsOpen(true)}
-          className="group relative block w-full border-b border-brand-border bg-brand-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-          aria-label={`View full image of ${stamp.title}`}
+          onClick={() => {
+            if (stamp.image) setIsOpen(true);
+          }}
+          disabled={!stamp.image}
+          className="relative block w-full border-b group border-brand-border bg-brand-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:cursor-default"
+          aria-label={
+            stamp.image
+              ? `View full image of ${stamp.title}`
+              : `No image available for ${stamp.title}`
+          }
         >
-          <div className="relative w-full aspect-[4/5]">
-            <Image
-              src={stamp.image ?? "/placeholder.jpg"}
+          {stamp.image ? (
+            <img
+              src={stamp.image}
               alt={stamp.title}
-              fill
-              className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.02]"
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="block h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
+              loading="lazy"
             />
-          </div>
+          ) : (
+            <div className="flex items-center justify-center w-full aspect-square bg-brand-surface">
+              <span className="text-xs font-meta text-brand-muted">
+                No image
+              </span>
+            </div>
+          )}
         </button>
 
-        {/* Info */}
         <div className="p-3">
           <h4 className="text-sm font-medium font-heading text-brand-text">
             {stamp.title}
           </h4>
+
           {tags?.color && (
             <p className="mt-1 text-xs font-meta text-brand-primary">
               {tags.color}
             </p>
           )}
+
           {keyAttributes?.motif && (
-            <p className="mt-0.5 text-xs font-meta text-brand-muted line-clamp-2">
+            <p className="mt-0.5 line-clamp-2 text-xs font-meta text-brand-muted">
               {keyAttributes.motif}
             </p>
           )}
+
           {physical?.dimensions && (
             <p className="mt-0.5 text-xs font-meta text-brand-muted">
               {physical.dimensions}
@@ -140,7 +154,6 @@ function DenominationCard({ stamp }: { stamp: StampRecord }) {
   );
 }
 
-// ── Spec Table ─────────────────────────────────────────
 function SpecTable({
   title,
   rows,
@@ -151,18 +164,20 @@ function SpecTable({
   if (rows.length === 0) return null;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-brand-border bg-white">
-      <div className="bg-brand-surface px-6 py-4">
-        <h2 className="font-heading text-xl text-brand-text">{title}</h2>
+    <div className="overflow-hidden bg-white border rounded-xl border-brand-border">
+      <div className="px-6 py-4 bg-brand-surface">
+        <h2 className="text-xl font-heading text-brand-text">{title}</h2>
       </div>
+
       <dl className="divide-y divide-brand-border">
         {rows.map((row) => (
           <div
             key={row.label}
             className="flex items-center justify-between gap-6 px-6 py-4"
           >
-            <dt className="font-body text-sm text-brand-muted">{row.label}</dt>
-            <dd className="text-right font-body text-sm font-semibold text-brand-text">
+            <dt className="text-sm font-body text-brand-muted">{row.label}</dt>
+
+            <dd className="text-sm font-semibold text-right font-body text-brand-text">
               {row.value}
             </dd>
           </div>
@@ -172,19 +187,28 @@ function SpecTable({
   );
 }
 
-// ── Page ───────────────────────────────────────────────
-export default function IncomeRevenueStamps() {
+export default function CourtFeeStamps() {
   const [stamps, setStamps] = useState<StampRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/stamps/income-revenue-stamps")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch court fee stamps");
+        }
+
+        return res.json();
+      })
       .then((data) => {
         setStamps(data.stamps ?? []);
-        setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((error) => {
+        console.error("Error fetching court fee stamps:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const firstStamp = stamps[0];
@@ -224,10 +248,11 @@ export default function IncomeRevenueStamps() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-brand-bg px-4 sm:px-6 lg:px-20">
+      <div className="min-h-screen px-4 bg-brand-bg sm:px-6 lg:px-20">
         <div className="py-6">
           <BreadCrumb />
-          <p className="mt-4 text-sm text-brand-muted font-meta">Loading...</p>
+
+          <p className="mt-4 text-sm font-meta text-brand-muted">Loading...</p>
         </div>
       </div>
     );
@@ -240,35 +265,47 @@ export default function IncomeRevenueStamps() {
         <BreadCrumb />
         <div className="mt-3">
           {firstStamp?.eyebrow && (
-            <p className="text-xs font-meta text-brand-primary uppercase tracking-widest">
+            <p className="text-xs tracking-widest uppercase font-meta text-brand-primary">
               {firstStamp.eyebrow}
             </p>
           )}
           <h1 className="mt-1 font-heading text-[30px] text-brand-text">
-            Income Revenue Stamps
+            Court Fee Stamps
           </h1>
-          <p className="text-sm text-brand-secondary font-body">
-            Fiscal and revenue stamps from Nepal's administrative history
+          <p className="text-sm font-body text-brand-secondary">
+            Court fee stamps from Nepal&apos;s administrative history
           </p>
         </div>
         <hr className="mt-4 border-brand-border" />
       </div>
 
-      {/* ── Denomination grid ────────────────────────────── */}
-      <div className="px-4 sm:px-6 lg:px-20">
-        <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest font-meta text-brand-secondary">
-          Denominations · {stamps.length} issues
-        </h3>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {stamps.map((stamp) => (
-            <DenominationCard key={stamp.id} stamp={stamp} />
-          ))}
+      {/* ── Historical context ───────────────────────────── */}
+      {historicalContext && Object.keys(historicalContext).length > 0 && (
+        <div className="px-4 sm:px-6 lg:px-20">
+          {Object.entries(historicalContext)
+            .filter(([key]) => key !== "denominationOverview")
+            .map(([key, value]) => {
+              const heading = key
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (str) => str.toUpperCase())
+                .trim();
+              return (
+                <div key={key} className="mb-8">
+                  <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
+                    {heading}
+                  </h3>
+                  <p className="text-sm leading-7 font-body text-brand-secondary">
+                    {value}
+                  </p>
+                </div>
+              );
+            })}
         </div>
-      </div>
+      )}
 
       {/* ── Spec tables ──────────────────────────────────── */}
       {(productionRows.length > 0 || issuanceRows.length > 0) && (
-        <div className="px-4 mt-16 sm:px-6 lg:px-20">
+        <div className="px-4 mt-8 sm:px-6 lg:px-20">
           <hr className="mb-10 border-brand-border" />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {productionRows.length > 0 && (
@@ -281,29 +318,27 @@ export default function IncomeRevenueStamps() {
         </div>
       )}
 
-      {/* ── Historical context ───────────────────────────── */}
-      {historicalContext && (
-        <div className="px-4 mt-16 mb-16 sm:px-6 lg:px-20">
-          <hr className="mb-10 border-brand-border" />
-          {Object.entries(historicalContext).map(([key, value]) => {
-            const heading = key
-              .replace(/([A-Z])/g, " $1")
-              .replace(/^./, (str) => str.toUpperCase())
-              .trim();
+      {/* ── Denomination Overview + Grid ─────────────────── */}
+      <div className="px-4 mb-16 sm:px-6 lg:px-20">
+        <hr className="mb-10 border-brand-border" />
 
-            return (
-              <div key={key} className="mb-8">
-                <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
-                  {heading}
-                </h3>
-                <p className="text-sm leading-7 text-brand-secondary font-body">
-                  {value}
-                </p>
-              </div>
-            );
-          })}
+        {historicalContext?.denominationOverview && (
+          <div className="mb-8">
+            <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
+              Denomination Overview
+            </h3>
+            <p className="text-sm leading-7 font-body text-brand-secondary">
+              {historicalContext.denominationOverview}
+            </p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {stamps.map((stamp) => (
+            <DenominationCard key={stamp.id} stamp={stamp} />
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }
