@@ -270,15 +270,15 @@ export default function CourtFeeStamps() {
             </p>
           )}
           <h1 className="mt-1 font-heading text-[30px] text-brand-text">
-            Court Fee Stamps
+            Money Order
           </h1>
           <p className="text-sm font-body text-brand-secondary">
-            Court fee stamps from Nepal&apos;s administrative history
+            Money Order from Nepal&apos;s administrative history
           </p>
         </div>
         <hr className="mt-4 border-brand-border" />
       </div>
-
+      
       {/* ── Historical context ───────────────────────────── */}
       {historicalContext && Object.keys(historicalContext).length > 0 && (
         <div className="px-4 sm:px-6 lg:px-20">
@@ -294,15 +294,25 @@ export default function CourtFeeStamps() {
                   <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
                     {heading}
                   </h3>
-                  <p className="text-sm leading-7 font-body text-brand-secondary">
-                    {value}
-                  </p>
+                  <div
+                    className="text-sm leading-7 font-body text-brand-secondary
+                [&_p]:mb-3
+                [&_strong]:font-semibold
+                [&_em]:italic
+                [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6
+                [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6
+                [&_li]:mb-1
+                [&_a]:underline"
+                    dangerouslySetInnerHTML={{
+                      __html: typeof value === "string" ? value : "",
+                    }}
+                  />
                 </div>
               );
             })}
         </div>
       )}
-
+      
       {/* ── Spec tables ──────────────────────────────────── */}
       {(productionRows.length > 0 || issuanceRows.length > 0) && (
         <div className="px-4 mt-8 sm:px-6 lg:px-20">
@@ -317,7 +327,7 @@ export default function CourtFeeStamps() {
           </div>
         </div>
       )}
-
+      
       {/* ── Denomination Overview + Grid ─────────────────── */}
       <div className="px-4 mb-16 sm:px-6 lg:px-20">
         <hr className="mb-10 border-brand-border" />
@@ -327,9 +337,13 @@ export default function CourtFeeStamps() {
             <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
               Denomination Overview
             </h3>
-            <p className="text-sm leading-7 font-body text-brand-secondary">
-              {historicalContext.denominationOverview}
-            </p>
+
+            <div
+              className="text-sm leading-7 font-body text-brand-secondary [&_strong]:font-semibold [&_em]:italic [&_p]:mb-4 [&_p:last-child]:mb-0 [&_h2]:mb-3 [&_h2]:mt-5 [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:font-semibold [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-1 [&_a]:text-brand-primary [&_a]:underline"
+              dangerouslySetInnerHTML={{
+                __html: historicalContext.denominationOverview,
+              }}
+            />
           </div>
         )}
 

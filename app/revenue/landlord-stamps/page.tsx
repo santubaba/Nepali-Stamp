@@ -170,16 +170,24 @@ function SpecTable({
       </div>
 
       <dl className="divide-y divide-brand-border">
-        {rows.map((row) => (
+        {rows.map((row, index) => (
           <div
-            key={row.label}
+            key={`${row.label}-${index}`}
             className="flex items-center justify-between gap-6 px-6 py-4"
           >
-            <dt className="text-sm font-body text-brand-muted">{row.label}</dt>
+            <dt
+              className="text-sm font-body text-brand-muted"
+              dangerouslySetInnerHTML={{
+                __html: row.label,
+              }}
+            />
 
-            <dd className="text-sm font-semibold text-right font-body text-brand-text">
-              {row.value}
-            </dd>
+            <dd
+              className="text-sm font-semibold text-right font-body text-brand-text"
+              dangerouslySetInnerHTML={{
+                __html: row.value,
+              }}
+            />
           </div>
         ))}
       </dl>
@@ -270,10 +278,10 @@ export default function CourtFeeStamps() {
             </p>
           )}
           <h1 className="mt-1 font-heading text-[30px] text-brand-text">
-            Court Fee Stamps
+            LandLord Stamps
           </h1>
           <p className="text-sm font-body text-brand-secondary">
-            Court fee stamps from Nepal&apos;s administrative history
+            Land Lord stamps from Nepal&apos;s administrative history
           </p>
         </div>
         <hr className="mt-4 border-brand-border" />
@@ -289,14 +297,25 @@ export default function CourtFeeStamps() {
                 .replace(/([A-Z])/g, " $1")
                 .replace(/^./, (str) => str.toUpperCase())
                 .trim();
+
               return (
                 <div key={key} className="mb-8">
                   <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
                     {heading}
                   </h3>
-                  <p className="text-sm leading-7 font-body text-brand-secondary">
-                    {value}
-                  </p>
+                  <div
+                    className="text-sm leading-7 font-body text-brand-secondary
+                [&_p]:mb-3
+                [&_strong]:font-semibold
+                [&_em]:italic
+                [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6
+                [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6
+                [&_li]:mb-1
+                [&_a]:underline"
+                    dangerouslySetInnerHTML={{
+                      __html: typeof value === "string" ? value : "",
+                    }}
+                  />
                 </div>
               );
             })}
@@ -327,9 +346,12 @@ export default function CourtFeeStamps() {
             <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
               Denomination Overview
             </h3>
-            <p className="text-sm leading-7 font-body text-brand-secondary">
-              {historicalContext.denominationOverview}
-            </p>
+            <div
+              className="text-sm leading-7 font-body text-brand-secondary [&_strong]:font-semibold [&_em]:italic [&_p]:mb-4 [&_p:last-child]:mb-0 [&_h2]:mb-3 [&_h2]:mt-5 [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:font-semibold [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-1 [&_a]:text-brand-primary [&_a]:underline"
+              dangerouslySetInnerHTML={{
+                __html: historicalContext.denominationOverview,
+              }}
+            />
           </div>
         )}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

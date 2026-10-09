@@ -294,9 +294,19 @@ export default function CourtFeeStamps() {
                   <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
                     {heading}
                   </h3>
-                  <p className="text-sm leading-7 font-body text-brand-secondary">
-                    {value}
-                  </p>
+                  <div
+                    className="text-sm leading-7 font-body text-brand-secondary
+                [&_p]:mb-3
+                [&_strong]:font-semibold
+                [&_em]:italic
+                [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6
+                [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6
+                [&_li]:mb-1
+                [&_a]:underline"
+                    dangerouslySetInnerHTML={{
+                      __html: typeof value === "string" ? value : "",
+                    }}
+                  />
                 </div>
               );
             })}
@@ -327,13 +337,22 @@ export default function CourtFeeStamps() {
             <h3 className="mb-3 text-lg font-semibold font-heading text-brand-text">
               Denomination Overview
             </h3>
-            <p className="text-sm leading-7 font-body text-brand-secondary">
-              {historicalContext.denominationOverview}
-            </p>
+            <div
+              className="text-sm leading-7 font-body text-brand-secondary
+              [&_p]:mb-3
+              [&_strong]:font-semibold
+              [&_em]:italic
+              [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-6
+              [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6
+              [&_li]:mb-1
+              [&_a]:underline"
+              dangerouslySetInnerHTML={{
+                __html: historicalContext.denominationOverview,
+              }}
+            />
           </div>
         )}
 
-        
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {stamps.map((stamp) => (
             <DenominationCard key={stamp.id} stamp={stamp} />
