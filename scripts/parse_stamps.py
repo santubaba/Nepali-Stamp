@@ -22,6 +22,7 @@ SECTION_GROUPS = {
         "messages-across-the-clouds",
         "introduction",
         "nepal-the-landlord-stamps",
+        "nepals-postal-cards",
     ],
     "genesisAndTimeline": [
         "genesis-production-and-administrative-timeline",
@@ -59,6 +60,7 @@ SECTION_GROUPS = {
         "local-production",
         "proliferation-of-varieties",
         "production-physical-characteristics",
+        "materials-printing-and-production",
     ],
     "judicialSecurity": [
         "judicial-security",
@@ -68,6 +70,10 @@ SECTION_GROUPS = {
         "withdrawal-and-modern-collectibility",
         "philatelic-and-historical-legacy",
         "archival-collector-significance",
+        "design-eras-postal-usages-and-key-varieties",
+        "the-classic-era-khukuri-and-chakra-issues",
+        "the-shri-pashupati-era",
+        "universal-postal-union-upu-accession-and-modern-issues",
     ],
     "denominationOverview": [
         "denominations-color-tiers-and-paper-stocks",
@@ -487,7 +493,8 @@ def parse_table_row(
             data[headers[i]] = cell.text.strip()
 
     title = (
-        data.get("denomination")
+        data.get("card name / type")
+        or data.get("denomination")
         or data.get("face value")
         or data.get("denomination (face value)")
         or data.get("value")
@@ -564,13 +571,29 @@ def parse_table_row(
 
     physical = {}
 
-    for key in ["stamp dimensions", "dimensions"]:
+    for key in ["stamp dimensions", "dimensions", "card size (approx.)", "card size"]:
         if key in data and data[key]:
             physical["dimensions"] = data[key]
             break
 
     if "perforation" in data and data["perforation"]:
         physical["perforation"] = data["perforation"]
+
+    # Per-row issuance and production overrides for postcards
+    if "date of issue" in data and data["date of issue"]:
+        if issuance is None:
+            issuance = {}
+        else:
+            issuance = dict(issuance)
+        issuance["issueDate"] = data["date of issue"]
+
+    if "printing house" in data and data["printing house"]:
+        if production is None:
+            production = {}
+        else:
+            production = dict(production)
+        production["printer"] = data["printing house"]
+    # ─────────────────────────────────────────────────────
 
     return {
         "title": title,

@@ -25,6 +25,7 @@ async function main() {
     { name: "Court Fee Stamps", slug: "court-fee-stamps" },
     { name: "Money Order", slug: "money-order" },
     { name: "Landlord Stamps", slug: "landlord-stamps" },
+    {name: "Post Card", slug:"postcards"}
   ]
 
   for (const cat of categories) {

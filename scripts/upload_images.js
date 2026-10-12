@@ -81,6 +81,7 @@ async function main() {
     "court-fee-stamps",
     "landlord-stamps",
     "money-order",
+    "postcards"
   ];
 
   for (const category of categories) {
