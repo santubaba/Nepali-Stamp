@@ -265,8 +265,10 @@ export default function Navbar() {
         <div className="flex items-center gap-2 lg:gap-3">
           {/* desktop search */}
 
-          <div className="hidden w-[220px] shrink md:block md:w-[320px] lg:w-48 xl:w-68
-          ">
+          <div
+            className="hidden w-[220px] shrink md:block md:w-[320px] lg:w-48 xl:w-68
+          "
+          >
             <SearchBar />
           </div>
 
@@ -346,7 +348,7 @@ export default function Navbar() {
         {/* mobile search */}
 
         <div className="p-5 border-b border-brand-border">
-          <SearchBar/>
+          <SearchBar onResultSelect={closeMenu} />
         </div>
 
         {/* body */}

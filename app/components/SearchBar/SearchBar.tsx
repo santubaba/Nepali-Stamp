@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IconSearch, IconX } from "@tabler/icons-react";
@@ -14,7 +15,11 @@ type SearchResult = {
   route: string;
 };
 
-export default function SearchBar() {
+type SearchBarProps = {
+  onResultSelect?: () => void;
+};
+
+export default function SearchBar({ onResultSelect }: SearchBarProps) {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -25,6 +30,14 @@ export default function SearchBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
 
+  const selectResult = (result: SearchResult) => {
+    setIsOpen(false);
+    setActiveIndex(-1);
+    onResultSelect?.();
+    router.push(result.route);
+  };
+
+  // Debounced search
   useEffect(() => {
     const trimmedQuery = query.trim();
 
@@ -38,10 +51,10 @@ export default function SearchBar() {
 
     let cancelled = false;
 
-    const timer = setTimeout(async () => {
-      setIsLoading(true);
-      setError(false);
+    setIsLoading(true);
+    setError(false);
 
+    const timer = setTimeout(async () => {
       try {
         const response = await fetch(
           `/api/search?q=${encodeURIComponent(trimmedQuery)}`,
@@ -54,7 +67,7 @@ export default function SearchBar() {
         const data: { results: SearchResult[] } = await response.json();
 
         if (!cancelled) {
-          setResults(data.results);
+          setResults(data.results ?? []);
           setActiveIndex(-1);
         }
       } catch {
@@ -75,19 +88,52 @@ export default function SearchBar() {
     };
   }, [query]);
 
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleOutsideClick = (event: PointerEvent) => {
+      const target = event.target;
+
+      if (
+        target instanceof Node &&
+        containerRef.current &&
+        !containerRef.current.contains(target)
+      ) {
+        setIsOpen(false);
+        setActiveIndex(-1);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("pointerdown", handleOutsideClick);
+    };
+  }, []);
+
   return (
     <div ref={containerRef} className="relative w-full">
       {/* Search input */}
-      <div className="flex items-center w-full h-11 px-3 bg-brand-surface border border-brand-border rounded-lg">
-        <IconSearch size={16} className="text-brand-muted shrink-0" />
+      <div className="flex h-11 w-full items-center rounded-lg border border-brand-border bg-brand-surface px-3">
+        <IconSearch size={16} className="shrink-0 text-brand-muted" />
 
         <input
           type="text"
           value={query}
           onChange={(e) => {
-            setQuery(e.target.value);
+            const nextQuery = e.target.value;
+
+            setQuery(nextQuery);
             setActiveIndex(-1);
             setIsOpen(true);
+            setError(false);
+
+            // Show loading immediately, before the debounce finishes.
+            if (nextQuery.trim().length >= 2) {
+              setIsLoading(true);
+            } else {
+              setIsLoading(false);
+              setResults([]);
+            }
           }}
           onFocus={() => {
             if (query.trim().length >= 2) {
@@ -110,10 +156,9 @@ export default function SearchBar() {
             } else if (e.key === "Enter") {
               const selected = results[activeIndex];
 
-              if (isOpen && selected) {
+              if (isOpen && selected && !isLoading) {
                 e.preventDefault();
-                setIsOpen(false);
-                router.push(selected.route);
+                selectResult(selected);
               }
             } else if (e.key === "Escape") {
               e.preventDefault();
@@ -128,7 +173,7 @@ export default function SearchBar() {
           aria-autocomplete="list"
           aria-expanded={isOpen}
           aria-controls="stamp-search-results"
-          className="flex-1 min-w-0 px-2 text-sm bg-transparent outline-none placeholder:text-brand-muted text-brand-text"
+          className="min-w-0 flex-1 bg-transparent px-2 text-sm text-brand-text outline-none placeholder:text-brand-muted"
         />
 
         {query && (
@@ -139,6 +184,7 @@ export default function SearchBar() {
               setResults([]);
               setActiveIndex(-1);
               setIsOpen(false);
+              setIsLoading(false);
               setError(false);
             }}
             aria-label="Clear search"
@@ -168,7 +214,7 @@ export default function SearchBar() {
             </p>
           )}
 
-          {!isLoading && !error && !results.length && (
+          {!isLoading && !error && results.length === 0 && (
             <p className="px-4 py-3 text-sm text-brand-muted">
               No stamps found.
             </p>
@@ -183,10 +229,7 @@ export default function SearchBar() {
                 type="button"
                 role="option"
                 aria-selected={activeIndex === index}
-                onClick={() => {
-                  setIsOpen(false);
-                  router.push(result.route);
-                }}
+                onClick={() => selectResult(result)}
                 className={`flex w-full items-center gap-3 px-4 py-3 text-left transition ${
                   activeIndex === index
                     ? "bg-brand-surface"
