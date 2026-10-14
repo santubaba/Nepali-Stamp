@@ -280,7 +280,7 @@ export default function CourtFeeStamps() {
           </h1>
 
           <p className="text-sm font-body text-brand-secondary">
-            Court fee stamps from Nepal&apos;s administrative history
+            Income Revenue stamps from Nepal&apos;s administrative history
           </p>
         </div>
 
