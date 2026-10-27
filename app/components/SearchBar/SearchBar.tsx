@@ -200,7 +200,7 @@ export default function SearchBar({ onResultSelect }: SearchBarProps) {
         <div
           id="stamp-search-results"
           role="listbox"
-          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-96 overflow-y-auto rounded-lg border border-brand-border bg-brand-bg py-2 shadow-lg"
+          className="absolute left-0 right-0 top-full z-50 mt-2 max-h-[60vh] overflow-y-auto rounded-lg border border-brand-border bg-brand-bg py-2 shadow-lg"
         >
           {isLoading && (
             <p className="px-4 py-3 text-sm text-brand-muted">

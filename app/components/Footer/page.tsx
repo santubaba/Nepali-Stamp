@@ -21,7 +21,7 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-20 h-20 shrink-0">
                 <Image
-                  src="/stamps/Simplified Logo.svg"
+                  src="/stamps/Simplified Logo Dark.svg"
                   width={200}
                   height={275}
                   alt="Nepali Stamp Logo"
