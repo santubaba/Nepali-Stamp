@@ -3,25 +3,29 @@ import Link from "next/link";
 
 interface StampCardProps {
   id: number;
-  slug: string; // needed for the detail page link
+  slug: string;
   title: string;
-  year: number; // plain number — DB returns Int, not Date
-  country: string;
-  description: string; // renamed from metadata — more honest about what it is
-  img: string; // R2 public URL — Phase 5 wires this from DB
+  eyebrow?: string;
+  year?: number;
+  country?: string;
+  description?: string;
+  img: string;
+  basePath: string;
 }
 
 export default function StampCard({
   slug,
   title,
+  eyebrow,
   year,
   country,
   description,
   img,
+  basePath,
 }: StampCardProps) {
   return (
     <Link
-      href={`/stamps/stamps-fdc/${slug}`}
+      href={`${basePath}/${slug}`}
       className="block overflow-hidden transition-all duration-200 bg-white border group border-brand-border rounded-xl hover:-translate-y-1 hover:shadow-md hover:border-brand-primary/40"
     >
       {/* Image area */}
@@ -41,11 +45,21 @@ export default function StampCard({
           {title}
         </h2>
 
-        <p className="mt-1.5 text-xs font-meta text-brand-primary">{year}</p>
+        {eyebrow && (
+          <p className="mt-1.5 text-xs font-meta text-brand-primary line-clamp-1">
+            {eyebrow}
+          </p>
+        )}
 
-        <p className="mt-0.5 text-xs font-meta text-brand-muted line-clamp-1">
-          {country} · {description}
-        </p>
+        {(year || country || description) && (
+          <p className="mt-0.5 text-xs font-meta text-brand-muted line-clamp-1">
+            {year && <span>{year}</span>}
+            {year && (country || description) && <span> · </span>}
+            {country && <span>{country}</span>}
+            {country && description && <span> · </span>}
+            {description && <span>{description}</span>}
+          </p>
+        )}
       </div>
     </Link>
   );

@@ -2,7 +2,7 @@
 import BreadCrumb from "@/app/breadcrumbs/page";
 import StampGrid from "@/app/components/StampGrid/stampgrid";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "@/app/components/Pagination/Pagination";
 import stamps from "./mock-data";
 import { useStampListEntrance } from "@/lib/animations/useStampListEntrance";
@@ -311,7 +311,7 @@ export default function Stamps() {
         {/* ── RIGHT: pagination ──────── */}
         <div ref={gridWrapperRef} className="w-full lg:flex-1 lg:min-w-0 lg:pl-8">
           {/* Stamp grid */}
-          <StampGrid stamps={paginatedStamps} />
+          <StampGrid stamps={paginatedStamps} basePath="/stamps/stamps-fdc" />
 
           {/* Pagination */}
           <div className="mt-20">

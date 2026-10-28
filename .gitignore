@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -10,6 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 .pnpm-store
+.env
 
 # testing
 /coverage
@@ -33,10 +34,17 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
-
+!.env.example
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Parser output
+scripts/output/
+scripts/images/
+
+# Client source documents
+scripts/*.docx

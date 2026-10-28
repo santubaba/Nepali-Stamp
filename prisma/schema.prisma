@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Stamp {
+  id                 Int       @id @default(autoincrement())
+  title              String
+  slug               String    @unique
+  eyebrow            String?
+  image              String?
+  featured           Boolean   @default(false)
+  categoryId         Int?
+  tags               Json?
+  keyAttributes      Json?
+  physicalProperties Json?
+  printingProduction Json?
+  issuance           Json?
+  historicalContext  Json?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  category           Category? @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id     Int     @id @default(autoincrement())
+  name   String
+  slug   String  @unique
+  stamps Stamp[]
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

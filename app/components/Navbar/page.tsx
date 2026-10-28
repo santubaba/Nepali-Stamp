@@ -10,6 +10,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useRef, useState } from "react";
+import SearchBar from "../SearchBar/SearchBar";
+
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { LanguageContext } from "@/app/context/LanguageContext";
@@ -551,13 +553,9 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ================================================================== */}
-      {/* Navbar */}
-      {/* ================================================================== */}
-
       <nav
         ref={navRef}
-        className="relative z-30 flex items-center justify-between h-16 px-4 border-b md:h-24 md:px-6 lg:px-15 border-brand-border bg-brand-bg"
+        className="relative flex items-center justify-between h-16 px-4 border-b z-[60] md:h-24 md:px-6 lg:px-15 border-brand-border bg-brand-bg"
       >
         {/* Logo */}
 
@@ -688,51 +686,12 @@ export default function Navbar() {
         <div className="flex items-center gap-2 lg:gap-3 navbar-entrance">
           {/* Desktop Search */}
 
-          <form
-            onSubmit={handleSearch}
-            className="
-              hidden
-              md:flex
-              items-center
-              flex-1
-              max-w-[220px]
-              md:max-w-[320px]
-              lg:w-40
-              xl:w-56
-              h-10
-              px-3
-              bg-brand-surface
-              border
-              border-brand-border
-              rounded-lg
-              shrink
-            "
+          <div
+            className="hidden w-[220px] shrink md:block md:w-[320px] lg:w-48 xl:w-68
+          "
           >
-            <IconSearch
-              size={16}
-              className="text-brand-muted shrink-0"
-            />
-
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) =>
-                setSearchQuery(e.target.value)
-              }
-              placeholder="Search stamps..."
-              className="flex-1 min-w-0 px-2 text-sm bg-transparent outline-none placeholder:text-brand-muted"
-            />
-
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                aria-label="Clear search"
-              >
-                <IconX size={15} />
-              </button>
-            )}
-          </form>
+            <SearchBar />
+          </div>
 
           {/* Language */}
 
@@ -778,27 +737,20 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ================================================================== */}
-      {/* Mobile Overlay */}
-      {/* ================================================================== */}
+      {/* mobile overlay */}
+
+      {isMenuOpen && (
+        <div
+          onClick={closeMenu}
+          className="fixed inset-0 z-[70] bg-black/50 lg:hidden"
+        />
+      )}
+
+      {/* mobile drawer */}
 
       <div
-        ref={mobileOverlayRef}
-        onClick={closeMenu}
-        className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-        style={{
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* ================================================================== */}
-      {/* Mobile Drawer */}
-      {/* ================================================================== */}
-
-      <div
-        ref={mobileDrawerRef}
-        className="fixed top-0 right-0 z-50 h-full overflow-y-auto w-72 bg-brand-bg lg:hidden"
+        className={`fixed top-0 right-0 h-full w-72 bg-brand-bg z-[80] overflow-y-auto transition-transform duration-300 lg:hidden
+          ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         {/* Header */}
 
@@ -827,36 +779,8 @@ export default function Navbar() {
 
         {/* Mobile Search */}
 
-        <div className="p-5 border-b border-brand-border mobile-menu-item">
-          <form
-            onSubmit={handleSearch}
-            className="flex items-center px-3 border rounded-lg h-11 bg-brand-surface border-brand-border"
-          >
-            <IconSearch
-              size={16}
-              className="text-brand-muted"
-            />
-
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) =>
-                setSearchQuery(e.target.value)
-              }
-              placeholder="Search stamps..."
-              className="flex-1 px-2 text-sm bg-transparent outline-none"
-            />
-
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                aria-label="Clear search"
-              >
-                <IconX size={15} />
-              </button>
-            )}
-          </form>
+        <div className="p-5 border-b border-brand-border">
+          <SearchBar onResultSelect={closeMenu} />
         </div>
 
         {/* Mobile Navigation */}
