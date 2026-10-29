@@ -1,7 +1,10 @@
+"use client";
+
+import { useRef } from "react";
 import BreadCrumb from "../breadcrumbs/page";
+
 import {
   FiBook,
-  FiHome,
   FiLayers,
   FiRefreshCw,
   FiUsers,
@@ -9,13 +12,20 @@ import {
   FiGlobe,
   FiCamera,
   FiList,
-  FiGrid,
   FiBookOpen,
 } from "react-icons/fi";
 
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 export default function AboutPage() {
+  const rootRef = useRef<HTMLElement>(null);
+
   const timeline = [
     {
       year: "2006",
@@ -88,20 +98,236 @@ export default function AboutPage() {
     },
   ];
 
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // ----------------------------------------
+        // 1. HERO ENTRANCE
+        // ----------------------------------------
+
+        const heroItems = gsap.utils.toArray<HTMLElement>(
+          "[data-hero-copy] > *",
+        );
+
+        gsap.from(heroItems, {
+          y: 30,
+          opacity: 0,
+          duration: 0.85,
+          stagger: 0.13,
+          ease: "power3.out",
+          clearProps: "all",
+        });
+
+        gsap.from("[data-profile-card]", {
+          x: 35,
+          y: 10,
+          opacity: 0,
+          duration: 1,
+          delay: 0.2,
+          ease: "power3.out",
+          clearProps: "all",
+        });
+
+        // ----------------------------------------
+        // 2. GENERIC SCROLL REVEALS
+        // ----------------------------------------
+
+        gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
+          gsap.from(element, {
+            y: 28,
+            opacity: 0,
+            duration: 0.75,
+            ease: "power2.out",
+            clearProps: "all",
+            scrollTrigger: {
+              trigger: element,
+              start: "top 88%",
+              toggleActions: "play none none none",
+            },
+          });
+        });
+
+        // ----------------------------------------
+        // 3. QUOTE SECTION
+        // ----------------------------------------
+
+        gsap.from("[data-quote-content]", {
+          y: 24,
+          opacity: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: "[data-quote]",
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        // ----------------------------------------
+        // 4. TIMELINE LINE
+        // ----------------------------------------
+
+        gsap.from("[data-timeline-line]", {
+          scaleY: 0,
+          transformOrigin: "top center",
+          duration: 1.5,
+          ease: "power2.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: "[data-timeline-section]",
+            start: "top 65%",
+            end: "bottom 70%",
+            scrub: 0.6,
+          },
+        });
+
+        // ----------------------------------------
+        // 5. TIMELINE MILESTONES
+        // ----------------------------------------
+
+        gsap.utils
+          .toArray<HTMLElement>("[data-timeline-item]")
+          .forEach((item, index) => {
+            const dot = item.querySelector("[data-timeline-dot]");
+            const content = item.querySelector("[data-timeline-content]");
+
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: item,
+                start: "top 86%",
+                toggleActions: "play none none none",
+              },
+            });
+
+            tl.from(item, {
+              opacity: 0,
+              y: 24,
+              duration: 0.65,
+              ease: "power2.out",
+              clearProps: "all",
+            });
+
+            if (content) {
+              tl.from(
+                content,
+                {
+                  x: 16,
+                  opacity: 0,
+                  duration: 0.55,
+                  ease: "power2.out",
+                  clearProps: "all",
+                },
+                "-=0.4",
+              );
+            }
+
+            if (dot) {
+              tl.from(
+                dot,
+                {
+                  scale: 0.5,
+                  duration: 0.35,
+                  ease: "back.out(1.7)",
+                  clearProps: "transform",
+                },
+                "-=0.4",
+              );
+            }
+
+            // Alternate only a very small timing variation.
+            // The actual timeline layout remains unchanged.
+            if (index % 2 !== 0) {
+              tl.timeScale(1.05);
+            }
+          });
+
+        // ----------------------------------------
+        // 6. STATISTICS
+        // ----------------------------------------
+
+        gsap.from("[data-stat]", {
+          y: 25,
+          opacity: 0,
+          duration: 0.65,
+          stagger: 0.12,
+          ease: "power2.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: "[data-stats-section]",
+            start: "top 83%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        // ----------------------------------------
+        // 7. SOCIETY PANELS
+        // ----------------------------------------
+
+        gsap.from("[data-society-panel]", {
+          y: 28,
+          opacity: 0,
+          duration: 0.75,
+          stagger: 0.18,
+          ease: "power2.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: "[data-society-grid]",
+            start: "top 82%",
+            toggleActions: "play none none none",
+          },
+        });
+
+        // ----------------------------------------
+        // 8. METHODOLOGY CARDS
+        // ----------------------------------------
+
+        gsap.from("[data-method-card]", {
+          y: 32,
+          opacity: 0,
+          duration: 0.75,
+          stagger: 0.15,
+          ease: "power3.out",
+          clearProps: "all",
+          scrollTrigger: {
+            trigger: "[data-method-grid]",
+            start: "top 82%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+
+      return () => mm.revert();
+    },
+    { scope: rootRef },
+  );
+
   return (
-    <main className="min-h-screen bg-brand-secondary text-brand-text font-body">
+    <main
+      ref={rootRef}
+      className="min-h-screen bg-brand-secondary text-brand-text font-body"
+    >
       {/* Breadcrumb */}
+
       <div className="relative flex items-center top-6 left-6 md:top-20 md:left-20 w-fit text-brand-bg">
         <BreadCrumb className="text-brand-bg [&_a]:text-brand-bg/60 [&_a:hover]:text-brand-bg" />
       </div>
 
-      {/* Page container */}
+      {/* Hero */}
+
       <section className="px-6 py-10 md:px-20 md:py-16">
         <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
-          {/* LEFT CONTENT */}
-          <div className="flex flex-col gap-5 mt-6 md:mt-15 lg:max-w-2xl">
+          {/* Left content */}
+
+          <div
+            data-hero-copy
+            className="flex flex-col gap-5 mt-6 md:mt-15 lg:max-w-2xl"
+          >
             <div className="flex items-center gap-2">
               <div className="w-8 h-px bg-brand-accent" />
+
               <p className="text-xs tracking-widest uppercase text-brand-accent md:text-sm font-meta">
                 A COLLECTOR’S JOURNEY
               </p>
@@ -120,9 +346,12 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* RIGHT CARD */}
-          <div className="w-full lg:w-[480px] p-6 md:p-8 border bg-[#f5efeb0f] border-brand-border rounded-2xl">
-            {/* Avatar */}
+          {/* Founder card */}
+
+          <div
+            data-profile-card
+            className="w-full lg:w-[480px] p-6 md:p-8 border bg-[#f5efeb0f] border-brand-border rounded-2xl"
+          >
             <div className="flex flex-col items-center text-center">
               <div className="flex items-center justify-center w-20 h-20 text-xl text-white rounded-full md:w-24 md:h-24 bg-brand-primary md:text-2xl font-heading">
                 SG
@@ -137,27 +366,25 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Divider */}
             <div className="my-6 border-t border-brand-bg/60" />
 
-            {/* Stats */}
             <div className="space-y-4 text-sm md:text-base">
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span className="text-brand-bg/60">Collection started</span>
                 <span className="text-brand-bg">2006</span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span className="text-brand-bg/60">Society membership</span>
                 <span className="text-brand-bg">2025</span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span className="text-brand-bg/60">Records in archive</span>
                 <span className="text-brand-bg">1,400+</span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span className="text-brand-bg/60">Contact</span>
                 <span className="text-brand-bg">9898989898</span>
               </div>
@@ -166,9 +393,16 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Quote Container */}
-      <section className="flex flex-col items-center px-6 py-8 text-center bg-brand-primary md:px-20 md:py-10">
-        <div className="max-w-5xl text-xl leading-relaxed font-heading text-brand-bg md:text-3xl">
+      {/* Quote */}
+
+      <section
+        data-quote
+        className="flex flex-col items-center px-6 py-8 text-center bg-brand-primary md:px-20 md:py-10"
+      >
+        <div
+          data-quote-content
+          className="max-w-5xl text-xl leading-relaxed font-heading text-brand-bg md:text-3xl"
+        >
           &quot;Each tiny rectangle was a miniature window to another world — a
           burst of color, a snippet of history, a glimpse into a faraway land or
           a time long past.&quot;
@@ -180,25 +414,38 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <div className="px-6 py-10 border-t border-brand-border bg-brand-bg md:px-20 md:py-14">
-        {/* Header */}
-        <div className="mb-10">
-          <div className="text-2xl font-bold font-heading text-brand-text md:text-3xl mb-2">
-            The journey, year by year
-          </div>
 
-          <div className="text-sm md:text-base text-brand-muted">
+      <section
+        data-timeline-section
+        className="px-6 py-10 border-t border-brand-border bg-brand-bg md:px-20 md:py-14"
+      >
+        <div data-reveal className="mb-10">
+          <h2 className="mb-2 text-2xl font-bold font-heading text-brand-text md:text-3xl">
+            The journey, year by year
+          </h2>
+
+          <p className="text-sm md:text-base text-brand-muted">
             From accidental discovery to a structured national archive
-          </div>
+          </p>
         </div>
 
-        <div className="flex flex-col">
+        <div className="relative flex flex-col">
+          {/* Animated timeline rail */}
+
+          <div
+            data-timeline-line
+            aria-hidden="true"
+            className="absolute top-1 bottom-10 left-[77px] md:left-[122px] w-px bg-brand-border origin-top"
+          />
+
           {timeline.map((item, index) => (
             <div
               key={`${item.year}-${index}`}
-              className="grid grid-cols-[70px_16px_1fr] md:grid-cols-[110px_24px_1fr] gap-x-4 md:gap-x-8 pb-10"
+              data-timeline-item
+              className="relative grid grid-cols-[70px_16px_minmax(0,1fr)] md:grid-cols-[110px_24px_minmax(0,1fr)] gap-x-4 md:gap-x-8 pb-10"
             >
               {/* Year */}
+
               <div className="pt-1">
                 <div className="text-lg md:text-[22px] font-heading text-brand-primary">
                   {item.year}
@@ -209,38 +456,31 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* Timeline Dot */}
-              <div className="flex flex-col items-center">
-                <div
-                  className={`
-                rounded-full border-2 border-brand-bg mt-1
-                ${
-                  item.milestone
-                    ? "w-4 h-4 md:w-5 md:h-5 bg-brand-primary"
-                    : "w-2.5 h-2.5 md:w-3 md:h-3 bg-brand-accent"
-                }
-              `}
-                />
+              {/* Timeline dot */}
 
-                {index !== timeline.length - 1 && (
-                  <div className="flex-1 w-px bg-brand-border" />
-                )}
+              <div className="relative z-10 flex flex-col items-center">
+                <div
+                  data-timeline-dot
+                  className={`rounded-full border-2 border-brand-bg mt-1 ${
+                    item.milestone
+                      ? "w-4 h-4 md:w-5 md:h-5 bg-brand-primary"
+                      : "w-2.5 h-2.5 md:w-3 md:h-3 bg-brand-accent"
+                  }`}
+                />
               </div>
 
               {/* Content */}
-              <div className="pl-3 md:pl-6">
-                {/* Label */}
+
+              <div data-timeline-content className="min-w-0 pl-3 md:pl-6">
                 <div className="flex items-center gap-2 mb-2 text-[11px] md:text-sm font-meta uppercase tracking-[0.18em] text-brand-accent">
                   {item.icon}
-                  {item.iconLabel}
+                  <span>{item.iconLabel}</span>
                 </div>
 
-                {/* Title */}
                 <h3 className="mb-3 text-xl md:text-2xl font-heading text-brand-text">
                   {item.title}
                 </h3>
 
-                {/* Body */}
                 <p className="text-base leading-7 md:text-lg md:leading-8 text-brand-muted">
                   {item.text}
                 </p>
@@ -256,43 +496,63 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Stats Band */}
-      <div className="grid grid-cols-2 md:grid-cols-4 border-y border-brand-border bg-brand-secondary">
-        <div className="flex flex-col items-center justify-center px-6 py-8 text-center border-r border-brand-bg/10">
+      {/* Statistics band */}
+
+      <section
+        data-stats-section
+        className="grid grid-cols-2 md:grid-cols-4 border-y border-brand-border bg-brand-secondary"
+      >
+        <div
+          data-stat
+          className="flex flex-col items-center justify-center px-6 py-8 text-center border-r border-brand-bg/10"
+        >
           <div className="text-3xl font-heading text-brand-bg">18 years</div>
+
           <div className="mt-2 text-sm uppercase tracking-wider font-meta text-brand-bg/40">
             Active collecting
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center px-6 py-8 text-center border-brand-bg/10 md:border-r">
+        <div
+          data-stat
+          className="flex flex-col items-center justify-center px-6 py-8 text-center border-brand-bg/10 md:border-r"
+        >
           <div className="text-3xl font-heading text-brand-bg">50 stamps</div>
+
           <div className="mt-2 text-sm uppercase tracking-wider font-meta text-brand-bg/40">
             Where it all started
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center px-6 py-8 text-center border-t border-r border-brand-bg/10 md:border-t-0 md:border-r">
+        <div
+          data-stat
+          className="flex flex-col items-center justify-center px-6 py-8 text-center border-t border-r border-brand-bg/10 md:border-t-0 md:border-r"
+        >
           <div className="text-3xl font-heading text-brand-bg">1,400+</div>
+
           <div className="mt-2 text-sm uppercase tracking-wider font-meta text-brand-bg/40">
             Records documented
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center px-6 py-8 text-center border-t border-brand-bg/10 md:border-t-0">
+        <div
+          data-stat
+          className="flex flex-col items-center justify-center px-6 py-8 text-center border-t border-brand-bg/10 md:border-t-0"
+        >
           <div className="text-3xl font-heading text-brand-bg">2025</div>
+
           <div className="mt-2 text-sm uppercase tracking-wider font-meta text-brand-bg/40">
             NPS membership year
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Nepal Philatelic Society */}
+
       <section className="px-6 py-12 md:px-20 md:py-16 bg-brand-bg">
-        {/* Header */}
-        <div className="mb-10">
+        <div data-reveal className="mb-10">
           <h2 className="text-2xl md:text-3xl font-heading text-brand-text">
             The Nepal Philatelic Society
           </h2>
@@ -302,10 +562,16 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Society Block */}
-        <div className="overflow-hidden bg-white border rounded-2xl border-brand-border grid grid-cols-1 md:grid-cols-2 min-h-fit md:h-[500px] w-full">
-          {/* Left */}
-          <div className="p-6 md:p-15 border-b md:border-b-0 md:border-r border-brand-border bg-white">
+        <div
+          data-society-grid
+          className="overflow-hidden bg-white border rounded-2xl border-brand-border grid grid-cols-1 md:grid-cols-2 min-h-fit md:min-h-[500px] w-full"
+        >
+          {/* Left panel */}
+
+          <div
+            data-society-panel
+            className="p-6 md:p-15 border-b md:border-b-0 md:border-r border-brand-border bg-white"
+          >
             <h3 className="text-xl md:text-2xl font-heading text-brand-text font-semibold">
               A community built on shared knowledge
             </h3>
@@ -324,8 +590,9 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Right */}
-          <div className="p-6 md:p-15 bg-brand-surface">
+          {/* Right panel */}
+
+          <div data-society-panel className="p-6 md:p-15 bg-brand-surface">
             <h3 className="text-xl md:text-2xl font-heading text-brand-text font-semibold">
               How the Society shaped this archive
             </h3>
@@ -349,9 +616,9 @@ export default function AboutPage() {
       </section>
 
       {/* Methodology */}
+
       <section className="px-6 py-12 md:px-20 md:py-16 bg-brand-bg border-t border-brand-border">
-        {/* Header */}
-        <div className="mb-10">
+        <div data-reveal className="mb-10">
           <h2 className="text-2xl md:text-3xl font-heading text-brand-text">
             How records are documented
           </h2>
@@ -361,10 +628,13 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div data-method-grid className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* Card 1 */}
-          <div className="p-6 transition-all bg-white border rounded-2xl border-brand-border hover:shadow-sm h-80">
+
+          <div
+            data-method-card
+            className="p-6 transition-all duration-300 bg-white border rounded-2xl border-brand-border hover:shadow-sm md:hover:-translate-y-1"
+          >
             <div className="flex items-center justify-center w-12 h-12 mb-5 rounded-xl bg-brand-surface text-brand-primary">
               <FiCamera size={22} />
             </div>
@@ -381,7 +651,11 @@ export default function AboutPage() {
           </div>
 
           {/* Card 2 */}
-          <div className="p-6 transition-all bg-white border rounded-2xl border-brand-border hover:shadow-sm">
+
+          <div
+            data-method-card
+            className="p-6 transition-all duration-300 bg-white border rounded-2xl border-brand-border hover:shadow-sm md:hover:-translate-y-1"
+          >
             <div className="flex items-center justify-center w-12 h-12 mb-5 rounded-xl bg-brand-surface text-brand-primary">
               <FiList size={22} />
             </div>
@@ -398,7 +672,11 @@ export default function AboutPage() {
           </div>
 
           {/* Card 3 */}
-          <div className="p-6 transition-all bg-white border rounded-2xl border-brand-border hover:shadow-sm">
+
+          <div
+            data-method-card
+            className="p-6 transition-all duration-300 bg-white border rounded-2xl border-brand-border hover:shadow-sm md:hover:-translate-y-1"
+          >
             <div className="flex items-center justify-center w-12 h-12 mb-5 rounded-xl bg-brand-surface text-brand-primary">
               <FiBookOpen size={22} />
             </div>

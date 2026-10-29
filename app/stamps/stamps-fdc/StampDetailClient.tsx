@@ -243,7 +243,7 @@ export default function StampDetailClient({
                 key={featuredStamp.id}
                 className="featured-card mx-auto w-full max-w-[220px]"
               >
-                <StampCard {...featuredStamp} />
+                <StampCard {...featuredStamp} basePath="/stamps/stamps-fdc" />
               </div>
             ))}
           </div>
